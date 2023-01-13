@@ -1,0 +1,79 @@
+{
+  "_development": true,
+  "_from": "@sds/tailwindcss-3@https://artifactory.sei.cmu.edu:443/artifactory/api/npm/sei-design-system/@sds/tailwindcss-3/-/@sds/tailwindcss-3-2.0.7.tgz",
+  "_id": "@sds/tailwindcss-3@2.0.7",
+  "_inBundle": false,
+  "_integrity": "sha512-dWM0+RCRwTpEhsK6hf4SEvy/biDK1XckWoTmcwILL5mAi/ON8EsYWZ8euFSkZ+XNN3fN3ddpUf2lunCUbLaqbA==",
+  "_location": "/@sds/tailwindcss-3",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "remote",
+    "raw": "@sds/tailwindcss-3@https://artifactory.sei.cmu.edu:443/artifactory/api/npm/sei-design-system/@sds/tailwindcss-3/-/@sds/tailwindcss-3-2.0.7.tgz",
+    "name": "@sds/tailwindcss-3",
+    "escapedName": "@sds%2ftailwindcss-3",
+    "scope": "@sds",
+    "rawSpec": "https://artifactory.sei.cmu.edu:443/artifactory/api/npm/sei-design-system/@sds/tailwindcss-3/-/@sds/tailwindcss-3-2.0.7.tgz",
+    "saveSpec": "https://artifactory.sei.cmu.edu:443/artifactory/api/npm/sei-design-system/@sds/tailwindcss-3/-/@sds/tailwindcss-3-2.0.7.tgz",
+    "fetchSpec": "https://artifactory.sei.cmu.edu:443/artifactory/api/npm/sei-design-system/@sds/tailwindcss-3/-/@sds/tailwindcss-3-2.0.7.tgz"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "https://artifactory.sei.cmu.edu:443/artifactory/api/npm/sei-design-system/@sds/tailwindcss-3/-/@sds/tailwindcss-3-2.0.7.tgz",
+  "_shasum": "d021b7ea0c19cb2dd4250089153ae7fe5cdb17ed",
+  "_spec": "@sds/tailwindcss-3@https://artifactory.sei.cmu.edu:443/artifactory/api/npm/sei-design-system/@sds/tailwindcss-3/-/@sds/tailwindcss-3-2.0.7.tgz",
+  "_where": "/frontend",
+  "bugs": {
+    "url": "https://issues.sei.cmu.edu/jira/projects/SDS"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "The TailwindCSS 3.x configuration for the SEI Design System.",
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.3",
+    "@tailwindcss/line-clamp": "^0.4.2",
+    "@tailwindcss/typography": "^0.5.8",
+    "@vitejs/plugin-vue": "^3.2.0",
+    "@vue/compiler-sfc": "^3.0.5",
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.19",
+    "tailwindcss": "^3.2.4",
+    "vite": "^3.2.4",
+    "vue": "^3.0.5"
+  },
+  "engines": {
+    "node": ">=12.13.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./tailwindcss/tailwind-base.js",
+      "require": "./tailwindcss/tailwind-base.js"
+    },
+    "./tailwindcss/*": "./tailwindcss/*",
+    "./open-sans/*": "./open-sans/*"
+  },
+  "files": [
+    "tailwindcss",
+    "open-sans"
+  ],
+  "homepage": "https://designsystem.sei.cmu.edu/",
+  "main": "./tailwindcss/tailwind-base.js",
+  "module": "./tailwindcss/tailwind-base.js",
+  "name": "@sds/tailwindcss-3",
+  "publishConfig": {
+    "cache": "~/.npm",
+    "registry": "https://artifactory.sei.cmu.edu/artifactory/api/npm/sei-design-system/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://code.sei.cmu.edu/bitbucket/projects/SDS/repos/tailwindcss-3/"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "release": "./scripts/release.sh",
+    "serve": "vite preview"
+  },
+  "version": "2.0.7"
+}

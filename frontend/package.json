@@ -1,0 +1,25 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js",
+    "build": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js build",
+    "start": "node --max-old-space-size=4096 node_modules/nuxt/bin/nuxt.js start",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "core-js": "^3.15.1",
+    "nuxt": "^2.15.7"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^4.2.1",
+    "@sds/components-vue2": "^2.7.0",
+    "@sds/tailwindcss-3": "^2.0.7",
+    "@tailwindcss/aspect-ratio": "^0.3.0",
+    "@tailwindcss/forms": "^0.3.4",
+    "@tailwindcss/line-clamp": "^0.2.2",
+    "@tailwindcss/typography": "^0.4.1",
+    "postcss": "^8.3.11"
+  }
+}

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LayoutStacked should match its default snapshot 1`] = `
+<div
+  class="flex flex-col w-full min-h-screen"
+  data-id="sds-layout-stacked"
+>
+  <!---->
+   
+  <main
+    class="flex-grow"
+  />
+   
+  <!---->
+</div>
+`;

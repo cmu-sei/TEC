@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScrollArea should match its default snapshot 1`] = `
+<div
+  class="scroll-area"
+  data-id="sds-scroll-area"
+/>
+`;

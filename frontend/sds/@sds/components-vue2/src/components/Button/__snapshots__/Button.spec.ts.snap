@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button should match its default snapshot 1`] = `
+<button
+  class=""
+  data-id="sds-button"
+>
+  Button content
+</button>
+`;
+
+exports[`Button should match its variant primary snapshot 1`] = `
+<button
+  class="btn btn-primary"
+  data-id="sds-button"
+>
+  Button content
+</button>
+`;

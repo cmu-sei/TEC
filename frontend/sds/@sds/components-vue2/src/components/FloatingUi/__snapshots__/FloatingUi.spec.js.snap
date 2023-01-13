@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FloatingUi.vue matches snapshot with no props assigned 1`] = `
+"<div class=\\"inline-block\\">
+  <div class=\\"inline-block w-full\\"></div>
+  <transition-stub css=\\"true\\" enterclass=\\"transform scale-95 opacity-0\\" leaveclass=\\"transform scale-100 opacity-100\\" entertoclass=\\"transform scale-100 opacity-100\\" leavetoclass=\\"transform scale-95 opacity-0\\" enteractiveclass=\\"transition duration-75 ease-out\\" leaveactiveclass=\\"transition duration-50 ease-in\\">
+    <!---->
+  </transition-stub>
+</div>"
+`;

@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input should match its default snapshot 1`] = `
+<div>
+  <input
+    class="form-control"
+    data-id="sds-input"
+    maxlength="524288"
+    type="text"
+  />
+   
+  <!---->
+</div>
+`;

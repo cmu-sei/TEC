@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modal should match its default snapshot 1`] = `
+<transition-stub
+  enteractiveclass="transition-opacity duration-75"
+  enterclass="opacity-0"
+  leaveactiveclass="transition-opacity duration-75"
+  leavetoclass="opacity-0"
+>
+  <!---->
+</transition-stub>
+`;
