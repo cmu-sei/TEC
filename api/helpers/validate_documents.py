@@ -7,6 +7,7 @@
 # DM23-0003
 
 import requests
+import os
 from jsonschema import Draft7Validator
 from flask import current_app
 
@@ -22,8 +23,10 @@ def validate_document_against_schema(descriptor_name, document):
 
     :return: A list containing validation error messages as strings
     """
-    response = requests.get(current_app.config['descriptor_address'] + '/get_schema/' + descriptor_name + '_schema.json')
-    schema = response.json()
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    dir_path = dir_path + '/../ml-mismatch-descriptors/schemas/' + descriptor_name + '_schema.json'
+    schema_file = open(dir_path)
+    schema = json.load(schema_file)
 
     v = Draft7Validator(schema)
     validation_errors = sorted(v.iter_errors(document), key=str)
