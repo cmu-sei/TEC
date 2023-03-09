@@ -2,7 +2,30 @@
 
 ## Introduction
 
-The Mismatch Analysis Tool, TEC is used to aid the user in properly filling out the descriptors developed during the ML Mismatch LENS and then the tool detects mismatches on the information supplied. These mismatches will then be displayed to the user providing them information about what the mismatch was, and what the potential impact is if the mismatch is not addressed. 
+The development and operation of ML-enabled systems involves three workflows
+
+- The *Model Development* workflow produces a trained model and is typically executed by data scientists or ML engineers with a background in statistics and machine learning
+- The *Model Integration* workflow takes the data pipeline and trained model produced in the previous workflow, packages them as an ML component, and integrates it into an ML-enabled system — typically executed by software engineers and developers with a background in traditional software development and testing
+- The *Model Operation* workflow oversees the operation and monitoring of the production ML-enabled system — typically executed by IT personnel with a background in traditional IT operations
+
+These workflows are often executed by three different teams with three different backgrounds, tools, and even different vocabularies, which can lead to ML Mismatch.
+
+We define ML Mismatch as a problem that occurs in the development, integration, deployment, and operation of an ML-enabled system due to incorrect assumptions made about system elements by different stakeholders that results in a negative consequence.
+
+### Descriptors
+TEC supports the explicit recording of these assumptions in a set of **eight descriptors**, shown in the diagram below in bold caps letters. The goal of the descriptors is to support the **model development to operations process**.
+
+- System Context: Business goals, task to perform, success criteria, usage context, risks, and other business elements that influence model development, integration, deployment, operation, and evolution
+- Raw Data: Unprocessed data sources from which training data is derived
+- Data Pipeline: Code that prepares data for processing by the Trained Model
+- Training Data: Data for model training
+- Trained Model: Trained model to be deployed in a production ML-enabled system
+- Development Environment: Development and computing environment in which the ML Component (data pipeline and trained model) will be tested and integrated into the ML-enabled system
+- Production Environment: Computing environment in which the ML Component (data pipeline and model) will execute as part of an ML-enabled system
+- Production Data: Data that is processed by the ML Component in production
+
+### ML System Development Workflows
+![System Diagram](/frontend/static/system-diagram.png)
 
 ## Usage
 
