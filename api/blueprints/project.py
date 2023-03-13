@@ -37,9 +37,7 @@ def insert_project():
         print("Could not complete request. Please check postgres logs.", flush=True)
         return "Could not complete request. Please check postgres logs.", 500
 
-    print(response, flush=True)
-    
-    return json.dumps({'project_uuid': response}), 200
+    return response, 200
 
 
 @project_blueprint.route('/update_project', methods=['POST'])
@@ -51,18 +49,18 @@ def update_project() -> json:
     """
     json_data = request.get_json()
 
-    if not all([json_data['project_uuid'], json_data['name'], json_data['description'], json_data['point_of_contact']]):
+    if not all([json_data['name'], json_data['description'], json_data['point_of_contact']]):
         print("Could not complete request. Required data missing.", flush=True)
         return "Could not complete request. Required data missing.", 500
     
     database = current_app.config['database']
-    response = db_update_project(database, json_data['project_uuid'], json_data['name'], json_data['description'], json_data['point_of_contact'])
+    response = db_update_project(database, json_data['name'], json_data['description'], json_data['point_of_contact'])
 
     if not response:
         print("Could not complete request. Please check postgres logs.", flush=True)
         return "Could not complete request. Please check postgres logs.", 500
 
-    return 'Success', 200
+    return response, 200
 
 
 @project_blueprint.route('/delete_project', methods=['POST'])
@@ -83,8 +81,8 @@ def delete_project():
     response = db_delete_project(database, json_data['project_name'])
 
     if response == 0:
-        print("Could not complete request. Project UUID not found in database.", flush=True)
-        return "Could not complete request. Project UUID not found in the database.", 500
+        print("Could not complete request. Project not found in database.", flush=True)
+        return "Could not complete request. Project not found in the database.", 500
     elif not response:
         print("Could not complete request. Please check postgres logs.", flush=True)
         return "Could not complete request. Please check postgres logs.", 500
@@ -121,29 +119,6 @@ def get_project():
     return json.dumps({'project': response}), 200
 
 
-@project_blueprint.route('/get_project_documents', methods=['POST'])
-def get_project_documents():
-    """
-    Gets all of the documents for a specified project
-    :JSON param project_name: :JSON param project_name: The project that the document will be inserted underThe project that the document will be inserted under
-
-    :return: JSON containing all of the documents for the project
-    """
-    json_data = request.get_json()
-
-    if not json_data['project_name']:
-        print("Could not complete request. No project name provided.", flush=True)
-        return "Could not complete request. No project name provided.", 500
-    
-    database = current_app.config['database']
-    response = db_get_project_documents(database, json_data['project_name'])
-
-    if not response:
-        print("Could not complete request. Please check postgres logs.", flush=True)
-        return "Could not complete request. Please check postgres logs.", 500
-
-    return json.dumps(response), 200
-
 
 @project_blueprint.route('/get_all_projects', methods=['GET'])
 def get_all_projects():
@@ -154,8 +129,6 @@ def get_all_projects():
     """
     database = current_app.config['database']
     response = db_get_all_projects(database)
-
-    print(response, flush=True)
 
     return json.dumps(response), 200
 
@@ -175,13 +148,13 @@ def evaluate_project():
         return "Could not complete request. No project name provided.", 500
 
     database = current_app.config['database']
-    project_documents = db_get_project_documents(database, json_data['project_name'])
+    project = db_get_project(database, json_data['project_name'])
 
-    if not project_documents:
+    if not project:
         print("Could not complete request. Please check postgres logs.", flush=True)
         return "Could not complete request. Please check postgres logs.", 500
 
-    mismatches = project_mismatches_and_missing_fields(project_documents)
+    mismatches = project_mismatches_and_missing_fields(project)
     
     return mismatches, 200
 
@@ -201,13 +174,13 @@ def evaluate_project_pdf():
         return "Could not complete request. No project name provided.", 500
 
     database = current_app.config['database']
-    project_documents = db_get_project_documents(database, json_data['project_name'])
+    project = db_get_project(database, json_data['project_name'])
 
-    if not project_documents:
+    if not project:
         print("Could not complete request. Please check postgres logs.", flush=True)
         return "Could not complete request. Please check postgres logs.", 500
 
-    mismatches = project_mismatches_and_missing_fields(project_documents)
+    mismatches = project_mismatches_and_missing_fields(project)
 
     pdf = MyFPDFClass()
     pdf.add_page()

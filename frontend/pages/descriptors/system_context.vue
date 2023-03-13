@@ -220,7 +220,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '',
+            version: '1.0',
             task: '',
             ml_problem_type: {
               ml_problem: '',
@@ -381,6 +381,8 @@ DM23-0003
       await this.$axios.post('/api/documents/get_document', post_json).then(response => {
         if(response['data']['document'] != null){
           console.log(response['data'])
+          console.log("xxx")
+          console.log(response['data']['document'])
 
           this.model.document = JSON.parse(JSON.stringify(response['data']['document']))
 

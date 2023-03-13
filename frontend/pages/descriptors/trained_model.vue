@@ -1563,7 +1563,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '',
+            version: '1.0',
             model_name: '',
             model_version: '',
             model_description: '',

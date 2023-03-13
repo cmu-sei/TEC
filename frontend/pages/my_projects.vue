@@ -56,7 +56,7 @@ DM23-0003
       
       async export_project(project_name){
         let post_json = {'project_name': project_name}
-        await this.$axios.post('/api/project/get_project_documents', post_json).then(response => {
+        await this.$axios.post('/api/project/get_project', post_json).then(response => {
           let project_json = response['data']
           Object.entries(project_json).forEach(([key, value]) => {
             if(!value){

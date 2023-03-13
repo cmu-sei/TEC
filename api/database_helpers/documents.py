@@ -7,36 +7,28 @@
 # DM23-0003
 
 
-import psycopg2
-import psycopg2.extras
 from psycopg2.extras import RealDictCursor
 import json
-import uuid
 
 
-def db_insert_document(database, project_uuid, descriptor_name, document):
+def db_insert_document(database, project_name, descriptor_name, document):
     """
     Insert or update a document in the DB based on project name and descriptor name
 
     :return: 
     """
-     # Create new data uuid
-    document_uuid = uuid.uuid1()
-    
     # Create cursor and insert new record in table
     cursor = database.connection.cursor()
 
     try:
-        record_to_insert = (str(document_uuid.hex), str(project_uuid), str(json.dumps(document)), str(json.dumps(document)), str(project_uuid))
-        query = """
-                INSERT INTO """ + descriptor_name + """ (document_uuid, project_uuid, document) 
-                VALUES(%s, %s, %s) 
-                ON CONFLICT (project_uuid)
-                DO
-                UPDATE SET document = %s WHERE """ + descriptor_name + """.project_uuid = %s
+        query_data = (str(json.dumps(document)), project_name,)
+        query = f"""
+                UPDATE projects
+                SET {descriptor_name} = %s
+                WHERE name = %s
                 """
 
-        cursor.execute(query, record_to_insert)
+        cursor.execute(query, query_data)
         return 'Success'
     except:
         database.connection.rollback()
@@ -46,21 +38,21 @@ def db_insert_document(database, project_uuid, descriptor_name, document):
         database.connection.commit()
 
 
-def db_get_document(database, project_uuid, descriptor_name):
+def db_get_document(database, project_name, descriptor_name):
     """
-    Get information based on project_uuid and descriptor_name
+    Get document information based on project_name and descriptor_name
 
     :return: document json or None
     """
     cursor = database.connection.cursor(cursor_factory=RealDictCursor)
 
     try:
-        cursor.execute('SELECT document FROM ' + descriptor_name + ' WHERE project_uuid=%s', (project_uuid,))
+        cursor.execute(f'SELECT {descriptor_name} FROM projects WHERE name = %s', (project_name,))
         result = cursor.fetchall()
         if len(result) == 0:
             return None
         else:
-            return result[0]
+            return result[0][descriptor_name]
     except:
         database.connection.rollback()
         raise
@@ -69,14 +61,21 @@ def db_get_document(database, project_uuid, descriptor_name):
         database.connection.commit()
 
 
-def db_delete_document(database, project_uuid, descriptor_name):
+def db_delete_document(database, project_name, descriptor_name):
     """
-    Delete document based on project_uuid and descriptor_name
+    Delete document based on project_name and descriptor_name. Achieved by setting it to null.
     """
     cursor = database.connection.cursor()
 
     try:
-        cursor.execute('DELETE FROM ' + descriptor_name + ' WHERE project_uuid=%s', (project_uuid,))
+        query_data = (project_name,)
+        query = f"""
+                UPDATE projects
+                SET {descriptor_name} = null
+                WHERE name = %s
+                """
+
+        cursor.execute(query, query_data)
         return 'Success'
     except:
         database.connection.rollback()

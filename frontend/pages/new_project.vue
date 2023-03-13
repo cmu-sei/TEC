@@ -57,7 +57,6 @@ DM23-0003
         is_edit: false,
         bypass_beforeRouteLeave: false,
         model: {
-          project_uuid: '',
           name: '',
           description: '',
           point_of_contact: '',
@@ -87,7 +86,6 @@ DM23-0003
         console.log(this.model);
 
         let post_json = {
-          project_uuid: this.model.project_uuid,
           name: this.model.name,
           description: this.model.description,
           point_of_contact: this.model.point_of_contact

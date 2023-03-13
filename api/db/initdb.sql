@@ -9,116 +9,20 @@
 
 CREATE TABLE IF NOT EXISTS projects
 (
-    project_uuid UUID NOT NULL,
     name VARCHAR NOT NULL UNIQUE,
     description VARCHAR NOT NULL,
-    point_of_contact VARCHAR, 
+    point_of_contact VARCHAR,
 
-    PRIMARY KEY(project_uuid)
-);
+    system_context JSON,
+    raw_data JSON,
+    training_data JSON,
+    data_pipeline JSON,
+    trained_model JSON,
+    development_environment JSON,
+    production_environment JSON,
+    production_data JSON,
 
-CREATE TABLE IF NOT EXISTS system_context
-(
-    document_uuid UUID NOT NULL,
-    project_uuid UUID NOT NULL UNIQUE,
-    document JSON NOT NULL,
-    CONSTRAINT fk_project
-      FOREIGN KEY(project_uuid) 
-	    REFERENCES projects(project_uuid)
-	    ON DELETE CASCADE,
-
-    PRIMARY KEY(document_uuid)
-);
-
-CREATE TABLE IF NOT EXISTS raw_data
-(
-    document_uuid UUID NOT NULL,
-    project_uuid UUID NOT NULL UNIQUE,
-    document JSON NOT NULL,
-    CONSTRAINT fk_project
-      FOREIGN KEY(project_uuid) 
-	    REFERENCES projects(project_uuid)
-	    ON DELETE CASCADE,
-
-    PRIMARY KEY(document_uuid)
-);
-
-CREATE TABLE IF NOT EXISTS training_data
-(
-    document_uuid UUID NOT NULL,
-    project_uuid UUID NOT NULL  UNIQUE,
-    document JSON NOT NULL,
-    CONSTRAINT fk_project
-      FOREIGN KEY(project_uuid) 
-	    REFERENCES projects(project_uuid)
-	    ON DELETE CASCADE,
-
-    PRIMARY KEY(document_uuid)
-);
-
-CREATE TABLE IF NOT EXISTS data_pipeline
-(
-    document_uuid UUID NOT NULL,
-    project_uuid UUID NOT NULL UNIQUE,
-    document JSON NOT NULL,
-    CONSTRAINT fk_project
-      FOREIGN KEY(project_uuid) 
-	    REFERENCES projects(project_uuid)
-	    ON DELETE CASCADE,
-
-    PRIMARY KEY(document_uuid)
-);
-
-CREATE TABLE IF NOT EXISTS trained_model
-(
-    document_uuid UUID NOT NULL,
-    project_uuid UUID NOT NULL UNIQUE,
-    document JSON NOT NULL,
-    CONSTRAINT fk_project
-      FOREIGN KEY(project_uuid) 
-	    REFERENCES projects(project_uuid)
-	    ON DELETE CASCADE,
-
-    PRIMARY KEY(document_uuid)
-);
-
-CREATE TABLE IF NOT EXISTS development_environment
-(
-    document_uuid UUID NOT NULL,
-    project_uuid UUID NOT NULL UNIQUE,
-    document JSON NOT NULL,
-    CONSTRAINT fk_project
-      FOREIGN KEY(project_uuid) 
-	    REFERENCES projects(project_uuid)
-	    ON DELETE CASCADE,
-
-    PRIMARY KEY(document_uuid)
-);
-
-CREATE TABLE IF NOT EXISTS production_environment
-(
-    document_uuid UUID NOT NULL,
-    project_uuid UUID NOT NULL UNIQUE,
-    document JSON NOT NULL,
-    CONSTRAINT fk_project
-      FOREIGN KEY(project_uuid) 
-	    REFERENCES projects(project_uuid)
-	    ON DELETE CASCADE,
-
-    PRIMARY KEY(document_uuid)
-);
-
-CREATE TABLE IF NOT EXISTS production_data
-(
-    document_uuid UUID NOT NULL,
-    project_uuid UUID NOT NULL UNIQUE,
-    document JSON NOT NULL,
-    CONSTRAINT fk_project
-      FOREIGN KEY(project_uuid) 
-	    REFERENCES projects(project_uuid)
-	    ON DELETE CASCADE,
-
-    PRIMARY KEY(document_uuid)
+    PRIMARY KEY(name)
 );
 
 CREATE TABLE IF NOT EXISTS ml_frameworks

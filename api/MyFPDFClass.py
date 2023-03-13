@@ -12,4 +12,4 @@ from fpdf import FPDF
 class MyFPDFClass(FPDF):
     def footer(self):
         self.set_y(-15)
-        self.cell(0, 10, str(self.page_no()), 0, 0, 'R') 
+        self.cell(0, 10, str(self.page_no()), 0, 0, 'R')

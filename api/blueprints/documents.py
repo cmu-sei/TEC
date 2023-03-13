@@ -39,9 +39,6 @@ def insert_document():
 
     database = current_app.config['database']
 
-    project = db_get_project_from_name(database, project_name)
-    project_uuid = project['project_uuid']
-
     # TODO : Give this and export a different list name than just 'errors'
     # TODO : This will not do the normal validation along with this because it returns every time
     if('import' in json_data and json_data['import']):
@@ -51,24 +48,24 @@ def insert_document():
 
     error_list = []
     if(descriptor_name == 'system_context'):
-        error_list = validate_system_context(database, project_uuid, document)
+        error_list = validate_system_context(database, project_name, document)
     elif(descriptor_name == 'data_pipeline'):
-        error_list = validate_data_pipeline(database, project_uuid, document)
+        error_list = validate_data_pipeline(database, project_name, document)
     elif(descriptor_name == 'training_data'):
-        error_list = validate_training_data(database, project_uuid, document)
+        error_list = validate_training_data(database, project_name, document)
     elif(descriptor_name == 'trained_model'):
-        error_list = validate_trained_model(database, project_uuid, document)
+        error_list = validate_trained_model(database, project_name, document)
     elif(descriptor_name == 'development_environment'):
-        error_list = validate_development_environment(database, project_uuid, document)
+        error_list = validate_development_environment(database, project_name, document)
     elif(descriptor_name == 'production_environment'):
-        error_list = validate_production_environment(database, project_uuid, document)
+        error_list = validate_production_environment(database, project_name, document)
     elif(descriptor_name == 'production_data'):
-        error_list = validate_production_data(database, project_uuid, document)
+        error_list = validate_production_data(database, project_name, document)
     
     if(len(error_list) > 0):
         return {'error_list': error_list}, 400
 
-    db_response = db_insert_document(database, project_uuid, descriptor_name, document)
+    db_response = db_insert_document(database, project_name, descriptor_name, document)
 
     if not db_response:
         return {'error_list': ['Database Error.']}, 500
@@ -94,25 +91,21 @@ def get_document():
 
     project_name = json_data['project_name']
     descriptor_name = json_data['descriptor_name']
+    
     database = current_app.config['database']
 
-    project = db_get_project_from_name(database, project_name)
-    project_uuid = project['project_uuid']
-
-    db_response = db_get_document(database, project_uuid, descriptor_name)
+    db_response = db_get_document(database, project_name, descriptor_name)
 
     if not db_response:
         return "No document found", 200
     else:
-        document = db_response['document']
-
         # TODO : Give this and export a different list name than just 'errors'
         # TODO : This will not do the normal validation along with this because it returns every time
         if 'export' in json_data and json_data['export']:
-            schema_errors = validate_document_against_schema(descriptor_name, document)
-            return {'document': document, 'errors': schema_errors}
+            schema_errors = validate_document_against_schema(descriptor_name, db_response)
+            return {'document': db_response, 'errors': schema_errors}
         else:
-            return db_response, 200
+            return {'document': db_response}, 200
             
 
 @documents_blueprint.route('/delete_document', methods=['POST'])
@@ -136,9 +129,6 @@ def delete_document():
 
     database = current_app.config['database']
 
-    project = db_get_project_from_name(database, project_name)
-    project_uuid = project['project_uuid']
-
-    db_delete_document(database, project_uuid, descriptor_name)
+    db_delete_document(database, project_name, descriptor_name)
 
     return 'Success', 200

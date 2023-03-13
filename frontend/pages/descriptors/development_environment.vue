@@ -572,7 +572,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '',
+            version: '1.0',
             programming_languages: [],
             ml_frameworks: [],
             upstream_components: [{

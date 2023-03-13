@@ -40,18 +40,18 @@ def validate_document_against_schema(descriptor_name, document):
     return schema_errors
 
 
-def validate_system_context(database, project_uuid, system_context_document):
+def validate_system_context(database, project_name, system_context_document):
     """
     Validate that the linked fields being submitted are still valid
     - business_goals map to business_goal_mapping in Trained Model
 
     :param database: Database that will be used (pulled from the global app config)
-    :param project_uuid: UUID of the project that contains the documents being validated
+    :param project_name: name of the project that contains the documents being validated
     :param system_context_document: System Context document being evaluated for submission
     """
     error_list = []
 
-    db_trained_model_reponse = db_get_document(database, project_uuid, 'trained_model')
+    db_trained_model_reponse = db_get_document(database, project_name, 'trained_model')
 
     if(db_trained_model_reponse):
         trained_model_document = db_trained_model_reponse['document']
@@ -65,23 +65,23 @@ def validate_system_context(database, project_uuid, system_context_document):
     return error_list
 
 
-def validate_data_pipeline(database, project_uuid, data_pipeline_document):
+def validate_data_pipeline(database, project_name, data_pipeline_document):
     """
     Validate that the linked fields being submitted are still valid and then checks db_lists for new entries
     - component and data_item in input_spec are pulled from upstream_components in Development Environment
 
     :param database: Database that will be used (pulled from the global app config)
-    :param project_uuid: UUID of the project that contains the documents being validated
+    :param project_name: name of the project that contains the documents being validated
     :param data_pipeline_document: Data Pipeline document being evaluated for submission
 
     :return: A list containing error messages as strings
     """
     error_list = []
 
-    db_response = db_get_document(database, project_uuid, 'development_environment')
+    db_response = db_get_document(database, project_name, 'development_environment')
 
     if(db_response):
-        development_environment_document = db_response['document']
+        development_environment_document = db_response
         upstream_component_names = [component['component_name'] for component in development_environment_document['upstream_components']]
 
         for input_spec in data_pipeline_document['input_spec']:
@@ -107,13 +107,13 @@ def validate_data_pipeline(database, project_uuid, data_pipeline_document):
     return error_list
 
 
-def validate_training_data(database, project_uuid, training_data_document):
+def validate_training_data(database, project_name, training_data_document):
     """
     Validate that all the fields in the document being submitted are valid and then checks db_lists for new entries
     - raw_data_identifer is pulled from dataset_identifier in Raw Data
 
     :param database: Database that will be used (pulled from the global app config)
-    :param project_uuid: UUID of the project that contains the documents being validated
+    :param project_name: name of the project that contains the documents being validated
     :param training_data_document: Training Data document being evaluated for submission
 
     :return: A list containing error messages as strings
@@ -126,10 +126,10 @@ def validate_training_data(database, project_uuid, training_data_document):
         if(statistic['field'] not in schema_field_name_list and statistic['field'] != ''):
             error_list.append('The field: ' + statistic['field'] + ' that you selected is no longer in the list of schema. Please fix and resubmit.')
 
-    db_raw_data_response = db_get_document(database, project_uuid, 'raw_data')
+    db_raw_data_response = db_get_document(database, project_name, 'raw_data')
     
     if(db_raw_data_response):
-        raw_data_document = db_raw_data_response['document']
+        raw_data_document = db_raw_data_response
         if(training_data_document['raw_data_identifier'] != raw_data_document['dataset_identifier']):
             error_list.append('Dataset Identifier in Raw Data was updated and this submission does not reflect that change. Reload page and resubmit to get updated field.')
 
@@ -141,7 +141,7 @@ def validate_training_data(database, project_uuid, training_data_document):
     return error_list
 
 
-def validate_trained_model(database, project_uuid, trained_model_document):
+def validate_trained_model(database, project_name, trained_model_document):
     """
     Validate that the linked fields being submitted are still valid and then checks db_lists for new entries
     - data_pipeline_identifier is pulled from pipeline_identifier in Data Pipeline
@@ -155,31 +155,31 @@ def validate_trained_model(database, project_uuid, trained_model_document):
 
 
     :param database: Database that will be used (pulled from the global app config)
-    :param project_uuid: UUID of the project that contains the documents being validated
+    :param project_name: name of the project that contains the documents being validated
     :param trained_model_document: Trained Model document being evaluated for submission
 
     :return: A list containing error messages as strings
     """
     error_list = []
 
-    db_data_pipeline_response = db_get_document(database, project_uuid, 'data_pipeline')
+    db_data_pipeline_response = db_get_document(database, project_name, 'data_pipeline')
 
     if(db_data_pipeline_response):
-        data_pipeline_document = db_data_pipeline_response['document']
+        data_pipeline_document = db_data_pipeline_response
         if(trained_model_document['data_pipeline_identifier'] != data_pipeline_document['pipeline_identifier']):
             error_list.append('Pipeline Identifier in Data Pipeline was updated and this submission does not reflect that change. Reload page and resubmit to get updated field.')
 
-    db_training_data_response = db_get_document(database, project_uuid, 'training_data')
+    db_training_data_response = db_get_document(database, project_name, 'training_data')
 
     if(db_training_data_response):
-        training_data_document = db_training_data_response['document']
+        training_data_document = db_training_data_response
         if(trained_model_document['training_data_identifier'] != training_data_document['dataset_identifier']):
             error_list.append('Dataset Identifier in Training Data was updated and this submission does not reflect that change. Reload page and resubmit to get updated field.')
 
-    db_development_environment_response = db_get_document(database, project_uuid, 'development_environment')
+    db_development_environment_response = db_get_document(database, project_name, 'development_environment')
 
     if(db_development_environment_response):
-        development_environment_document = db_development_environment_response['document']
+        development_environment_document = db_development_environment_response
         development_environment_downstream_component_names = [component['component_name'] for component in development_environment_document['downstream_components']]
 
         # Ensuring that no components selected in Output Specification of Trained Model have been deleted
@@ -212,10 +212,10 @@ def validate_trained_model(database, project_uuid, trained_model_document):
                 if(final_output_spec['component_mapping']['data_item'] != '' and final_output_spec['component_mapping']['data_item'] not in selected_downstream_component_data_items):
                     error_list.append('The Data Item: ' + final_output_spec['component_mapping']['data_item'] + ' in the Downstream Component: ' + final_output_spec['component_mapping']['component'] + ' is no longer available in Development Environment.')    
 
-    db_production_environment_response = db_get_document(database, project_uuid, 'production_environment')
+    db_production_environment_response = db_get_document(database, project_name, 'production_environment')
 
     if(db_production_environment_response):
-        production_environment_document = db_production_environment_response['document']
+        production_environment_document = db_production_environment_response
 
         production_environment_algorithm_metrics = [item['metric'] for item in production_environment_document['algorithm_metrics']]
         trained_model_algorithm_metrics = [item['metric'] for item in trained_model_document['algorithm_metrics']]
@@ -245,10 +245,10 @@ def validate_trained_model(database, project_uuid, trained_model_document):
             if(feedback not in trained_model_user_system_feedback and feedback != ''):
                 error_list.append('The User System Feedback: ' + feedback + ' is currently in use in Production Environment and cannot be deleted.')
 
-    db_system_context_response = db_get_document(database, project_uuid, 'system_context')
+    db_system_context_response = db_get_document(database, project_name, 'system_context')
 
     if(db_system_context_response):
-        system_context_document = db_system_context_response['document']
+        system_context_document = db_system_context_response
 
         system_context_business_goals_ids = [item['id'] for item in system_context_document['business_goals']]
 
@@ -281,24 +281,24 @@ def validate_trained_model(database, project_uuid, trained_model_document):
     return error_list
 
 
-def validate_development_environment(database, project_uuid, development_environment_document):
+def validate_development_environment(database, project_name, development_environment_document):
     """
     Validate that the linked fields being submitted are still valid and then checks db_lists for new entries
     - component_name and data_item in upstream_components map to input_spec in Data Pipeline
     - component_name and data_item in downstream_components map to output_spec and final_output_spec in Trained Model
 
     :param database: Database that will be used (pulled from the global app config)
-    :param project_uuid: UUID of the project that contains the documents being validated
+    :param project_name: name of the project that contains the documents being validated
     :param development_environment_document: Development Environment document being evaluated for submission
 
     :return: A list containing error messages as strings
     """
     error_list = []
 
-    db_data_pipeline_response = db_get_document(database, project_uuid, 'data_pipeline')
+    db_data_pipeline_response = db_get_document(database, project_name, 'data_pipeline')
 
     if(db_data_pipeline_response):
-        data_pipeline_document = db_data_pipeline_response['document']
+        data_pipeline_document = db_data_pipeline_response
         development_environment_upstream_component_names = [component['component_name'] for component in development_environment_document['upstream_components']]
 
         # Ensuring that no components selected in the input specification of Data Pipeline have been deleted
@@ -316,10 +316,10 @@ def validate_development_environment(database, project_uuid, development_environ
                 if(input_spec['component_mapping']['data_item'] != '' and input_spec['component_mapping']['data_item'] not in selected_upstream_component_data_items):
                     error_list.append('The Data Item: ' + input_spec['component_mapping']['data_item'] + ' in the Upstream Component: ' + input_spec['component_mapping']['component'] + ' is in use in Data Pipeline and cannot be deleted.')
 
-    db_trained_model_response = db_get_document(database, project_uuid, 'trained_model')
+    db_trained_model_response = db_get_document(database, project_name, 'trained_model')
 
     if(db_trained_model_response):
-        trained_model_document = db_trained_model_response['document']
+        trained_model_document = db_trained_model_response
         development_environment_downstream_component_names = [component['component_name'] for component in development_environment_document['downstream_components']]
 
         # Ensuring that no components selected in Output Specification of Trained Model have been deleted
@@ -368,7 +368,7 @@ def validate_development_environment(database, project_uuid, development_environ
     return error_list
 
 
-def validate_production_environment(database, project_uuid, production_environment_document):
+def validate_production_environment(database, project_name, production_environment_document):
     """
     Validate that the linked fields being submitted are still valid
     - metric in algorithm_metrics pulls from algorithm_metrics in Trained Model
@@ -377,17 +377,17 @@ def validate_production_environment(database, project_uuid, production_environme
     - feedback in user_system_feedback pulls from user_system_feedback in Trained Model
 
     :param database: Database that will be used (pulled from the global app config)
-    :param project_uuid: UUID of the project that contains the documents being validated
+    :param project_name: name of the project that contains the documents being validated
     :param production_environment_document: Production Environment document being evaluated for submission
 
     :return: A list containing error messages as strings
     """
     error_list = []
 
-    db_trained_model_response = db_get_document(database, project_uuid, 'trained_model')
+    db_trained_model_response = db_get_document(database, project_name, 'trained_model')
 
     if(db_trained_model_response):
-        trained_model_document = db_trained_model_response['document']
+        trained_model_document = db_trained_model_response
 
         production_environment_algorithm_metrics = [item['metric'] for item in production_environment_document['algorithm_metrics']]
         trained_model_algorithm_metrics = [item['metric'] for item in trained_model_document['algorithm_metrics']]
@@ -420,12 +420,12 @@ def validate_production_environment(database, project_uuid, production_environme
     return error_list
 
 
-def validate_production_data(database, project_uuid, production_data_document):
+def validate_production_data(database, project_name, production_data_document):
     """
     Checks the database statistic list to see if any submitted properties need to be added
 
     :param database: Database that will be used (pulled from the global app config)
-    :param project_uuid: UUID of the project that contains the documents being validated
+    :param project_name: name of the project that contains the documents being validated
     :param production_environment_document: Production Environment document being evaluated for submission
 
     :return: A list containing error messages as strings
