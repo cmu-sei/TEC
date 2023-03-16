@@ -18,11 +18,11 @@ DM23-0003
         :fields="table_fields"
       >
         <template #cell(actions)="{ item }">
-          <nuxt-link :to="{path: 'project_view', query: {project_name: item.name}}"> <sds-button size="sm" type="button">  Select </sds-button> </nuxt-link>
-          <nuxt-link :to="{path: 'new_project', query: {project_name: item.name}}"> <sds-button size="sm" type="button"> Edit </sds-button> </nuxt-link>
-          <sds-button size="sm" type="button" @click="delete_project(item.name)"> Delete </sds-button>
-          <nuxt-link :to="{path: 'mismatch_results', query: {project_name: item.name}}"> <sds-button size="sm" type="button"> Detect Mismatches </sds-button> </nuxt-link>
-          <sds-button size="sm" type="button" @click="export_project(item.name)"> Export Project </sds-button>
+          <nuxt-link :to="{path: 'project_view', query: {project_name: item.name}}"> <sds-button size="sm" variant="default"> Edit Descriptors </sds-button> </nuxt-link>
+          <nuxt-link :to="{path: 'new_project', query: {project_name: item.name}}"> <sds-button size="sm" variant="default"> Edit Project </sds-button> </nuxt-link>
+          <nuxt-link :to="{path: 'mismatch_results', query: {project_name: item.name}}"> <sds-button size="sm" variant="default"> Detect Mismatches </sds-button> </nuxt-link>
+          <sds-button size="sm" variant="default" @click="export_project(item.name)"> Export Project </sds-button>
+          <sds-button size="sm" variant="danger" @click="delete_project(item.name)"> Delete Project</sds-button>
         </template>
       </sds-table>
     </div>

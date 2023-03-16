@@ -14,7 +14,7 @@ DM23-0003
 
     <sds-toaster v-model='toasts'/>
     
-    <form @submit.prevent='submit' v-if='schema.properties'>
+    <div class="form-div" v-if='schema.properties'>
 
       <div class='input-div'>
         <label for="required_inference_time"> <b> Required Inference Time </b> - {{schema.properties.required_inference_time.description}}</label>
@@ -159,7 +159,7 @@ DM23-0003
       <div class='input-div'>
         <label for="algorithm_metrics"> <b> Algorithm Metrics </b> - {{schema.properties.algorithm_metrics.description}}</label>
         <br>
-        <div v-for="(item, index) in model.document.algorithm_metrics" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.algorithm_metrics" :key="index">
           <div class='variable-input-parent-div'>
             <label for='metric' class='split-fourth-label'> Metric </label>
             <div class='popover-container'>
@@ -209,12 +209,12 @@ DM23-0003
             <textarea type='text' class='split-fourth-input' style='vertical-align: top' v-model="item.implementation"/>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_algorithm_metric()" class="btn">
+            <sds-button variant="default" v-if='index==0' @click="add_algorithm_metric()">
               Add Algorithm Metric
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_algorithm_metric(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_algorithm_metric(index)">
               Delete Algorithm Metric
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -222,7 +222,7 @@ DM23-0003
       <div class='input-div'>
         <label for="business_metrics"> <b> Business Metrics </b> - {{schema.properties.business_metrics.description}}</label>
         <br>
-        <div v-for="(item, index) in model.document.business_metrics" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.business_metrics" :key="index">
           <div class='variable-input-parent-div'>
             <label for='metric' class='split-fourth-label'> Metric </label>
             <div class='popover-container'>
@@ -272,12 +272,12 @@ DM23-0003
             <textarea type='text' class='split-fourth-input' style='vertical-align: top' v-model="item.implementation"/>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_business_metric()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_business_metric()">
               Add Business Metric
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_business_metric(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_business_metric(index)">
               Delete Business Metric
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -285,7 +285,7 @@ DM23-0003
       <div class='input-div'>
         <label for="other_metrics"> <b> Other Metrics </b> - {{schema.properties.other_metrics.description}}</label>
         <br>
-        <div v-for="(item, index) in model.document.other_metrics" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.other_metrics" :key="index">
           <div class='variable-input-parent-div'>
             <label for='metric' class='split-fourth-label'> Metric </label>
             <div class='popover-container'>
@@ -327,12 +327,12 @@ DM23-0003
             <textarea type='text' class='split-fourth-input' style='vertical-align: top' v-model="item.implementation"/>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_other_metric()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_other_metric()">
               Add Other Metric
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_other_metric(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_other_metric(index)">
               Delete Other Metric
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -340,7 +340,7 @@ DM23-0003
       <div class='input-div'>
         <label for="user_system_feedback"> <b> User and System Feedback </b> - {{schema.properties.user_system_feedback.description}}</label>
         <br>
-        <div v-for="(item, index) in model.document.user_system_feedback" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.user_system_feedback" :key="index">
           <div class='variable-input-parent-div'>
             <label for='feedback' class='split-fourth-label'> Feedback </label>
             <div class='popover-container'>
@@ -390,12 +390,12 @@ DM23-0003
             <textarea type='text' class='split-fourth-input' style='vertical-align: top' v-model="item.implementation"/>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_user_system_feedback()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_user_system_feedback()">
               Add Feedback
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_user_system_feedback(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_user_system_feedback(index)">
               Delete Feedback
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -403,7 +403,7 @@ DM23-0003
       <div class='input-div'>
         <label for="model_logs"> <b> Model Logs </b> - {{schema.properties.model_logs.description}}</label>
         <br>
-        <div v-for="(item, index) in model.document.model_logs" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.model_logs" :key="index">
           <div class='variable-input-parent-div'>
             <label for='log' class='split-fourth-label'> Log </label>
             <div class='popover-container'>
@@ -453,12 +453,12 @@ DM23-0003
             <textarea type='text' class='split-fourth-input' style='vertical-align: top' v-model="item.implementation"/>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_model_log()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_model_log()">
               Add Model Log
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_model_log(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_model_log(index)">
               Delete Model Log
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -466,7 +466,7 @@ DM23-0003
       <div class='input-div'>
         <label for="other_logs"> <b> Other Logs </b> - {{schema.properties.other_logs.description}}</label>
         <br>
-        <div v-for="(item, index) in model.document.other_logs" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.other_logs" :key="index">
           <div class='variable-input-parent-div'>
             <label for='log' class='split-fourth-label'> Log </label>
             <div class='popover-container'>
@@ -508,19 +508,19 @@ DM23-0003
             <textarea type='text' class='split-fourth-input' style='vertical-align: top' v-model="item.implementation"/>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_other_log()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_other_log()">
               Add Other Log
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_other_log(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_other_log(index)">
               Delete Other Log
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
 
       <div class='input-div'>
         <label for="documentation"> <b> Documentation </b> - {{schema.properties.documentation.description}}</label>
-        <div v-for="(item, index) in model.document.documentation" :key="index" class='relative display:table'>
+        <div class="input-div" v-for="(item, index) in model.document.documentation" :key="index">
           <div class='variable-input-parent-div'>
             <label for='description' class='split-fourth-label'> Description </label>
             <div class='popover-container'>
@@ -562,16 +562,16 @@ DM23-0003
             <input v-model="item.location" type="text" class='split-fourth-input' />
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_documentation()" class="btn">
+            <sds-button variant="default" v-if='index==0' @click="add_documentation()">
               Add Documentation
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_documentation(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_documentation(index)">
               Delete Documentation
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
-    </form>
+    </div>
 
     <template v-slot:actions-bar>
       <nuxt-link :to="{path: '/project_view', query: {project_name: project_name}}" class="ml-auto"> 

@@ -14,7 +14,7 @@ DM23-0003
 
     <sds-toaster v-model='toasts'/>
 
-    <form @submit.prevent='submit' v-if='schema.properties'>
+    <div class="form-div" v-if='schema.properties'>
       <div class='input-div'>
         <label for="model_name"> <b> Model Name </b> - {{schema.properties.model_name.description}} </label>
         <br>
@@ -41,7 +41,7 @@ DM23-0003
 
       <div class='input-div'>
         <label for="model_components"> <b> Model Components </b> - {{schema.properties.model_components.description}} </label>
-        <div v-for="(item, model_component_index) in model.document.model_components" :key="'MCI' + model_component_index" >
+        <div class="input-div" v-for="(item, model_component_index) in model.document.model_components" :key="'MCI' + model_component_index" >
           <div class='variable-input-parent-div' style='border: 1px solid black'>
             <div class='input-line-div'>
               <div class='variable-input-parent-div py-0'>
@@ -90,7 +90,7 @@ DM23-0003
               </div>
             </div>
             <div class='input-line-div'>
-              <div v-for="(parameter, parameter_index) in item.hyper_parameters" :key="'PI' + parameter_index">
+              <div class='input-div' v-for="(parameter, parameter_index) in item.hyper_parameters" :key="'PI' + parameter_index">
                 <div class='variable-input-parent-div py-0'>
                   <div class='input-line-div'>
                     <label for='name' class='split-fourth-label'> Hyperparameter Name </label>
@@ -134,12 +134,12 @@ DM23-0003
                   </div>
                 </div>
                 <div class='variable-input-btn-div'>
-                  <button v-if='parameter_index==0' @click.prevent="add_hyper_parameter(model_component_index)" class="btn">
+                  <sds-button variant="default" v-if='parameter_index==0' @click="add_hyper_parameter(model_component_index)">
                     Add Parameter
-                  </button>
-                  <button v-if='parameter_index!=0' @click.prevent="remove_hyper_parameter(model_component_index, parameter_index)"  class="btn">
+                  </sds-button>
+                  <sds-button variant="default" v-if='parameter_index!=0' @click="remove_hyper_parameter(model_component_index, parameter_index)" >
                     Delete Paremter
-                  </button>
+                  </sds-button>
                 </div>
               </div>
             </div>
@@ -176,12 +176,12 @@ DM23-0003
             </div>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='model_component_index==0' @click.prevent="add_model_component()" class='btn'>
+            <sds-button variant="default" v-if='model_component_index==0' @click="add_model_component()">
               Add Component
-            </button>
-            <button v-if='model_component_index!=0' @click.prevent="remove_model_component(model_component_index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='model_component_index!=0' @click="remove_model_component(model_component_index)">
               Delete component
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -223,7 +223,7 @@ DM23-0003
 
       <div class='input-div'>
         <label for="output_spec"> <b> Output Specification </b> - {{schema.properties.output_spec.description}}</label>
-        <div v-for="(item, spec_index) in model.document.output_spec" :key="spec_index">
+        <div class="input-div" v-for="(item, spec_index) in model.document.output_spec" :key="spec_index">
           <div class='variable-input-parent-div'>
             <div class='input-line-div'>
               <label for='name' class='split-fourth-label'> Data Item Name </label>
@@ -370,12 +370,12 @@ DM23-0003
             </div>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='spec_index==0' @click.prevent="add_output_spec()" class='btn'>
+            <sds-button variant="default" v-if='spec_index==0' @click="add_output_spec()">
               Add Output
-            </button>
-            <button v-if='spec_index!=0' @click.prevent="remove_output_spec(spec_index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='spec_index!=0' @click="remove_output_spec(spec_index)">
               Delete Output
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -387,24 +387,24 @@ DM23-0003
 
       <div class='input-div' >
         <label> <b> Post Processing Process </b> - {{schema.properties.post_processing_process.description}}</label>
-        <div v-for="(item, index) in model.document.post_processing_process" :key="index" >
+        <div class='input-div' v-for="(item, index) in model.document.post_processing_process" :key="index" >
           <div class='variable-input-parent-div'>
             <textarea :disabled='!model.document.post_processing' v-model="item.value" type="text" class='form-control'/>
           </div>
           <div class='variable-input-btn-div'>
-            <button :disabled='!model.document.post_processing' v-if='index==0' @click.prevent="add_post_processing_process()" class="btn">
+            <sds-button variant="default" :disabled='!model.document.post_processing' v-if='index==0' @click="add_post_processing_process()">
               Add Step
-            </button>
-            <button :disabled='!model.document.post_processing' v-if='index!=0' @click.prevent="remove_post_processing_process(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" :disabled='!model.document.post_processing' v-if='index!=0' @click="remove_post_processing_process(index)">
               Delete Step
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
 
       <div class='input-div'>
         <label for="final_output_spec"> <b> Final Output Specification </b> - {{schema.properties.final_output_spec.description}}</label>
-        <div v-for="(item, spec_index) in model.document.final_output_spec" :key="spec_index">
+        <div class="input-div" v-for="(item, spec_index) in model.document.final_output_spec" :key="spec_index">
           <div class='variable-input-parent-div'>
             <div class='input-line-div'>
               <label for='item_name' class='split-fourth-label'> Item Name </label>
@@ -551,19 +551,19 @@ DM23-0003
             </div>  
           </div>
           <div class='variable-input-btn-div'>
-            <button :disabled='!model.document.post_processing' v-if='spec_index==0' @click.prevent="add_final_output_spec()" class='btn'>
+            <sds-button variant="default" :disabled='!model.document.post_processing' v-if='spec_index==0' @click="add_final_output_spec()">
               Add Output
-            </button>
-            <button :disabled='!model.document.post_processing' v-if='spec_index!=0' @click.prevent="remove_final_output_spec(spec_index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" :disabled='!model.document.post_processing' v-if='spec_index!=0' @click="remove_final_output_spec(spec_index)">
               Delete Output
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
 
       <div class='input-div'>
         <label> <b> Error Handling </b> - {{schema.properties.error_handling.description}}</label>
-        <div v-for="(error, index) in model.document.error_handling" :key="index">
+        <div class='input-div' v-for="(error, index) in model.document.error_handling" :key="index">
           <div class='variable-input-parent-div'>
             <label for='error_condition' class='split-fourth-label'> Error Condition </label>
             <div class='popover-container'>
@@ -605,12 +605,12 @@ DM23-0003
             <textarea v-model="error.how_handled" type="text" class='split-fourth-input' style='vertical-align: top'/>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_error()" class="btn">
+            <sds-button variant="default" v-if='index==0' @click="add_error()">
               Add Error Condition
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_error(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_error(index)">
               Delete Error Condition
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -723,7 +723,7 @@ DM23-0003
 
       <div class='input-div'>
         <label for="evaluation_metrics"> <b> Evaluation Metrics </b> - {{schema.properties.evaluation_metrics.description}}</label>
-        <div v-for="(item, index) in model.document.evaluation_metrics" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.evaluation_metrics" :key="index">
           <div class='variable-input-parent-div'>
             <div class='input-line-div'>
               <label for='metric' class='split-fourth-label'> Metric </label>
@@ -791,12 +791,12 @@ DM23-0003
             </div>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_evaluation_metric()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_evaluation_metric()">
               Add Metric
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_evaluation_metric(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_evaluation_metric(index)">
               Delete Metric
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -935,7 +935,7 @@ DM23-0003
 
       <div class='input-div'>
         <label for="test_metrics"> <b> Test Metrics </b> - {{schema.properties.test_metrics.description}}</label>
-        <div v-for="(item, index) in model.document.test_metrics" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.test_metrics" :key="index">
           <div class='variable-input-parent-div'>
             <div class='input-line-div'>
               <label for='metric' class='split-fourth-label'> Metric </label>
@@ -1002,12 +1002,12 @@ DM23-0003
             </div>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_test_metric()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_test_metric()">
               Add Metric
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_test_metric(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_test_metric(index)">
               Delete Metric
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -1026,7 +1026,7 @@ DM23-0003
 
       <div class='input-div'>
         <label for="algorithm_metrics"> <b> Algorithm Metrics </b> - {{schema.properties.algorithm_metrics.description}}</label>
-        <div v-for="(item, index) in model.document.algorithm_metrics" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.algorithm_metrics" :key="index">
           <div class='variable-input-parent-div'>
             <label for='metric' class='split-fourth-label'> Algorithm Metric </label>
             <div class='popover-container'>
@@ -1068,19 +1068,19 @@ DM23-0003
             <input v-model.number="item.threshold" type="number" class='split-fourth-input' />
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_algorithm_metric()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_algorithm_metric()">
               Add Metric
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_algorithm_metric(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_algorithm_metric(index)">
               Delete Metric
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
 
       <div class='input-div'>
         <label for="business_metrics"> <b> Business Metrics </b> - {{schema.properties.business_metrics.description}}</label>
-        <div v-for="(item, index) in model.document.business_metrics" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.business_metrics" :key="index">
           <div class='variable-input-parent-div'>
             <div class='input-line-div'>
               <label for='metric' class='split-fourth-label'> Business Metric </label>
@@ -1152,21 +1152,20 @@ DM23-0003
               />
             </div>
           </div>
-          
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_business_metric()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_business_metric()">
               Add Metric
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_business_metric(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_business_metric(index)">
               Delete Metric
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
 
       <div class='input-div'>
         <label> <b> User and System Feedback </b> - {{schema.properties.user_system_feedback.description}} </label>
-        <div v-for="(feedback, index) in model.document.user_system_feedback" :key="index">
+        <div class="input-div" v-for="(feedback, index) in model.document.user_system_feedback" :key="index">
           <div class='variable-input-parent-div'>
             <div class='input-line-div'>
               <label for='short_name' class='split-fourth-label'> Short Name </label>
@@ -1210,19 +1209,19 @@ DM23-0003
             </div>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_user_system_feedback()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_user_system_feedback()">
               Add Feedback
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_user_system_feedback(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_user_system_feedback(index)">
               Delete Feedback
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
 
       <div class='input-div'>
         <label for="log_data"> <b> Log Data </b> - {{schema.properties.log_data.description}}</label>
-        <div v-for="(item, index) in model.document.log_data" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.log_data" :key="index">
           <div class='variable-input-parent-div'>
             <div class='input-line-div'>
               <label for='data' class='split-fourth-label'> Data to Log </label>
@@ -1287,12 +1286,12 @@ DM23-0003
             </div>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_log_data()" class='btn'> 
+            <sds-button variant="default" v-if='index==0' @click="add_log_data()"> 
               Add Log Data
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_log_data(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_log_data(index)">
               Delete Log Data
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -1305,17 +1304,17 @@ DM23-0003
 
       <div class='input-div'>
         <label> <b> Decisions and Assumptions </b> - {{schema.properties.decisions_assumptions.description}} </label>
-        <div v-for="(item, index) in model.document.decisions_assumptions" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.decisions_assumptions" :key="index">
           <div class='variable-input-parent-div'>
             <textarea v-model="item.value" type="text" class='form-control'/>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_decisions_assumptions()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_decisions_assumptions()">
               Add Assumption
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_decisions_assumptions(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_decisions_assumptions(index)">
               Delete Assumption
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -1458,17 +1457,17 @@ DM23-0003
 
       <div class='input-div'>
         <label> <b> System Dependencies </b> - {{schema.properties.system_dependencies.description}} </label>
-        <div v-for="(parameter, index) in model.document.system_dependencies" :key="index">
+        <div class="input-div" v-for="(parameter, index) in model.document.system_dependencies" :key="index">
           <div class='variable-input-parent-div'>
             <input v-model="parameter.value" type="text" class='form-control'/>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_system_dependency()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_system_dependency()">
               Add Dependency
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_system_dependency(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_system_dependency(index)">
               Delete Dependency
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -1487,7 +1486,7 @@ DM23-0003
 
       <div class='input-div'>
         <label for="documentation"> <b> Documentation </b> - {{schema.properties.documentation.description}}</label>
-        <div v-for="(item, index) in model.document.documentation" :key="index" class='relative display:table'>
+        <div class="input-div" v-for="(item, index) in model.document.documentation" :key="index">
           <div class='variable-input-parent-div'>
             <label for='description' class='split-fourth-label'> Description </label>
             <div class='popover-container'>
@@ -1529,16 +1528,16 @@ DM23-0003
             <input v-model="item.location" type="text" class='split-fourth-input' />
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_documentation()" class="btn">
+            <sds-button variant="default" v-if='index==0' @click="add_documentation()">
               Add Documentation
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_documentation(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_documentation(index)">
               Delete Documentation
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
-    </form>
+    </div>
 
     <template v-slot:actions-bar>
       <nuxt-link :to="{path: '/project_view', query: {project_name: project_name}}" class="ml-auto"> 

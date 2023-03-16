@@ -34,10 +34,10 @@ DM23-0003
 
         <template #cell(actions)="{ item }">
           <div style="width: 275px;">
-            <nuxt-link :to="{path: item.link, query: {project_name: project_name}}"> <sds-button size="sm" type="button">  Edit </sds-button> </nuxt-link>
-            <sds-button size="sm" type="button" @click='export_json(item.nice_name, item.name)'> Export </sds-button>
-            <sds-button size="sm" type="button" @click='import_modal_toggle = true; import_modal_text=""; import_modal_error = false; import_modal_error_list = []; import_modal_descriptor_name=item.name; import_modal_nice_descriptor_name=item.nice_name'> Import </sds-button>
-            <sds-button size="sm" type="button" @click="delete_descriptor(item.name, item.nice_name)"> Clear </sds-button>
+            <nuxt-link :to="{path: item.link, query: {project_name: project_name}}"> <sds-button size="sm" variant="default">  Edit </sds-button> </nuxt-link>
+            <sds-button size="sm" variant="default" @click='export_json(item.nice_name, item.name)'> Export </sds-button>
+            <sds-button size="sm" variant="default" @click='import_modal_toggle = true; import_modal_text=""; import_modal_error = false; import_modal_error_list = []; import_modal_descriptor_name=item.name; import_modal_nice_descriptor_name=item.nice_name'> Import </sds-button>
+            <sds-button size="sm" variant="danger" @click="delete_descriptor(item.name, item.nice_name)"> Clear </sds-button>
           </div>
         </template>
       </sds-table>

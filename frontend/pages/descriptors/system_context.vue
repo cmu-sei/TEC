@@ -14,7 +14,7 @@ DM23-0003
 
     <sds-toaster v-model='toasts'/>
 
-    <form @submit.prevent='submit' v-if='schema.properties'>
+    <div class="form-div" v-if='schema.properties'>
       <div class='input-div'>
         <label for="task"> <b> Task </b> - {{schema.properties.task.description}}</label>
         <br>
@@ -38,7 +38,7 @@ DM23-0003
       <div class='input-div'>
         <label for='business_goals'> <b> Business Goals </b> - {{schema.properties.business_goals.description}}</label>
         <br />
-        <div v-for="(business_goal, index) in model.document.business_goals" :key="index">
+        <div class="input-div" v-for="(business_goal, index) in model.document.business_goals" :key="index">
           <div class='variable-input-parent-div'>
             <label for='id' class='split-fourth-label'> ID </label>
             <div class='popover-container'>
@@ -80,12 +80,12 @@ DM23-0003
             <input v-model="business_goal.goal" type="text" class='split-fourth-input' />
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_business_goal()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_business_goal()">
               Add Goal
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_business_goal(index)" class='btn'> 
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_business_goal(index)"> 
               Delete Goal
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -99,16 +99,16 @@ DM23-0003
       <div class='input-div'>
         <label for='success_criteria'> <b> Success Criteria </b> - {{schema.properties.success_criteria.description}}</label>
         <br />
-        <div v-for="(criteria, index) in model.document.success_criteria" :key="index">
+        <div class="input-div" v-for="(criteria, index) in model.document.success_criteria" :key="index">
           <div class='variable-input-parent-div'>
             <input v-model="criteria.value" type="text" class='form-control'/>
           </div>
-          <button v-if='index==0' @click.prevent="add_success_criteria()" class='btn'>
+          <sds-button variant="default" v-if='index==0' @click="add_success_criteria()">
             Add Criteria
-          </button>
-          <button v-if='index!=0' @click.prevent="remove_success_criteria(index)" class='btn'>
+          </sds-button>
+          <sds-button variant="default" v-if='index!=0' @click="remove_success_criteria(index)">
             Delete Criteria
-          </button>
+          </sds-button>
         </div>
       </div>
 
@@ -144,7 +144,7 @@ DM23-0003
 
       <div class='input-div'>
         <label for="documentation"> <b> Documentation </b> - {{schema.properties.documentation.description}}</label>
-        <div v-for="(item, index) in model.document.documentation" :key="index" class='relative display:table'>
+        <div class="input-div" v-for="(item, index) in model.document.documentation" :key="index">
           <div class='variable-input-parent-div'>
             <label for='description' class='split-fourth-label'> Description </label>
             <div class='popover-container'>
@@ -186,16 +186,16 @@ DM23-0003
             <input v-model="item.location" type="text" class='split-fourth-input' />
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_documentation()" class="btn">
+            <sds-button variant="default" v-if='index==0' @click="add_documentation()">
               Add Documentation
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_documentation(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_documentation(index)">
               Delete Documentation
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
-    </form>
+    </div>
 
     <template v-slot:actions-bar>
       <nuxt-link :to="{path: '/project_view', query: {project_name: project_name}}" class="ml-auto"> 

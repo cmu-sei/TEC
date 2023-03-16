@@ -17,8 +17,8 @@ DM23-0003
   @apply max-w-4xl m-8 p-4 bg-white;
 }
 
-form {
-  @apply pt-4 pb-10 px-4;
+.form-div {
+  @apply pt-4 pb-10 px-4 bg-white;
 }
 
 a.text-link {

@@ -14,7 +14,7 @@ DM23-0003
 
     <sds-toaster v-model='toasts'/>
 
-    <form @submit.prevent='submit' v-if='schema.properties'>
+    <div class="form-div" v-if='schema.properties'>
       <div class='input-div'>
         <label for="dataset_identifier"> <b> Dataset Identifier </b> - {{schema.properties.dataset_identifier.description}}</label>
         <br>
@@ -41,7 +41,7 @@ DM23-0003
 
       <div class='input-div'>
         <label for="data_sources"> <b> Data Sources </b> - {{schema.properties.data_sources.description}} </label>
-        <div v-for="(item, index) in model.document.data_sources" :key="index">
+        <div class='input-div' v-for="(item, index) in model.document.data_sources" :key="index">
           <div class='variable-input-parent-div'>
             <select v-bind:class="[ item.data_source === 'Other' ? 'variable-input-other' : 'form-control' ]" v-model="item.data_source" @change="data_source_change(index)" style=''>
               <option v-for='(data_source, index) in data_sources_enum' :value='data_source' :key='index'> {{data_source}} </option>
@@ -53,12 +53,12 @@ DM23-0003
             </div>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_data_source()" class="btn">
+            <sds-button variant="default" v-if='index==0' @click="add_data_source()">
               Add Data Source
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_data_source(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_data_source(index)">
               Delete Data Source
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -78,7 +78,7 @@ DM23-0003
       <div class='input-div'>
         <label for='labels_distribution'> <b> Labels and Distribution </b> - {{schema.properties.labels_distribution.description}}</label>
         <br />
-        <div v-for="(item, index) in model.document.labels_distribution" :key="index">
+        <div class='input-div' v-for="(item, index) in model.document.labels_distribution" :key="index">
           <div class='variable-input-parent-div' >
             <label for='label' class='split-fourth-label'> Label </label>
             <div class='popover-container'>
@@ -120,12 +120,12 @@ DM23-0003
             <input type='number' min='0' max='100' class='split-fourth-input' v-model.number="item.percentage"/>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_label_distribution()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_label_distribution()">
               Add Label
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_label_distribution(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_label_distribution(index)">
               Delete Label
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -133,7 +133,7 @@ DM23-0003
       <div class='input-div'>
         <label for="schema"> <b> Schema </b> - {{schema.properties.schema.description}}</label>
         <br>
-        <div v-for="(item, index) in model.document.schema" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.schema" :key="index">
           <div class='variable-input-parent-div'>
             <div class='input-line-div'>
               <label for='field_name' class='split-fourth-label'> Field Name </label>
@@ -260,12 +260,12 @@ DM23-0003
           </div>
 
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_schema()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_schema()">
               Add Field
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_schema(index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_schema(index)">
               Delete Field
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -377,7 +377,7 @@ DM23-0003
 
       <div class='input-div'>
         <label for="documentation"> <b> Documentation </b> - {{schema.properties.documentation.description}}</label>
-        <div v-for="(item, index) in model.document.documentation" :key="index" class='relative display:table'>
+        <div class='input-div' v-for="(item, index) in model.document.documentation" :key="index">
           <div class='variable-input-parent-div'>
             <label for='description' class='split-fourth-label'> Description </label>
             <div class='popover-container'>
@@ -419,16 +419,16 @@ DM23-0003
             <input v-model="item.location" type="text" class='split-fourth-input' />
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_documentation()" class="btn">
+            <sds-button variant="default" v-if='index==0' @click="add_documentation()">
               Add Documentation
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_documentation(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_documentation(index)">
               Delete Documentation
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
-    </form>
+    </div>
 
     <template v-slot:actions-bar>
       <nuxt-link :to="{path: '/project_view', query: {project_name: project_name}}" class="ml-auto"> 

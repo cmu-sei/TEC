@@ -27,6 +27,8 @@ services:
   api:
     container_name: api
     build: api
+    environment:
+      - PYTHONBUFFERED=TRUE
     depends_on:
       - postgres
     ports:

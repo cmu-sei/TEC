@@ -10,11 +10,11 @@ DM23-0003
 
 
 <template>
-  <base-layout :page_title="page_title">
+  <base-layout :page_title="page_title" :actions_bar_toggle=true>
 
     <sds-toaster v-model='toasts'/>
 
-    <form @submit.prevent='submit'>
+    <div class="form-div prose">
       <div class='input-div'>
         <label for='name'>
           <strong> Name </strong>
@@ -35,16 +35,19 @@ DM23-0003
         </label>
         <input type='text' v-model='model.point_of_contact' required class='form-control'/>
       </div>
+    </div>
 
-      <footer >
-        <nuxt-link :to="{path: 'my_projects'}"> 
-          <sds-button size="md" type='button'> Cancel </sds-button> 
-        </nuxt-link>
-        <sds-button size="md" type='submit'>
-          Submit
-        </sds-button>
-      </footer>
-    </form>
+    <template v-slot:actions-bar>
+      <nuxt-link :to="{path: 'my_projects'}" class="ml-auto"> 
+        <sds-button variant="light" outline="True">
+          Cancel
+        </sds-button> 
+      </nuxt-link>
+      <sds-button variant="default" class="text-primary hover:text-black hover:bg-white" @click="submit()">
+        Submit
+      </sds-button>
+    </template>
+
   </base-layout>
 </template>
 

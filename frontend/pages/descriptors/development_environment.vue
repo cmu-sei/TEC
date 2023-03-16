@@ -14,7 +14,7 @@ DM23-0003
 
     <sds-toaster v-model='toasts'/>
 
-    <form @submit.prevent='submit' v-if='schema.properties'>
+    <div class="form-div" v-if='schema.properties'>
       <div class='input-div'>
         <label for='programming_languages'> <b> Programming Languages </b> - {{schema.properties.programming_languages.description}}</label>
         <programming-language-multiselect 
@@ -175,23 +175,23 @@ DM23-0003
                   </div>
                 </div>  
                 <div class='variable-input-btn-div'>
-                  <button v-if='spec_index==0' @click.prevent="add_output_spec(component_index)" class='btn'>
+                  <sds-button variant="default" v-if='spec_index==0' @click="add_output_spec(component_index)">
                     Add Item
-                  </button>
-                  <button v-if='spec_index!=0' @click.prevent="remove_output_spec(component_index, spec_index)" class='btn'>
+                  </sds-button>
+                  <sds-button variant="default" v-if='spec_index!=0' @click="remove_output_spec(component_index, spec_index)">
                     Delete Item
-                  </button>
+                  </sds-button>
                 </div>
               </div>
             </div>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='component_index==0' @click.prevent="add_upstream_component()" class='btn'>
+            <sds-button variant="default" v-if='component_index==0' @click="add_upstream_component()">
               Add Component
-            </button>
-            <button v-if='component_index!=0' @click.prevent="remove_upstream_component(component_index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='component_index!=0' @click="remove_upstream_component(component_index)">
               Delete Component
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -240,7 +240,6 @@ DM23-0003
               </div>
               <input v-model="item.ml_component" type="checkbox" class='' />           
             </div>
-            
 
             <div class='input-line-div'>
               <div v-for='spec, spec_index in item.input_spec' :key='spec_index'>
@@ -334,32 +333,31 @@ DM23-0003
                   </div>
                 </div>  
                 <div class='variable-input-btn-div'>
-                  <button v-if='spec_index==0' @click.prevent="add_input_spec(component_index)" class='btn'>
+                  <sds-button variant="default" v-if='spec_index==0' @click="add_input_spec(component_index)">
                     Add Item
-                  </button>
-                  <button v-if='spec_index!=0' @click.prevent="remove_input_spec(component_index, spec_index)" class='btn'>
+                  </sds-button>
+                  <sds-button variant="default" v-if='spec_index!=0' @click="remove_input_spec(component_index, spec_index)">
                     Delete Item
-                  </button>
+                  </sds-button>
                 </div>
               </div>
             </div>
 
-
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='component_index==0' @click.prevent="add_downstream_component()" class='btn'>
+            <sds-button variant="default" v-if='component_index==0' @click="add_downstream_component()">
               Add Component
-            </button>
-            <button v-if='component_index!=0' @click.prevent="remove_downstream_component(component_index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='component_index!=0' @click="remove_downstream_component(component_index)">
               Delete Component
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
 
       <div class='input-div'>
         <label for="milestones"> <b> Milestones </b> - {{schema.properties.milestones.description}}</label>
-        <div v-for="(item, index) in model.document.milestones" :key="index">
+        <div class="input-div" v-for="(item, index) in model.document.milestones" :key="index">
           <div class='variable-input-parent-div'>
             <label for='milestone' class='split-fourth-label'> Milestone </label>
             <div class='popover-container'>
@@ -400,12 +398,12 @@ DM23-0003
             </div>
             <input v-model="item.milestone_date" type="date" class='split-fourth-input' />
           </div>
-          <button v-if='index==0' @click.prevent="add_milestone()" class='btn'>
+          <sds-button variant="default" v-if='index==0' @click="add_milestone()" >
             Add Milestone
-          </button>
-          <button v-if='index!=0' @click.prevent="remove_milestone(index)" class='btn'>
+          </sds-button>
+          <sds-button variant="default" v-if='index!=0' @click="remove_milestone(index)" >
             Delete Milestone
-          </button>
+          </sds-button>
         </div>
       </div>
 
@@ -496,7 +494,7 @@ DM23-0003
 
       <div class='input-div'>
         <label for="documentation"> <b> Documentation </b> - {{schema.properties.documentation.description}}</label>
-        <div v-for="(item, index) in model.document.documentation" :key="index" class='relative display:table'>
+        <div class="input-div" v-for="(item, index) in model.document.documentation" :key="index">
           <div class='variable-input-parent-div'>
             <label for='description' class='split-fourth-label'> Description </label>
             <div class='popover-container'>
@@ -538,16 +536,16 @@ DM23-0003
             <input v-model="item.location" type="text" class='split-fourth-input' />
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_documentation()" class="btn">
+            <sds-button variant="default" v-if='index==0' @click="add_documentation()">
               Add Documentation
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_documentation(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_documentation(index)">
               Delete Documentation
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
-    </form>
+    </div>
 
     <template v-slot:actions-bar>
       <nuxt-link :to="{path: '/project_view', query: {project_name: project_name}}" class="ml-auto"> 

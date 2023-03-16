@@ -12,7 +12,7 @@ DM23-0003
   <base-layout :page_title=page_title :actions_bar_toggle=true>
     <sds-toaster v-model='toasts'/>
 
-    <form @submit.prevent='submit' v-if='schema.properties'>
+    <div class="form-div" v-if='schema.properties'>
       <div class='input-div'>
         <label for="pipeline_identifier"> <b> Pipeline Identifier </b> - {{schema.properties.pipeline_identifier.description}}</label>
         <br>
@@ -33,7 +33,7 @@ DM23-0003
 
       <div class='input-div'>
         <label for="input_spec"> <b> Input Specification </b> - {{schema.properties.input_spec.description}}</label>
-        <div v-for="(item, spec_index) in model.document.input_spec" :key="spec_index">
+        <div class="input-div" v-for="(item, spec_index) in model.document.input_spec" :key="spec_index">
           <div class='variable-input-parent-div'>
             <div class='input-line-div'>
               <label for='item_name' class='split-fourth-label'> Item Name </label>
@@ -181,19 +181,19 @@ DM23-0003
           </div>
 
           <div class='variable-input-btn-div'>
-            <button v-if='spec_index==0' @click.prevent="add_input_spec()" class='btn'>
+            <sds-button variant="default" v-if='spec_index==0' @click="add_input_spec()">
               Add Input
-            </button>
-            <button v-if='spec_index!=0' @click.prevent="remove_input_spec(spec_index)" class='btn'>
+            </sds-button>
+            <sds-button variant="default" v-if='spec_index!=0' @click="remove_input_spec(spec_index)">
               Delete Input
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
 
       <div class='input-div'>
         <label for="test_cases"> <b> Test Cases </b> - {{schema.properties.test_cases.description}}</label>
-        <div v-for="(item, index) in model.document.test_cases" :key="index" class='relative'>
+        <div class="input-div relative" v-for="(item, index) in model.document.test_cases" :key="index">
           <div class='variable-input-parent-div'>
             <div class='input-line-div'>
               <label for='test_case_name' class='split-fourth-label'> Test Case Name </label>
@@ -258,12 +258,12 @@ DM23-0003
             </div>
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_test_case()" class='btn'>
+            <sds-button variant="default" v-if='index==0' @click="add_test_case()">
               Add Test Case
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_test_case(index)" class="btn" >
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_test_case(index)" >
               Delete Test Case
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -271,7 +271,7 @@ DM23-0003
       <div class='input-div'>
         <label for="pipeline_steps"> <b> Pipeline Steps </b> -  {{schema.properties.pipeline_steps.description}} </label>
         <br>
-        <div v-for="(item, index) in model.document.pipeline_steps"  :key='index'>
+        <div class='input-div' v-for="(item, index) in model.document.pipeline_steps"  :key='index'>
           <div class='variable-input-parent-div'>
             <label for='data_processing_step' class='split-fourth-label'> Step </label>
             <div class='popover-container'>
@@ -313,12 +313,12 @@ DM23-0003
             <textarea type="text" class='split-fourth-input' style='vertical-align: top' v-model="item.data_processing_detail" />
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_pipeline_step()" class="btn" >
+            <sds-button variant="default" v-if='index==0' @click="add_pipeline_step()" >
               Add Step
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_pipeline_step(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_pipeline_step(index)">
               Delete Step
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
@@ -331,7 +331,7 @@ DM23-0003
 
       <div class='input-div'>
         <label for="documentation"> <b> Documentation </b> - {{schema.properties.documentation.description}}</label>
-        <div v-for="(item, index) in model.document.documentation" :key="index" class='relative display:table'>
+        <div class='input-div' v-for="(item, index) in model.document.documentation" :key="index">
           <div class='variable-input-parent-div'>
             <label for='description' class='split-fourth-label'> Description </label>
             <div class='popover-container'>
@@ -373,16 +373,16 @@ DM23-0003
             <input v-model="item.location" type="text" class='split-fourth-input' />
           </div>
           <div class='variable-input-btn-div'>
-            <button v-if='index==0' @click.prevent="add_documentation()" class="btn">
+            <sds-button variant="default" v-if='index==0' @click="add_documentation()">
               Add Documentation
-            </button>
-            <button v-if='index!=0' @click.prevent="remove_documentation(index)" class="btn">
+            </sds-button>
+            <sds-button variant="default" v-if='index!=0' @click="remove_documentation(index)">
               Delete Documentation
-            </button>
+            </sds-button>
           </div>
         </div>
       </div>
-    </form>
+    </div>
 
     <template v-slot:actions-bar>
       <nuxt-link :to="{path: '/project_view', query: {project_name: project_name}}" class="ml-auto"> 
