@@ -7,17 +7,16 @@
 # DM23-0003
 
 import os
-from os import error
-
 from flask import Flask
 from flask.helpers import send_from_directory
-
-from config import config
-from database_init import DatabaseManager
+from os import error
 
 from blueprints.project import *
 from blueprints.documents import *
 from blueprints.db_lists import *
+from config import config
+from db.database_init import DatabaseManager
+
 
 def create_application():
     """

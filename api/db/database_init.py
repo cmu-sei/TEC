@@ -9,8 +9,9 @@
 
 import psycopg2
 import psycopg2.extras
-from config import config
 from flask import current_app
+
+from config import config
 
 POSTGRES_HOST = config['postgres']['host']
 POSTGRES_PORT = config['postgres']['port']
