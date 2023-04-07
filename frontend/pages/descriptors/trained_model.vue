@@ -2123,7 +2123,6 @@ DM23-0003
         }
         else{
           console.log("No document found to load")
-          this.model.document.version = this.schema['properties']['version']['const']
         }
       });
 

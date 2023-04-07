@@ -595,7 +595,6 @@ DM23-0003
           });
         }
         else{
-          this.model.document.version = this.schema['properties']['version']['const']
           console.log("No document found to load")
         }
       }).catch(error => {

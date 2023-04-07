@@ -19,6 +19,7 @@ documents_blueprint = Blueprint('documents', __name__)
 def insert_document():
     """
     Insert or update a document in the DB
+    
     :JSON param project_name: The project that the document will be inserted under
     :JSON param descriptor_name: The descriptor that the document will be inserted under
     :JSON param document: The document to be inserted (POST)
@@ -46,22 +47,7 @@ def insert_document():
         if(len(schema_errors) > 0):
             return {'schema_errors': schema_errors}, 400
 
-    error_list = []
-    if(descriptor_name == 'system_context'):
-        error_list = validate_system_context(database, project_name, document)
-    elif(descriptor_name == 'data_pipeline'):
-        error_list = validate_data_pipeline(database, project_name, document)
-    elif(descriptor_name == 'training_data'):
-        error_list = validate_training_data(database, project_name, document)
-    elif(descriptor_name == 'trained_model'):
-        error_list = validate_trained_model(database, project_name, document)
-    elif(descriptor_name == 'development_environment'):
-        error_list = validate_development_environment(database, project_name, document)
-    elif(descriptor_name == 'production_environment'):
-        error_list = validate_production_environment(database, project_name, document)
-    elif(descriptor_name == 'production_data'):
-        error_list = validate_production_data(database, project_name, document)
-    
+    error_list = validate_document_linked_fields(database, project_name, descriptor_name, document)
     if(len(error_list) > 0):
         return {'error_list': error_list}, 400
 

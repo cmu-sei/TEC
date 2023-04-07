@@ -612,7 +612,6 @@ DM23-0003
           this.model.document = JSON.parse(JSON.stringify(response['data']['document']))
         }
         else{
-          this.model.document.version = this.schema['properties']['version']['const']
           console.log("No document found to load")
         }
       });

@@ -40,6 +40,32 @@ def validate_document_against_schema(descriptor_name, document):
     return schema_errors
 
 
+def validate_document_linked_fields(database, project_name, descriptor_name, document):
+    """
+    :param database: Database that will be used (pulled from the global app config)
+    :param project_name: name of the project that contains the documents being validated
+    :param descriptor_name: name of the descriptor being evaluated
+    :param system_context_document: System Context document being evaluated for submission
+    """
+    error_list = []
+    if(descriptor_name == 'system_context'):
+        error_list = validate_system_context(database, project_name, document)
+    elif(descriptor_name == 'data_pipeline'):
+        error_list = validate_data_pipeline(database, project_name, document)
+    elif(descriptor_name == 'training_data'):
+        error_list = validate_training_data(database, project_name, document)
+    elif(descriptor_name == 'trained_model'):
+        error_list = validate_trained_model(database, project_name, document)
+    elif(descriptor_name == 'development_environment'):
+        error_list = validate_development_environment(database, project_name, document)
+    elif(descriptor_name == 'production_environment'):
+        error_list = validate_production_environment(database, project_name, document)
+    elif(descriptor_name == 'production_data'):
+        error_list = validate_production_data(database, project_name, document)
+
+    return error_list
+
+
 def validate_system_context(database, project_name, system_context_document):
     """
     Validate that the linked fields being submitted are still valid

@@ -381,7 +381,6 @@ DM23-0003
       await this.$axios.post('/api/documents/get_document', post_json).then(response => {
         if(response['data']['document'] != null){
           console.log(response['data'])
-          console.log("xxx")
           console.log(response['data']['document'])
 
           this.model.document = JSON.parse(JSON.stringify(response['data']['document']))
@@ -392,7 +391,6 @@ DM23-0003
           });
         }
         else{
-          this.model.document.version = this.schema['properties']['version']['const']
           console.log("No document found to load")
         }
       });

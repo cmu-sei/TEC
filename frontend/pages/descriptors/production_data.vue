@@ -536,7 +536,6 @@ DM23-0003
           this.update_field_name_options();
         }
         else{
-          this.model.document.version = this.schema['properties']['version']['const']
           console.log("No document found to load")
         }
       });
