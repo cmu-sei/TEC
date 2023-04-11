@@ -117,3 +117,27 @@ VALUES('Integer'),
         ('Image'),
         ('Text'),
         ('Character');
+
+CREATE TABLE IF NOT EXISTS deployment_platforms
+(
+    deployment_platform VARCHAR NOT NULL UNIQUE,
+
+    PRIMARY KEY(deployment_platform)
+);
+
+INSERT INTO deployment_platforms(deployment_platform)
+VALUES('Local Server'),
+        ('Cloud'),
+        ('Embedded Platform');
+
+CREATE TABLE IF NOT EXISTS deployment_mechanisms
+(
+    deployment_mechanism VARCHAR NOT NULL UNIQUE,
+
+    PRIMARY KEY(deployment_mechanism)
+);
+
+INSERT INTO deployment_mechanisms(deployment_mechanism)
+VALUES('API'),
+        ('User-Facing'),
+        ('Output to System Component');

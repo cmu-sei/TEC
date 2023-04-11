@@ -15,6 +15,23 @@ from database_helpers.db_lists import *
 db_lists_blueprint = Blueprint('db_lists', __name__)
 
 
+@db_lists_blueprint.route('/get_deployment_mechanisms', methods=['GET'])
+def get_deployment_mechanisms():
+    """
+    Get the list of deployment mechanisms currently in the database
+
+    :return: JSON containing the list of deployment mechanisms
+    """
+    database = current_app.config['database']
+    db_response = db_get_deployment_mechanisms(database)
+
+    response = []
+    for mechanism in db_response:
+        response.append(mechanism['deployment_mechanism'])
+    
+    return json.dumps(response), 200
+
+
 @db_lists_blueprint.route('/get_deployment_platforms', methods=['GET'])
 def get_deployment_platforms():
     """

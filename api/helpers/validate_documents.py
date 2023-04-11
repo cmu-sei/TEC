@@ -443,6 +443,14 @@ def validate_production_environment(database, project_name, production_environme
             if(feedback not in trained_model_user_system_feedback and feedback != ''):
                 error_list.append('The User System Feedback: ' + feedback + ' is no longer available in Trained Model.')
 
+    # If there are no errors, check the database to see if the deployment platform or mechanism are new and need to be added
+    if(error_list == []):
+        deployment_platform_list = [production_environment_document['deployment_platform']]
+        validate_deployment_platform_submission(database, deployment_platform_list)
+
+        deployment_mechanism_list = [production_environment_document['deployment_mechanism']]
+        validate_deployment_mechanism_submission(database, deployment_mechanism_list)
+
     return error_list
 
 
@@ -471,6 +479,16 @@ Collection of methods to check submissions in fields that are populated by datab
 Each method will check its corresponding list, and if one of the submitted items is not currently in the
 database, it will add it in to make that new entry available to future users.
 """
+def validate_deployment_mechanism_submission(database, submitted_deployment_mechanism_list):
+    """
+    """
+    db_deployment_mechanism_list = [entry['deployment_mechanism'] for entry in db_get_deployment_mechanisms(database)]
+
+    for deployment_mechanism in submitted_deployment_mechanism_list:
+        if(deployment_mechanism not in db_deployment_mechanism_list and deployment_mechanism != ''):
+            db_add_deployment_mechanism(database, deployment_mechanism)
+
+
 def validate_deployment_platform_submission(database, submitted_deployment_platform_list):
     """
     """

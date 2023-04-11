@@ -12,11 +12,54 @@ import psycopg2.extras
 from psycopg2.extras import RealDictCursor
 
 
+def db_get_deployment_mechanisms(database):
+    """
+    Get all deployment mechanisms in the database
+
+    :return: List of dict items in the format [{'deployment_mechanism': 'API'}, {'deployment_mechanism': 'User-Facing'}]
+    """
+    cursor = database.connection.cursor(cursor_factory=RealDictCursor)
+
+    try:
+        cursor.execute('SELECT deployment_mechanism FROM deployment_mechanisms')
+        result = cursor.fetchall()
+        return result
+    except:
+        database.connection.rollback()
+        raise
+    finally:
+        cursor.close()
+        database.connection.commit()
+
+
+def db_add_deployment_mechanism(database, deployment_mechanism):
+    """
+    Adds the deployment mechanism to the database
+
+    :return: Success
+    """
+    cursor = database.connection.cursor()
+
+    try:
+        record_to_insert = (str(deployment_mechanism),)
+        query = """
+                INSERT INTO deployment_mechanisms (deployment_mechanism) VALUES (%s)
+                """
+        cursor.execute(query, record_to_insert)
+        return 'Success'
+    except:
+        database.connection.rollback()
+        raise
+    finally:
+        cursor.close()
+        database.connection.commit()
+
+
 def db_get_deployment_platforms(database):
     """
     Get all deployment platforms in the database
 
-    :return: List of dict items in the format [{'deployment_platform': 'local_server'}]
+    :return: List of dict items in the format [{'deployment_platform': 'Local Server'}, {'deployment_platform': 'Cloud'}]
     """
     cursor = database.connection.cursor(cursor_factory=RealDictCursor)
 

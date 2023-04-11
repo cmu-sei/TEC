@@ -172,7 +172,14 @@ DM23-0003
       <div class='input-div'>
         <label for="deployment_mechanism"> <b> Deployment Mechanism </b> - {{schema.properties.deployment_mechanism.description}}</label>
         <br>
-        <input type="text" v-model="model.document.deployment_mechanism" class="form-control" />
+        <deployment-mechanism-multiselect
+          :value='model.document.deployment_mechanism'
+          v-bind:multiple='false'
+
+          @updateSelected='(selections) => {model.document.deployment_mechanism = selections}'
+
+          class='form-control'
+        />
       </div>
 
       <div class='input-div'>
@@ -697,6 +704,7 @@ DM23-0003
         });
 
         post_json.document.deployment_platform = post_json.document.deployment_platform.length > 0 ? post_json.document.deployment_platform[0].value : '';
+        post_json.document.deployment_mechanism = post_json.document.deployment_mechanism.length > 0 ? post_json.document.deployment_mechanism[0].value : '';
 
         post_json.document.business_metrics.forEach(metric => {
           metric.metric = metric.metric.length > 0 ? metric.metric[0].value : '';
@@ -833,6 +841,7 @@ DM23-0003
 
           this.model.document.required_inference_time.unit = [{id: this.model.document.required_inference_time.unit, value: this.model.document.required_inference_time.unit}];
           this.model.document.deployment_platform = [{id: this.model.document.deployment_platform, value: this.model.document.deployment_platform}];
+          this.model.document.deployment_mechanism = [{id: this.model.document.deployment_mechanism, value: this.model.document.deployment_mechanism}];
 
           this.model.document.algorithm_metrics.forEach(metric => {
             metric['metric'] = [{id: metric['metric'], value: metric['metric']}]

@@ -26,6 +26,15 @@ export const actions = {
   },
 
 
+  async get_deployment_mechanisms({context}){
+    let data = []
+    await this.$axios.get('api/db_lists/get_deployment_mechanisms').then((promise) => {
+      data = promise['data'];
+    })
+    return data;
+  },
+
+
   async get_deployment_platforms({context}){
     let data = [];
     await this.$axios.get('api/db_lists/get_deployment_platforms').then((promise) => {
