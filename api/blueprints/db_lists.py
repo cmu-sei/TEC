@@ -8,16 +8,68 @@
 
 
 import json
-from flask import Blueprint, request, current_app
+from flask import Blueprint, current_app
 
 from database_helpers.db_lists import *
 
 db_lists_blueprint = Blueprint('db_lists', __name__)
 
+
+@db_lists_blueprint.route('/get_deployment_platforms', methods=['GET'])
+def get_deployment_platforms():
+    """
+    Get the list of deployment platforms currently in the database
+
+    :return: JSON containing the list of deployment platforms
+    """
+    database = current_app.config['database']
+    db_response = db_get_deployment_platforms(database)
+
+    response = []
+    for platform in db_response:
+        response.append(platform['deployment_platform'])
+    
+    return json.dumps(response), 200
+
+
+@db_lists_blueprint.route('/get_item_types', methods=['GET'])
+def get_item_types():
+    """
+    Get the list of item types currently in the database
+    
+    :return: JSON containing the list of statistics
+    """
+    database = current_app.config['database']
+    db_response = db_get_item_types(database)
+
+    response = []
+    for type in db_response:
+        response.append(type['item_type'])
+
+    return json.dumps(response), 200
+
+
+@db_lists_blueprint.route('/get_ml_frameworks', methods=['GET'])
+def get_ml_frameworks():
+    """
+    Get the list of ml frameworks currently in the database
+    
+    :return: JSON containing the list of frameworks
+    """
+    database = current_app.config['database']
+    db_response = db_get_ml_frameworks(database)
+
+    response = []
+    for framework in db_response:
+        response.append(framework['framework_name'])
+
+    return json.dumps(response), 200
+
+
 @db_lists_blueprint.route('/get_programming_languages', methods=['GET'])
 def get_programming_languages():
     """
-    Get the list of programming languages currently in the db
+    Get the list of programming languages currently in the database
     
     :return: JSON containing the list of languages
     """
@@ -30,31 +82,14 @@ def get_programming_languages():
 
     print(response, flush=True)
 
-    return json.dumps( response ), 200
-
-
-@db_lists_blueprint.route('/get_ml_frameworks', methods=['GET'])
-def get_ml_frameworks():
-    """
-    Get the list of ml frameworks currently in the db
-    
-    :return: JSON containing the list of frameworks
-    """
-    database = current_app.config['database']
-    db_response = db_get_ml_frameworks(database)
-
-    response = []
-    for framework in db_response:
-        response.append(framework['framework_name'])
-
-    return json.dumps( response ), 200
+    return json.dumps(response), 200
     
 
 
 @db_lists_blueprint.route('/get_statistics', methods=['GET'])
 def get_statistics():
     """
-    Get the list of statistics currently in the db
+    Get the list of statistics currently in the database
     
     :return: JSON containing the list of statistics
     """
@@ -65,22 +100,4 @@ def get_statistics():
     for statistic in db_response:
         response.append(statistic['statistic_name'])
 
-    return json.dumps( response ), 200
-
-
-
-@db_lists_blueprint.route('/get_item_types', methods=['GET'])
-def get_item_types():
-    """
-    Get the list of item types currently in the db
-    
-    :return: JSON containing the list of statistics
-    """
-    database = current_app.config['database']
-    db_response = db_get_item_types(database)
-
-    response = []
-    for type in db_response:
-        response.append(type['item_type'])
-
-    return json.dumps( response ), 200
+    return json.dumps(response), 200

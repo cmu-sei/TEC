@@ -12,16 +12,16 @@ import psycopg2.extras
 from psycopg2.extras import RealDictCursor
 
 
-def db_get_programming_languages(database):
+def db_get_deployment_platforms(database):
     """
-    Get all programming languages in the database
+    Get all deployment platforms in the database
 
-    :return: List of all of the languages
+    :return: List of dict items in the format [{'deployment_platform': 'local_server'}]
     """
     cursor = database.connection.cursor(cursor_factory=RealDictCursor)
 
     try:
-        cursor.execute('SELECT language_name FROM programming_languages')
+        cursor.execute('SELECT deployment_platform FROM deployment_platforms')
         result = cursor.fetchall()
         return result
     except:
@@ -32,104 +32,18 @@ def db_get_programming_languages(database):
         database.connection.commit()
 
 
-def db_add_programming_language(database, programming_language):
+def db_add_deployment_platform(database, deployment_platform):
     """
-    Adds the language to the DB
+    Adds the deployment platform to the database
 
     :return: Success
     """
     cursor = database.connection.cursor()
 
     try:
-        record_to_insert = (str(programming_language),)
+        record_to_insert = (str(deployment_platform),)
         query = """
-                INSERT INTO programming_languages (language_name) VALUES (%s)
-                """
-        cursor.execute(query, record_to_insert)
-        return 'Success'
-    except:
-        database.connection.rollback()
-        raise
-    finally:
-        cursor.close()
-        database.connection.commit()
-
-
-def db_get_ml_frameworks(database):
-    """
-    Get all ml frameworks in the database
-
-    :return: List of all of the frameworks
-    """
-    cursor = database.connection.cursor(cursor_factory=RealDictCursor)
-
-    try:
-        cursor.execute('SELECT framework_name FROM ml_frameworks')
-        result = cursor.fetchall()
-        return result
-    except:
-        database.connection.rollback()
-        raise
-    finally:
-        cursor.close()
-        database.connection.commit()
-
-
-def db_add_ml_framework(database, framework_name):
-    """
-    Adds the framework to the DB
-
-    :return: Success
-    """
-    cursor = database.connection.cursor()
-
-    try:
-        record_to_insert = (str(framework_name),)
-        query = """
-                INSERT INTO ml_frameworks (framework_name) VALUES (%s)
-                """
-        cursor.execute(query, record_to_insert)
-        return 'Success'
-    except:
-        database.connection.rollback()
-        raise
-    finally:
-        cursor.close()
-        database.connection.commit()
-
-
-def db_get_statistics(database):
-    """
-    Get all statistics in the database
-
-    :return: List of all of the statistics
-    """
-    cursor = database.connection.cursor(cursor_factory=RealDictCursor)
-
-    try:
-        cursor.execute('SELECT statistic_name FROM statistic_list')
-        result = cursor.fetchall()
-        return result
-    except:
-        database.connection.rollback()
-        raise
-    finally:
-        cursor.close()
-        database.connection.commit()
-
-
-def db_add_statistic(database, statistic):
-    """
-    Adds the statistic to the DB
-
-    :return: Success
-    """
-    cursor = database.connection.cursor()
-
-    try:
-        record_to_insert = (str(statistic),)
-        query = """
-                INSERT INTO statistic_list (statistic_name) VALUES (%s)
+                INSERT INTO deployment_platforms (deployment_platform) VALUES (%s)
                 """
         cursor.execute(query, record_to_insert)
         return 'Success'
@@ -163,7 +77,7 @@ def db_get_item_types(database):
 
 def db_add_item_type(database, item_type):
     """
-    Adds the item type to the DB
+    Adds the item type to the database
 
     :return: Success
     """
@@ -173,6 +87,135 @@ def db_add_item_type(database, item_type):
         record_to_insert = (str(item_type),)
         query = """
                 INSERT INTO item_types (item_type) VALUES (%s)
+                """
+        cursor.execute(query, record_to_insert)
+        return 'Success'
+    except:
+        database.connection.rollback()
+        raise
+    finally:
+        cursor.close()
+        database.connection.commit()
+
+
+def db_get_ml_frameworks(database):
+    """
+    Get all ml frameworks in the database
+
+    :return: List of all of the frameworks
+    """
+    cursor = database.connection.cursor(cursor_factory=RealDictCursor)
+
+    try:
+        cursor.execute('SELECT framework_name FROM ml_frameworks')
+        result = cursor.fetchall()
+        return result
+    except:
+        database.connection.rollback()
+        raise
+    finally:
+        cursor.close()
+        database.connection.commit()
+
+
+def db_add_ml_framework(database, framework_name):
+    """
+    Adds the framework to the database
+
+    :return: Success
+    """
+    cursor = database.connection.cursor()
+
+    try:
+        record_to_insert = (str(framework_name),)
+        query = """
+                INSERT INTO ml_frameworks (framework_name) VALUES (%s)
+                """
+        cursor.execute(query, record_to_insert)
+        return 'Success'
+    except:
+        database.connection.rollback()
+        raise
+    finally:
+        cursor.close()
+        database.connection.commit()
+
+
+def db_get_programming_languages(database):
+    """
+    Get all programming languages in the database
+
+    :return: List of all of the languages
+    """
+    cursor = database.connection.cursor(cursor_factory=RealDictCursor)
+
+    try:
+        cursor.execute('SELECT language_name FROM programming_languages')
+        result = cursor.fetchall()
+        return result
+    except:
+        database.connection.rollback()
+        raise
+    finally:
+        cursor.close()
+        database.connection.commit()
+
+
+def db_add_programming_language(database, programming_language):
+    """
+    Adds the language to the database
+
+    :return: Success
+    """
+    cursor = database.connection.cursor()
+
+    try:
+        record_to_insert = (str(programming_language),)
+        query = """
+                INSERT INTO programming_languages (language_name) VALUES (%s)
+                """
+        cursor.execute(query, record_to_insert)
+        return 'Success'
+    except:
+        database.connection.rollback()
+        raise
+    finally:
+        cursor.close()
+        database.connection.commit()
+
+
+def db_get_statistics(database):
+    """
+    Get all statistics in the database
+
+    :return: List of all of the statistics
+    """
+    cursor = database.connection.cursor(cursor_factory=RealDictCursor)
+
+    try:
+        cursor.execute('SELECT statistic_name FROM statistic_list')
+        result = cursor.fetchall()
+        return result
+    except:
+        database.connection.rollback()
+        raise
+    finally:
+        cursor.close()
+        database.connection.commit()
+
+
+def db_add_statistic(database, statistic):
+    """
+    Adds the statistic to the database
+
+    :return: Success
+    """
+    cursor = database.connection.cursor()
+
+    try:
+        record_to_insert = (str(statistic),)
+        query = """
+                INSERT INTO statistic_list (statistic_name) VALUES (%s)
                 """
         cursor.execute(query, record_to_insert)
         return 'Success'

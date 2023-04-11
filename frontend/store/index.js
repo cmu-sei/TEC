@@ -26,9 +26,18 @@ export const actions = {
   },
 
 
-  async get_programming_languages({context}){
+  async get_deployment_platforms({context}){
     let data = [];
-    await this.$axios.get('api/db_lists/get_programming_languages').then((promise) => {
+    await this.$axios.get('api/db_lists/get_deployment_platforms').then((promise) => {
+      data = promise['data'];
+    })
+    return data;
+  },
+
+
+  async get_item_types({context}){
+    let data = [];
+    await this.$axios.get('api/db_lists/get_item_types').then((promise) => {
       data = promise['data'];
     })
     return data;
@@ -44,18 +53,18 @@ export const actions = {
   },
 
 
-  async get_statistics({context}){
+  async get_programming_languages({context}){
     let data = [];
-    await this.$axios.get('api/db_lists/get_statistics').then((promise) => {
+    await this.$axios.get('api/db_lists/get_programming_languages').then((promise) => {
       data = promise['data'];
     })
     return data;
   },
 
 
-  async get_item_types({context}){
+  async get_statistics({context}){
     let data = [];
-    await this.$axios.get('api/db_lists/get_item_types').then((promise) => {
+    await this.$axios.get('api/db_lists/get_statistics').then((promise) => {
       data = promise['data'];
     })
     return data;

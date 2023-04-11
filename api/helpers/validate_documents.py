@@ -466,14 +466,29 @@ def validate_production_data(database, project_name, production_data_document):
     return error_list
 
 
-def validate_programming_language_submission(database, submitted_programming_language_list):
+"""
+Collection of methods to check submissions in fields that are populated by database lists.
+Each method will check its corresponding list, and if one of the submitted items is not currently in the
+database, it will add it in to make that new entry available to future users.
+"""
+def validate_deployment_platform_submission(database, submitted_deployment_platform_list):
     """
     """
-    db_programming_language_list = [entry['language_name'] for entry in db_get_programming_languages(database)]
+    db_deployment_platform_list = [entry['deployment_platform'] for entry in db_get_deployment_platforms(database)]
 
-    for language in submitted_programming_language_list:
-        if(language not in db_programming_language_list and language != ''):
-            db_add_programming_language(database, language)
+    for deployment_platform in submitted_deployment_platform_list:
+        if(deployment_platform not in db_deployment_platform_list and deployment_platform != ''):
+            db_add_deployment_platform(database, deployment_platform)
+
+
+def validate_item_type_submission(database, submitted_item_type_list):
+    """
+    """
+    db_item_type_list = [entry['item_type'] for entry in db_get_item_types(database)]
+
+    for item_type in submitted_item_type_list:
+        if(item_type not in db_item_type_list and item_type != ''):
+            db_add_item_type(database, item_type)
 
 
 def validate_ml_framework_submission(database, submitted_ml_framework_list):
@@ -486,6 +501,16 @@ def validate_ml_framework_submission(database, submitted_ml_framework_list):
             db_add_ml_framework(database, framework)
 
 
+def validate_programming_language_submission(database, submitted_programming_language_list):
+    """
+    """
+    db_programming_language_list = [entry['language_name'] for entry in db_get_programming_languages(database)]
+
+    for language in submitted_programming_language_list:
+        if(language not in db_programming_language_list and language != ''):
+            db_add_programming_language(database, language)
+
+
 def validate_statistic_submission(database, submitted_property_list):
     """
     """
@@ -494,13 +519,3 @@ def validate_statistic_submission(database, submitted_property_list):
     for property in submitted_property_list:
         if(property not in db_statistic_list and property != ''):
             db_add_statistic(database, property)
-    
-    
-def validate_item_type_submission(database, submitted_item_type_list):
-    """
-    """
-    db_item_type_list = [entry['item_type'] for entry in db_get_item_types(database)]
-
-    for item_type in submitted_item_type_list:
-        if(item_type not in db_item_type_list and item_type != ''):
-            db_add_item_type(database, item_type)
