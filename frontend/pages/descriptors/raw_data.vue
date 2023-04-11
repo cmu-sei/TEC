@@ -358,13 +358,25 @@ DM23-0003
       </div>
 
       <div class='input-div'>
-        <label for="restrictions"> <b> Restrictions </b> - {{schema.properties['restrictions'].description}}</label>
+        <label for="restrictions"> <b> Restrictions </b> - {{schema.properties.restrictions.description}}</label>
         <br>
         <textarea type="text" v-model="model.document.restrictions" class="form-control" />
       </div>
 
       <div class='input-div'>
-        <label for="anonymization"> <b> Anonymization </b> - {{schema.properties['anonymization'].description}}</label>
+        <label for="data_rights"> <b> Data Rights </b> - {{schema.properties.data_rights.description}}</label>
+        <br>
+        <textarea type="text" v-model="model.document.data_rights" class="form-control" />
+      </div>
+
+      <div class='input-div'>
+        <label for="data_policies"> <b> Data Policies </b> - {{schema.properties.data_policies.description}}</label>
+        <br>
+        <textarea type="text" v-model="model.document.data_policies" class="form-control" />
+      </div>
+
+      <div class='input-div'>
+        <label for="anonymization"> <b> Anonymization </b> - {{schema.properties.anonymization.description}}</label>
         <br>
         <textarea type="text" v-model="model.document.anonymization" class="form-control" />
       </div>
@@ -453,7 +465,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '1.0',
+            version: '1.1',
             dataset_identifier: '',
             dataset_version: '',
             dataset_name: '',
@@ -483,6 +495,8 @@ DM23-0003
               known_issues: ''
             },
             restrictions: '',
+            data_rights: '',
+            data_policies: '',
             anonymization: '',
             proxy_data: '',
             documentation: [{
