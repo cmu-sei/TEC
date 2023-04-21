@@ -69,7 +69,7 @@ def validate_document_linked_fields(database, project_name, descriptor_name, doc
 def validate_system_context(database, project_name, system_context_document):
     """
     Validate that the linked fields being submitted are still valid
-    - business_goals map to business_goal_mapping in Trained Model
+    - goals map to goal_mapping fields of Algorithm and Business Metrics in Trained Model
 
     :param database: Database that will be used (pulled from the global app config)
     :param project_name: name of the project that contains the documents being validated
@@ -77,16 +77,18 @@ def validate_system_context(database, project_name, system_context_document):
     """
     error_list = []
 
-    db_trained_model_reponse = db_get_document(database, project_name, 'trained_model')
+    trained_model_document = db_get_document(database, project_name, 'trained_model')
 
-    if(db_trained_model_reponse):
-        trained_model_document = db_trained_model_reponse['document']
+    if(trained_model_document):
+        system_context_goal_ids = [item['id'] for item in system_context_document['goals']]
 
-        system_context_business_goals_ids = [item['id'] for item in system_context_document['business_goals']]
+        for algorithm_metric in trained_model_document['algorithm_metrics']:
+            if(algorithm_metric['goal_mapping'] not in system_context_goal_ids and algorithm_metric['goal_mapping'] != ''):
+                error_list.append('The Goal ID: ' + algorithm_metric['goal_mapping'] + ' is currently in use in a Algorith Metric in Trained Model and cannot be deleted.')
 
         for business_metric in trained_model_document['business_metrics']:
-            if(business_metric['business_goal_mapping'] not in system_context_business_goals_ids and business_metric['business_goal_mapping'] != ''):
-                error_list.append('The Business Goal ID: ' + business_metric['business_goal_mapping'] + ' is currently in use in Trained Model and cannot be deleted.')
+            if(business_metric['goal_mapping'] not in system_context_goal_ids and business_metric['goal_mapping'] != ''):
+                error_list.append('The Goal ID: ' + business_metric['goal_mapping'] + ' is currently in use in a Business Metric in Trained Model and cannot be deleted.')
 
     return error_list
 
@@ -276,11 +278,15 @@ def validate_trained_model(database, project_name, trained_model_document):
     if(db_system_context_response):
         system_context_document = db_system_context_response
 
-        system_context_business_goals_ids = [item['id'] for item in system_context_document['business_goals']]
+        system_context_goal_ids = [item['id'] for item in system_context_document['goals']]
+
+        for algorithm_metric in trained_model_document['algorithm_metrics']:
+            if(algorithm_metric['goal_mapping'] not in system_context_goal_ids and algorithm_metric['goal_mapping'] != ''):
+                error_list.append('The Goal ID: ' + algorithm_metric['goal_mapping'] + ' is being used in an Algorith Metric, and is no longer available in System Context.')
 
         for business_metric in trained_model_document['business_metrics']:
-            if(business_metric['business_goal_mapping'] not in system_context_business_goals_ids and business_metric['business_goal_mapping'] != ''):
-                error_list.append('The Business Goal ID: ' + business_metric['business_goal_mapping'] + ' is no longer available in System Context.')
+            if(business_metric['goal_mapping'] not in system_context_goal_ids and business_metric['goal_mapping'] != ''):
+                error_list.append('The Goal ID: ' + business_metric['goal_mapping'] + ' is being used in a Business Metric, and is no longer available in System Context.')
             
     # If there are no errors, check the database to see if any of the item types or programming languages being submitted are new and need to be added
     if(error_list == []):

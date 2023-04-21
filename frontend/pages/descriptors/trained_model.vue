@@ -1028,44 +1028,102 @@ DM23-0003
         <label for="algorithm_metrics"> <b> Algorithm Metrics </b> - {{schema.properties.algorithm_metrics.description}}</label>
         <div class="input-div" v-for="(item, index) in model.document.algorithm_metrics" :key="index">
           <div class='variable-input-parent-div'>
-            <label for='metric' class='split-fourth-label'> Algorithm Metric </label>
-            <div class='popover-container'>
-              <sds-popover>
-                <template #trigger>
-                  <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                </template>
-                <template #default>
-                  <div class="popover-div">
-                    <h3 class="popover-h3">
-                      Algorithm Metric
-                    </h3>
-                    <p class="popover-p">
-                      {{schema.properties.algorithm_metrics.items.properties.metric.description}}
-                    </p>
-                  </div>
-                </template>
-              </sds-popover>
+            <div class="input-line-div">
+              <label for='metric' class='split-fourth-label'> Algorithm Metric </label>
+              <div class='popover-container'>
+                <sds-popover>
+                  <template #trigger>
+                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+                  </template>
+                  <template #default>
+                    <div class="popover-div">
+                      <h3 class="popover-h3">
+                        Algorithm Metric
+                      </h3>
+                      <p class="popover-p">
+                        {{schema.properties.algorithm_metrics.items.properties.metric.description}}
+                      </p>
+                    </div>
+                  </template>
+                </sds-popover>
+              </div>
+              <input v-model="item.metric" type="text" class='split-fourth-input' />
+              <label for='operator' class='split-fourth-label'> Operator </label>
+              <div class='popover-container'>
+                <sds-popover>
+                  <template #trigger>
+                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+                  </template>
+                  <template #default>
+                    <div class="popover-div">
+                      <h3 class="popover-h3">
+                        Operator
+                      </h3>
+                      <p class="popover-p">
+                        {{schema.properties.algorithm_metrics.items.properties.operator.description}}
+                      </p>
+                    </div>
+                  </template>
+                </sds-popover>
+              </div>
+              <general-multiselect
+                :value='item.operator'
+                :options='operator_options'
+                v-bind:multiple='false'
+
+                @updateSelected="(selections) => {item.operator = selections}"
+
+                class='split-fourth-input inline-block'
+              />
             </div>
-            <input v-model="item.metric" type="text" class='split-fourth-input' />
-            <label for='metric' class='split-fourth-label'> Threshold for Notification </label>
-            <div class='popover-container'>
-              <sds-popover>
-                <template #trigger>
-                  <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                </template>
-                <template #default>
-                  <div class="popover-div">
-                    <h3 class="popover-h3">
-                      Threshold for Notification
-                    </h3>
-                    <p class="popover-p">
-                      {{schema.properties.algorithm_metrics.items.properties.threshold.description}}
-                    </p>
-                  </div>
-                </template>
-              </sds-popover>
+            <div class="input-line-div">
+              <label for='metric' class='split-fourth-label'> Threshold for Notification </label>
+              <div class='popover-container'>
+                <sds-popover>
+                  <template #trigger>
+                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+                  </template>
+                  <template #default>
+                    <div class="popover-div">
+                      <h3 class="popover-h3">
+                        Threshold for Notification
+                      </h3>
+                      <p class="popover-p">
+                        {{schema.properties.algorithm_metrics.items.properties.threshold.description}}
+                      </p>
+                    </div>
+                  </template>
+                </sds-popover>
+              </div>
+              <input v-model.number="item.threshold" type="number" class='split-fourth-input' />
+              <label for='metric' class='split-fourth-label'> Goal Mapping </label>
+              <div class='popover-container'>
+                <sds-popover>
+                  <template #trigger>
+                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+                  </template>
+                  <template #default>
+                    <div class="popover-div">
+                      <h3 class="popover-h3">
+                        Goal Mapping
+                      </h3>
+                      <p class="popover-p">
+                        {{schema.properties.algorithm_metrics.items.properties.goal_mapping.description}}
+                      </p>
+                    </div>
+                  </template>
+                </sds-popover>
+              </div>
+              <general-multiselect
+                :value='item.goal_mapping'
+                :options='goal_options'
+                v-bind:multiple='false'
+
+                @updateSelected='(selections) => {item.goal_mapping = selections}'
+
+                class='split-fourth-input inline-block'
+              />
             </div>
-            <input v-model.number="item.threshold" type="number" class='split-fourth-input' />
           </div>
           <div class='variable-input-btn-div'>
             <sds-button variant="default" v-if='index==0' @click="add_algorithm_metric()">
@@ -1102,6 +1160,35 @@ DM23-0003
                 </sds-popover>
               </div>
               <input v-model="item.metric" type="text" class='split-fourth-input' />
+              <label for='operator' class='split-fourth-label'> Operator </label>
+              <div class='popover-container'>
+                <sds-popover>
+                  <template #trigger>
+                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+                  </template>
+                  <template #default>
+                    <div class="popover-div">
+                      <h3 class="popover-h3">
+                        Operator
+                      </h3>
+                      <p class="popover-p">
+                        {{schema.properties.business_metrics.items.properties.operator.description}}
+                      </p>
+                    </div>
+                  </template>
+                </sds-popover>
+              </div>
+              <general-multiselect
+                :value='item.operator'
+                :options='operator_options'
+                v-bind:multiple='false'
+
+                @updateSelected="(selections) => {item.operator = selections}"
+
+                class='split-fourth-input inline-block'
+              />
+            </div>
+            <div class='input-line-div'>
               <label for='metric' class='split-fourth-label'> Threshold for Notification </label>
               <div class='popover-container'>
                 <sds-popover>
@@ -1121,9 +1208,7 @@ DM23-0003
                 </sds-popover>
               </div>
               <input v-model.number="item.threshold" type="number" class='split-fourth-input'/>
-            </div>
-            <div class='input-line-div'>
-              <label for='metric' class='split-fourth-label'> Business Goal Mapping </label>
+              <label for='metric' class='split-fourth-label'> Goal Mapping </label>
               <div class='popover-container'>
                 <sds-popover>
                   <template #trigger>
@@ -1132,21 +1217,21 @@ DM23-0003
                   <template #default>
                     <div class="popover-div">
                       <h3 class="popover-h3">
-                        Business Goal Mapping
+                        Goal Mapping
                       </h3>
                       <p class="popover-p">
-                        {{schema.properties.business_metrics.items.properties.business_goal_mapping.description}}
+                        {{schema.properties.business_metrics.items.properties.goal_mapping.description}}
                       </p>
                     </div>
                   </template>
                 </sds-popover>
               </div>
               <general-multiselect
-                :value='item.business_goal_mapping'
-                :options='business_goal_options'
+                :value='item.goal_mapping'
+                :options='goal_options'
                 v-bind:multiple='false'
 
-                @updateSelected='(selections) => {item.business_goal_mapping = selections}'
+                @updateSelected='(selections) => {item.goal_mapping = selections}'
 
                 class='split-fourth-input inline-block'
               />
@@ -1562,7 +1647,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '1.0',
+            version: '1.1',
             model_name: '',
             model_version: '',
             model_description: '',
@@ -1642,12 +1727,15 @@ DM23-0003
             default_model_output: '',
             algorithm_metrics: [{
               metric: '',
+              operator: [],
               threshold: 0,
+              goal_mapping: []
             }],
             business_metrics: [{
               metric: '',
+              operator: [],
               threshold: 0,
-              business_goal_mapping: [],
+              goal_mapping: [],
             }],
             user_system_feedback: [{
               short_name: '',
@@ -1687,7 +1775,8 @@ DM23-0003
 
         evaluation_metrics_options: [],
         test_metrics_options: [],
-        business_goal_options: [],
+        operator_options: [],
+        goal_options: [],
         unit_options: [],
 
         toasts: [],
@@ -1754,16 +1843,39 @@ DM23-0003
           post_json.document.decisions_assumptions.push(element.value)
         });
 
-        post_json.document.business_metrics.forEach(metric => {
-          if(metric.business_goal_mapping.length > 0 && metric.business_goal_mapping[0].hasOwnProperty('key')){
-            metric.business_goal_mapping = metric.business_goal_mapping[0].key
+        post_json.document.algorithm_metrics.forEach(metric => {
+          if(metric.operator.length > 0 && metric.operator[0].hasOwnProperty('key')){
+            metric.operator = metric.operator[0].key
           }
           else{
-            metric.business_goal_mapping = ''
+            metric.operator = ''
+          }
+
+          if(metric.goal_mapping.length > 0 && metric.goal_mapping[0].hasOwnProperty('key')){
+            metric.goal_mapping = metric.goal_mapping[0].key
+          }
+          else{
+            metric.goal_mapping = ''
           }
         })
 
-        post_json.document.inference_time.unit = post_json.document.inference_time.unit.length > 0 ? post_json.document.inference_time.unit[0].value : '';
+        post_json.document.business_metrics.forEach(metric => {
+          if(metric.operator.length > 0 && metric.operator[0].hasOwnProperty('key')){
+            metric.operator = metric.operator[0].key
+          }
+          else{
+            metric.operator = ''
+          }
+
+          if(metric.goal_mapping.length > 0 && metric.goal_mapping[0].hasOwnProperty('key')){
+            metric.goal_mapping = metric.goal_mapping[0].key
+          }
+          else{
+            metric.goal_mapping = ''
+          }
+        })
+
+        post_json.document.inference_time.unit = post_json.document.inference_time.unit.length > 0 ? post_json.document.inference_time.unit[0].key : '';
 
         post_json.document.system_dependencies = []
         this.model.document.system_dependencies.forEach(element => {
@@ -1880,11 +1992,11 @@ DM23-0003
       },
 
       add_algorithm_metric(){
-        this.model.document.algorithm_metrics.push({metric: '', threshold: 0})
+        this.model.document.algorithm_metrics.push({metric: '', operator: [], threshold: 0, goal_mapping: []})
       },
 
       add_business_metric(){
-        this.model.document.business_metrics.push({metric: '', threshold: 0, business_goal_mapping: []})
+        this.model.document.business_metrics.push({metric: '', operator: [], threshold: 0, goal_mapping: []})
       },
 
       add_user_system_feedback(){
@@ -2003,22 +2115,25 @@ DM23-0003
         this.learning_algorithm_options = this.schema['properties']['model_components']['items']['properties']['learning_algorithm']['properties']['algorithm']['enum']
         this.evaluation_metrics_options = this.schema['properties']['evaluation_metrics']['items']['properties']['metric']['enum']
         this.test_metrics_options = this.schema['properties']['test_metrics']['items']['properties']['metric']['enum']
+        this.schema['properties']['algorithm_metrics']['items']['properties']['operator']['enum'].forEach(operator => {
+          this.operator_options.push({key: operator, value: operator});
+        })
         this.schema['properties']['inference_time']['properties']['unit']['enum'].forEach(unit => {
-          this.unit_options.push({id: unit, value: unit});
+          this.unit_options.push({key: unit, value: unit});
         })
       });
 
       // Bringing in the linked sytstem_context fields
-      // business_metrics links to a business_goal in system_context
+      // business_metrics and algorithm_metrics link to a goal in system_context
       let sc_post_json = {'project_name': this.project_name, 'descriptor_name': 'system_context'}
       let sc_document = {}
       await this.$axios.post('/api/documents/get_document', sc_post_json).then(response => {
         if(response['data']['document'] != null){
           sc_document = response['data']['document']
 
-          sc_document['business_goals'].forEach(goal => {
+          sc_document['goals'].forEach(goal => {
             let option = goal.id + ' - ' + goal.goal
-            this.business_goal_options.push({key: goal.id, value: option})
+            this.goal_options.push({key: goal.id, value: option})
           });
         }
       });
@@ -2079,37 +2194,65 @@ DM23-0003
             this.model.document.post_processing_process.push({value: element});
           });
 
+          this.model.document.algorithm_metrics.forEach(item => {
+            item.operator = [{key: item.operator, value: item.operator}]
+          })
+
+          this.model.document.business_metrics.forEach(item => {
+            item.operator = [{key: item.operator, value: item.operator}]
+          })
+
           // Using the descriptor forms this should never need to be validated, but in case the user 
-          // imports a document with the business goals not working as expected this will prevent errors
+          // imports a document with the goals not working as expected this will prevent errors
           // TODO : When I add the submit validation to descriptor imports, delete this validation and just adjust
           // the fields to the vue format
-          let system_context_business_goals = {}
-          let system_context_business_goals_ids = []
+          let system_context_goals = {}
+          let system_context_goals_ids = []
           if(Object.keys(sc_document).length > 0){
-            system_context_business_goals = sc_document['business_goals'];
-            system_context_business_goals_ids = sc_document['business_goals'].map(( {id} ) => id);
+            system_context_goals = sc_document['goals'];
+            system_context_goals_ids = sc_document['goals'].map(( {id} ) => id);
           }
-          this.model.document['business_metrics'].forEach(metric => {
-            if(! system_context_business_goals_ids.includes(metric['business_goal_mapping'])){
-              if(metric['business_goal_mapping'] != ''){
+          this.model.document.business_metrics.forEach(metric => {
+            if(! system_context_goals_ids.includes(metric.goal_mapping)){
+              if(metric.goal_mapping != ''){
                 let temp_toast = {
                   id: 100,
                   variant: 'warning',
                   title: 'Loading Error',
-                  text: "The Business Goal: " + metric['business_goal_mapping'] + " is no longer available in System Context. The mapping has been cleared.",
+                  text: "The Goal: " + metric.goal_mapping + " is no longer available in System Context. The mapping has been cleared.",
                   autoHideDelay: 5000
                 }
                 this.toasts.unshift(temp_toast)
               }
-              metric.business_goal_mapping = []
+              metric.goal_mapping = []
             }
             else {
-              let matched_goal = system_context_business_goals.find( goal => goal.id === metric.business_goal_mapping)
-              metric.business_goal_mapping = [{key: metric.business_goal_mapping, value: metric.business_goal_mapping + " - " + matched_goal['goal']} ]
+              let matched_goal = system_context_goals.find(goal => goal.id === metric.goal_mapping)
+              metric.goal_mapping = [{key: metric.goal_mapping, value: metric.goal_mapping + " - " + matched_goal.goal} ]
+            }
+          })
+          
+          this.model.document.algorithm_metrics.forEach(metric => {
+            if(! system_context_goals_ids.includes(metric.goal_mapping)){
+              if(metric.goal_mapping != ''){
+                let temp_toast = {
+                  id: 100,
+                  variant: 'warning',
+                  title: 'Loading Error',
+                  text: "The Goal: " + metric.goal_mapping + " is no longer available in System Context. The mapping has been cleared.",
+                  autoHideDelay: 5000
+                }
+                this.toasts.unshift(temp_toast)
+              }
+              metric.goal_mapping = []
+            }
+            else {
+              let matched_goal = system_context_goals.find(goal => goal.id === metric.goal_mapping)
+              metric.goal_mapping = [{key: metric.goal_mapping, value: metric.goal_mapping + " - " + matched_goal.goal} ]
             }
           })
 
-          this.model.document.inference_time.unit = [{id: this.model.document.inference_time.unit, value: this.model.document.inference_time.unit}]
+          this.model.document.inference_time.unit = [{key: this.model.document.inference_time.unit, value: this.model.document.inference_time.unit}]
 
           this.model.document.decisions_assumptions = []
           response['data']['document']['decisions_assumptions'].forEach(element => {
