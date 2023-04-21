@@ -179,7 +179,7 @@ def validate_trained_model(database, project_name, trained_model_document):
     - metric in business_metrics maps to business_metrics in Production Environment
     - log in log_data maps to model_logs in Production Environment
     - short_name in user_system_feedback maps to user_system_feedback in Production Environment
-    - business_goal_mapping in business metrics is pulled from business_goals in Systen Context
+    - goal_mapping in business metrics is pulled from goals in Systen Context
 
 
     :param database: Database that will be used (pulled from the global app config)

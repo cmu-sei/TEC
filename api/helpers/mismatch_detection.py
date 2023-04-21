@@ -50,14 +50,17 @@ def all_document_mismatches(project_json):
 
     # Rule 1
     if sc_doc:
-        tm_doc_business_goal_mappings = [metric['business_goal_mapping'] for metric in tm_doc['business_metrics']] if tm_doc else []
-        for goal in sc_doc['business_goals']:
-            if goal['id'] not in tm_doc_business_goal_mappings:
+        tm_doc_algorithm_metric_goal_mappings = [metric['goal_mapping'] for metric in tm_doc['algorithm_metrics']] if tm_doc else []
+        tm_doc_business_metric_goal_mappings = [metric['goal_mapping'] for metric in tm_doc['business_metrics']] if tm_doc else []
+        tm_doc_combined_goal_mappings = tm_doc_algorithm_metric_goal_mappings + tm_doc_business_metric_goal_mappings
+
+        for goal in sc_doc['goals']:
+            if goal['id'] not in tm_doc_combined_goal_mappings:
                 mismatches.append(
                     {
-                        'conditions': ['There is no mapping between business goal \'' + goal['id'] + ' ' + goal['goal'] + '\' defined in the System Context and a business metric defined for the Trained Model.'],
-                        'message': 'Not all business goals defined for the trained model have a corresponding metric to determine if they are being met.',
-                        'rationale': 'If there is not a business metric(s) associated to the trained model to be calculated based on information collected when the model is in production, there is not a way to verify that business goals defined for the model are being met.'
+                        'conditions': ['There is no mapping between  goal \'' + goal['id'] + ' ' + goal['goal'] + '\' defined in the System Context and a business or algorithm metric defined for the Trained Model.'],
+                        'message': 'Not all goals defined for the trained model have a corresponding metric to determine if they are being met.',
+                        'rationale': 'If there is not a business or algorithm metric(s) associated to the trained model to be calculated based on information collected when the model is in production, there is not a way to verify that goals defined for the model are being met.'
                     })
 
     # Rule 2
@@ -564,12 +567,12 @@ def system_context_missing_fields(system_context_json):
                 'rationale': 'Having the type of ML problem that the model is intended to solve explcitly stated constitutes a common underdtanding between model developers and system owners.'
             })
     
-    if(not system_context_json or any(item['goal'].strip() == '' for item in system_context_json['business_goals'])):
+    if(not system_context_json or any(item['goal'].strip() == '' for item in system_context_json['goals'])):
         missing_fields.append(
             {
                 'descriptor': 'System Context',
-                'field': 'Business Goals', 
-                'rationale': 'Understanding the business goals or objectives that the model is going to help satisfy is important for model development and evaluation, but also for establishing metrics to be collected once the model is deployed to understand if it meeting its goals and objectives.'
+                'field': 'Goals', 
+                'rationale': 'Understanding the goals or objectives that the model is going to help satisfy is important for model development and evaluation, but also for establishing metrics to be collected once the model is deployed to understand if it meeting its goals and objectives.'
             })
 
     if(not system_context_json or system_context_json['available_data'].strip() == ''):
@@ -578,14 +581,6 @@ def system_context_missing_fields(system_context_json):
                 'descriptor': 'System Context',
                 'field': 'Available Data', 
                 'rationale': 'Knowing what data is already available to solve the problems helps model developers better understand the suitability of the data, whether additional data collection is needed, and what algorithms may be appropriate.'
-            })
-    
-    if(not system_context_json or any(item.strip() == '' for item in system_context_json['success_criteria'])):
-        missing_fields.append(
-            {
-                'descriptor': 'System Context',
-                'field': 'Success Criteria', 
-                'rationale': 'Having success criteria is important for defining model evaluation criteria and determining when the model is "good enough" to solve the problem. Possible success criteria include client or system expectations, validation scenarios, or acceptance criteria.'
             })
     
     if(not system_context_json or system_context_json['usage_context'].strip() == ''):
@@ -1482,7 +1477,9 @@ def trained_model_missing_fields(trained_model_json):
     if(not trained_model_json 
         or all(
             metric['metric'].strip() == ''
+            and metric['operator'].strip() == ''
             and metric['threshold'] == 0
+            and metric['goal_mapping'].strip() == ''
             for metric in trained_model_json['algorithm_metrics']
         )
     ):
@@ -1490,7 +1487,7 @@ def trained_model_missing_fields(trained_model_json):
             {
                 'descriptor': 'Trained Model',
                 'field': 'Algorithm Metrics', 
-                'rationale': 'Algorithm metrics to capture at run time need to be specified that detect changes in prediction behavior and inform model troubleshooting and retraining when the model is in production.'
+                'rationale': 'Algorithm metrics to capture at run time, which map to the goals specified for the model, need to be specified so that it can be determined if the model is meeting goals.'
             })
     else:
         if(any(metric['metric'].strip() == '' for metric in trained_model_json['algorithm_metrics'])):
@@ -1500,20 +1497,37 @@ def trained_model_missing_fields(trained_model_json):
                     'field': 'Algorithm Metrics.Metric', 
                     'rationale': 'Proactively specifying an algorithm metric to be monitored at runtime will ensure that the production environment is set up for its collection.'
                 })
+        
+        if(any(metric['operator'].strip() == '' for metric in trained_model_json['algorithm_metrics'])):
+            missing_fields.append(
+                {
+                    'descriptor': 'Trained Model',
+                    'field': 'Algorithm Metrics.Operator', 
+                    'rationale': 'Specifying an operator for an algorithm metric is necessary to define monitoring thresholds.'
+                })
 
         if(any(metric['threshold'] == 0 for metric in trained_model_json['algorithm_metrics'])):
             missing_fields.append(
                 {
                     'descriptor': 'Trained Model',
                     'field': 'Algorithm Metrics.Threshold', 
-                    'rationale': 'Specifying a threshold for notification will ensure that the proper action is taken when the model is no longer performong adequately.'
+                    'rationale': 'Specifying a threshold for notification will ensure that the proper action is taken when the model is no longer performing adequately.'
+                })
+            
+        if(any(metric['goal_mapping'].strip() == '' for metric in trained_model_json['algorithm_metrics'])):
+            missing_fields.append(
+                {
+                    'descriptor': 'Trained Model',
+                    'field': 'Algorithm Metrics.Goal Mapping', 
+                    'rationale': 'Mapping an algorithm metric to a goal ensures that the model meets its requirements.'
                 })
 
     if(not trained_model_json 
         or all(
             metric['metric'].strip() == ''
+            and metric['operator'].strip() == ''
             and metric['threshold'] == 0
-            and metric['business_goal_mapping'].strip() == ''
+            and metric['goal_mapping'].strip() == ''
             for metric in trained_model_json['business_metrics']
         )
     ):
@@ -1521,7 +1535,7 @@ def trained_model_missing_fields(trained_model_json):
             {
                 'descriptor': 'Trained Model',
                 'field': 'Business Metrics', 
-                'rationale': 'Business metrics to capture at run time, which map to the business goals specified for the model, need to be specified so that it can be determined if the model is meeting business goals.'
+                'rationale': 'Business metrics to capture at run time, which map to the goals specified for the model, need to be specified so that it can be determined if the model is meeting goals.'
             })
     else:
         if(any(metric['metric'].strip() == '' for metric in trained_model_json['business_metrics'])):
@@ -1531,21 +1545,29 @@ def trained_model_missing_fields(trained_model_json):
                     'field': 'Business Metrics.Metric', 
                     'rationale': 'Proactively specifying a business metric to be monitored at runtime will ensure that the production environment is set up for its collection.'
                 })
+            
+        if(any(metric['operator'].strip() == '' for metric in trained_model_json['business_metrics'])):
+            missing_fields.append(
+                {
+                    'descriptor': 'Trained Model',
+                    'field': 'Business Metrics.Operator', 
+                    'rationale': 'Specifying an operator for an business metric is necessary to define monitoring thresholds.'
+                })
         
         if(any(metric['threshold'] == 0 for metric in trained_model_json['business_metrics'])):
             missing_fields.append(
                 {
                     'descriptor': 'Trained Model',
                     'field': 'Business Metrics.Threshold', 
-                    'rationale': 'Specifying a threshold for notification will ensure that the proper action is taken when the model is no longer meeting business goals.'
+                    'rationale': 'Specifying a threshold for notification will ensure that the proper action is taken when the model is no longer meeting goals.'
                 })
 
-        if(any(metric['business_goal_mapping'].strip() == '' for metric in trained_model_json['business_metrics'])):
+        if(any(metric['goal_mapping'].strip() == '' for metric in trained_model_json['business_metrics'])):
             missing_fields.append(
                 {
                     'descriptor': 'Trained Model',
-                    'field': 'Business Metrics.Business Goal Mapping', 
-                    'rationale': 'Mapping a business metric to a business goal ensures that the model meets its business requirements.'
+                    'field': 'Business Metrics.Goal Mapping', 
+                    'rationale': 'Mapping a business metric to a goal ensures that the model meets its requirements.'
                 })
 
     if(not trained_model_json 
