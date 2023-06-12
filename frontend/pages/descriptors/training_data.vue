@@ -716,6 +716,12 @@ DM23-0003
           console.log(response.data)
           this.model.document = JSON.parse(JSON.stringify(response.data.document))
 
+          if(response['data']['version_updated']){
+            this.$store.dispatch('generate_version_update_toast').then(toast => {
+              this.toasts.unshift(toast);
+            })
+          }
+
           this.model.document.schema.forEach(schema => {
             schema.field_type = [{id: schema.field_type, value: schema.field_type}];
             schema.mapping_production_data = [{id: schema.mapping_production_data, value: schema.mapping_production_data}];

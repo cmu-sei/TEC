@@ -622,8 +622,13 @@ DM23-0003
       await this.$axios.post('/api/documents/get_document', post_json).then(response => {
         if(response['data']['document'] != null){
           console.log(response['data'])
-
           this.model.document = JSON.parse(JSON.stringify(response['data']['document']))
+
+          if(response['data']['version_updated']){
+            this.$store.dispatch('generate_version_update_toast').then(toast => {
+              this.toasts.unshift(toast);
+            })
+          }
         }
         else{
           console.log("No document found to load")

@@ -9,12 +9,12 @@
 
 export const actions = {
   async validate_project_name({context}, {project_name}){
-    var response = await this.$axios.get('api/project/get_all_projects');
+    var response = await this.$axios.get("api/project/get_all_projects");
 
     let project_names = [];
 
-    response['data'].forEach(element => {
-      project_names.push(element['name']);
+    response["data"].forEach(element => {
+      project_names.push(element["name"]);
     });
 
     if(project_names.includes(project_name)){
@@ -28,8 +28,8 @@ export const actions = {
 
   async get_deployment_mechanisms({context}){
     let data = []
-    await this.$axios.get('api/db_lists/get_deployment_mechanisms').then((promise) => {
-      data = promise['data'];
+    await this.$axios.get("api/db_lists/get_deployment_mechanisms").then((promise) => {
+      data = promise["data"];
     })
     return data;
   },
@@ -37,8 +37,8 @@ export const actions = {
 
   async get_deployment_platforms({context}){
     let data = [];
-    await this.$axios.get('api/db_lists/get_deployment_platforms').then((promise) => {
-      data = promise['data'];
+    await this.$axios.get("api/db_lists/get_deployment_platforms").then((promise) => {
+      data = promise["data"];
     })
     return data;
   },
@@ -46,8 +46,8 @@ export const actions = {
 
   async get_item_types({context}){
     let data = [];
-    await this.$axios.get('api/db_lists/get_item_types').then((promise) => {
-      data = promise['data'];
+    await this.$axios.get("api/db_lists/get_item_types").then((promise) => {
+      data = promise["data"];
     })
     return data;
   },
@@ -55,8 +55,8 @@ export const actions = {
 
   async get_ml_frameworks({context}){
     let data = [];
-    await this.$axios.get('api/db_lists/get_ml_frameworks').then((promise) => {
-      data = promise['data'];
+    await this.$axios.get("api/db_lists/get_ml_frameworks").then((promise) => {
+      data = promise["data"];
     })
     return data;
   },
@@ -64,8 +64,8 @@ export const actions = {
 
   async get_programming_languages({context}){
     let data = [];
-    await this.$axios.get('api/db_lists/get_programming_languages').then((promise) => {
-      data = promise['data'];
+    await this.$axios.get("api/db_lists/get_programming_languages").then((promise) => {
+      data = promise["data"];
     })
     return data;
   },
@@ -73,9 +73,21 @@ export const actions = {
 
   async get_statistics({context}){
     let data = [];
-    await this.$axios.get('api/db_lists/get_statistics').then((promise) => {
-      data = promise['data'];
+    await this.$axios.get("api/db_lists/get_statistics").then((promise) => {
+      data = promise["data"];
     })
     return data;
   },
+
+
+  generate_version_update_toast({context}){
+    let toast = {
+      id: 150,
+      variant: "info",
+      title: "Descriptor Version Updated",
+      text: "Your saved document was a past version. It has been updated to the latest version automatically. Saving will make these changes permanent and also update any descriptors with fields linked to this one.",
+      autoHideDelay: 30000
+    }
+    return toast;
+  }
 }

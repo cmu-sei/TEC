@@ -586,7 +586,14 @@ DM23-0003
       let dp_post_json = {'project_name': this.project_name, 'descriptor_name': 'data_pipeline'}
       await this.$axios.post('/api/documents/get_document', dp_post_json).then(response => {
         if(response['data']['document'] != null){
+          console.log(response['data']['document'])
           this.model.document = JSON.parse(JSON.stringify(response['data']['document']))
+
+          if(response['data']['version_updated']){
+            this.$store.dispatch('generate_version_update_toast').then(toast => {
+              this.toasts.unshift(toast);
+            })
+          }
 
           this.model.document['input_spec'].forEach(spec => {
             spec.item_type = [{key: spec.item_type, value: spec.item_type}]

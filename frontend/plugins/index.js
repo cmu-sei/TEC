@@ -8,16 +8,16 @@
 
 
 export default (context, inject) => {
-    inject('form_beforeunload', (event) => {
-        event.preventDefault();
-        event.returnValue = ''
-    })
+  inject('form_beforeunload', (event) => {
+    event.preventDefault();
+    event.returnValue = ''
+  })
 
-    inject('confirm_leave_form', (next) =>{
-        if (confirm('Are you sure you want to leave this page? All unsaved changes will be lost.')) {
-            next()
-        } else {
-            next(false)
-        }
-    })
+  inject('confirm_leave_form', (next) => {
+    if (confirm('Are you sure you want to leave this page? All unsaved changes will be lost.')) {
+      next()
+    } else {
+      next(false)
+    }
+  })
 }

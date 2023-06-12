@@ -2162,9 +2162,15 @@ DM23-0003
       let tm_post_json = {'project_name': this.project_name, 'descriptor_name': 'trained_model'}
       await this.$axios.post('/api/documents/get_document', tm_post_json).then(response => {
         if(response['data']['document'] != null){
-          response['data']['document'] = response['data']['document']
+          console.log(response['data']['document'])
           this.model.document = JSON.parse(JSON.stringify(response['data']['document']))
-        
+
+          if(response['data']['version_updated']){
+            this.$store.dispatch('generate_version_update_toast').then(toast => {
+              this.toasts.unshift(toast);
+            })
+          }
+
           for(let i = 0; i < response['data']['document']['model_components'].length; i++){
             this.model.document.model_components[i].programming_languages = []
             response['data']['document']['model_components'][i]['programming_languages'].forEach(element => {
@@ -2281,7 +2287,6 @@ DM23-0003
       let td_post_json = {'project_name': this.project_name, 'descriptor_name': 'training_data'}
       await this.$axios.post('/api/documents/get_document', td_post_json).then(response => {
         if(response.data.document != null){
-          console.log(response.data.document)
           this.model.document.training_data_identifier = response.data.document.dataset_identifier
         }
       });

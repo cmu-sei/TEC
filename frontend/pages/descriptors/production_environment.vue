@@ -838,6 +838,12 @@ DM23-0003
         if(response['data']['document'] != null){
           console.log(response['data'])
           this.model.document = JSON.parse(JSON.stringify(response['data']['document']))
+          
+          if(response['data']['version_updated']){
+            this.$store.dispatch('generate_version_update_toast').then(toast => {
+              this.toasts.unshift(toast);
+            })
+          }
 
           this.model.document.required_inference_time.unit = [{id: this.model.document.required_inference_time.unit, value: this.model.document.required_inference_time.unit}];
           this.model.document.deployment_platform = [{id: this.model.document.deployment_platform, value: this.model.document.deployment_platform}];
