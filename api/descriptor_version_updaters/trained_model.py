@@ -16,6 +16,7 @@ def tm_convert_1_0_to_1_1(document):
         item = document['business_metrics'][i]
         item = insert_dict_key_preserve_order(item, 'metric', 'operator', '')
         item = update_dict_key_preserve_order(item, 'business_goal_mapping', 'goal_mapping')
+        item['goal_mapping'] = item['goal_mapping'][1:]
         document['business_metrics'][i] = item
 
     return document

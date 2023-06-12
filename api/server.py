@@ -29,6 +29,7 @@ def create_application():
     app = Flask(__name__, static_url_path=None)
 
     app.config['JSON_SORT_KEYS'] = False
+    app.config['latest_descriptor_version'] = '1.1'
 
     app.register_blueprint(project_blueprint, url_prefix='/project')
     app.register_blueprint(documents_blueprint, url_prefix='/documents')
@@ -50,7 +51,7 @@ def create_application():
     @app.route('/get_schema/<schema_name>', methods = ['GET', 'POST'])
     def schema(schema_name: str):
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        dir_path = dir_path + '/ml-mismatch-descriptors/schemas/'
+        dir_path = dir_path + '/ml-mismatch-descriptors/schemas/' + app.config['latest_descriptor_version']
 
         try:
             return send_from_directory(dir_path, schema_name, as_attachment=True)

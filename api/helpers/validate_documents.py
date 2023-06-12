@@ -13,6 +13,7 @@ from flask import current_app
 
 from database_helpers.documents import *
 from database_helpers.db_lists import *
+from descriptor_version_updaters.version_updater import update_document_version
 
 def validate_document_against_schema(descriptor_name, document):
     """
@@ -24,7 +25,7 @@ def validate_document_against_schema(descriptor_name, document):
     :return: A list containing validation error messages as strings
     """
     dir_path = os.path.dirname(os.path.realpath(__file__))
-    dir_path = dir_path + '/../ml-mismatch-descriptors/schemas/' + descriptor_name + '_schema.json'
+    dir_path = dir_path + '/../ml-mismatch-descriptors/schemas/' + document['version'] + '/' + descriptor_name + '_schema.json'
     schema_file = open(dir_path)
     schema = json.load(schema_file)
 
@@ -78,8 +79,11 @@ def validate_system_context(database, project_name, system_context_document):
     error_list = []
 
     trained_model_document = db_get_document(database, project_name, 'trained_model')
-
     if(trained_model_document):
+        if(trained_model_document['version'] != current_app.config['latest_descriptor_version']):
+            trained_model_document = update_document_version('trained_model', trained_model_document)
+            db_insert_document(current_app.config['database'], project_name, 'trained_model', trained_model_document)
+
         system_context_goal_ids = [item['id'] for item in system_context_document['goals']]
 
         for algorithm_metric in trained_model_document['algorithm_metrics']:
@@ -106,10 +110,12 @@ def validate_data_pipeline(database, project_name, data_pipeline_document):
     """
     error_list = []
 
-    db_response = db_get_document(database, project_name, 'development_environment')
+    development_environment_document = db_get_document(database, project_name, 'development_environment')
+    if(development_environment_document):
+        if(development_environment_document['version'] != current_app.config['latest_descriptor_version']):
+            development_environment_document = update_document_version('development_environment', development_environment_document)
+            db_insert_document(current_app.config['database'], project_name, 'development_environment', development_environment_document)
 
-    if(db_response):
-        development_environment_document = db_response
         upstream_component_names = [component['component_name'] for component in development_environment_document['upstream_components']]
 
         for input_spec in data_pipeline_document['input_spec']:
@@ -154,10 +160,12 @@ def validate_training_data(database, project_name, training_data_document):
         if(statistic['field'] not in schema_field_name_list and statistic['field'] != ''):
             error_list.append('The field: ' + statistic['field'] + ' that you selected is no longer in the list of schema. Please fix and resubmit.')
 
-    db_raw_data_response = db_get_document(database, project_name, 'raw_data')
-    
-    if(db_raw_data_response):
-        raw_data_document = db_raw_data_response
+    raw_data_document = db_get_document(database, project_name, 'raw_data')
+    if(raw_data_document):
+        if(raw_data_document['version'] != current_app.config['latest_descriptor_version']):
+            raw_data_document = update_document_version('raw_data', raw_data_document)
+            db_insert_document(current_app.config['database'], project_name, 'raw_data', raw_data_document)
+
         if(training_data_document['raw_data_identifier'] != raw_data_document['dataset_identifier']):
             error_list.append('Dataset Identifier in Raw Data was updated and this submission does not reflect that change. Reload page and resubmit to get updated field.')
 
@@ -190,24 +198,30 @@ def validate_trained_model(database, project_name, trained_model_document):
     """
     error_list = []
 
-    db_data_pipeline_response = db_get_document(database, project_name, 'data_pipeline')
+    data_pipeline_document = db_get_document(database, project_name, 'data_pipeline')
+    if(data_pipeline_document):
+        if(data_pipeline_document['version'] != current_app.config['latest_descriptor_version']):
+            data_pipeline_document = update_document_version('data_pipeline', data_pipeline_document)
+            db_insert_document(current_app.config['database'], project_name, 'data_pipeline', data_pipeline_document)
 
-    if(db_data_pipeline_response):
-        data_pipeline_document = db_data_pipeline_response
         if(trained_model_document['data_pipeline_identifier'] != data_pipeline_document['pipeline_identifier']):
             error_list.append('Pipeline Identifier in Data Pipeline was updated and this submission does not reflect that change. Reload page and resubmit to get updated field.')
 
-    db_training_data_response = db_get_document(database, project_name, 'training_data')
+    training_data_document = db_get_document(database, project_name, 'training_data')
+    if(training_data_document):
+        if(training_data_document['version'] != current_app.config['latest_descriptor_version']):
+            training_data_document = update_document_version('training_data', training_data_document)
+            db_insert_document(current_app.config['database'], project_name, 'training_data', training_data_document)
 
-    if(db_training_data_response):
-        training_data_document = db_training_data_response
         if(trained_model_document['training_data_identifier'] != training_data_document['dataset_identifier']):
             error_list.append('Dataset Identifier in Training Data was updated and this submission does not reflect that change. Reload page and resubmit to get updated field.')
 
-    db_development_environment_response = db_get_document(database, project_name, 'development_environment')
+    development_environment_document = db_get_document(database, project_name, 'development_environment')
+    if(development_environment_document):
+        if(development_environment_document['version'] != current_app.config['latest_descriptor_version']):
+            development_environment_document = update_document_version('development_environment', development_environment_document)
+            db_insert_document(current_app.config['database'], project_name, 'development_environment', development_environment_document)
 
-    if(db_development_environment_response):
-        development_environment_document = db_development_environment_response
         development_environment_downstream_component_names = [component['component_name'] for component in development_environment_document['downstream_components']]
 
         # Ensuring that no components selected in Output Specification of Trained Model have been deleted
@@ -240,10 +254,11 @@ def validate_trained_model(database, project_name, trained_model_document):
                 if(final_output_spec['component_mapping']['data_item'] != '' and final_output_spec['component_mapping']['data_item'] not in selected_downstream_component_data_items):
                     error_list.append('The Data Item: ' + final_output_spec['component_mapping']['data_item'] + ' in the Downstream Component: ' + final_output_spec['component_mapping']['component'] + ' is no longer available in Development Environment.')    
 
-    db_production_environment_response = db_get_document(database, project_name, 'production_environment')
-
-    if(db_production_environment_response):
-        production_environment_document = db_production_environment_response
+    production_environment_document = db_get_document(database, project_name, 'production_environment')
+    if(production_environment_document):
+        if(production_environment_document['version'] != current_app.config['latest_descriptor_version']):
+            production_environment_document = update_document_version('production_environment', production_environment_document)
+            db_insert_document(current_app.config['database'], project_name, 'production_environment', production_environment_document)
 
         production_environment_algorithm_metrics = [item['metric'] for item in production_environment_document['algorithm_metrics']]
         trained_model_algorithm_metrics = [item['metric'] for item in trained_model_document['algorithm_metrics']]
@@ -273,10 +288,11 @@ def validate_trained_model(database, project_name, trained_model_document):
             if(feedback not in trained_model_user_system_feedback and feedback != ''):
                 error_list.append('The User System Feedback: ' + feedback + ' is currently in use in Production Environment and cannot be deleted.')
 
-    db_system_context_response = db_get_document(database, project_name, 'system_context')
-
-    if(db_system_context_response):
-        system_context_document = db_system_context_response
+    system_context_document = db_get_document(database, project_name, 'system_context')
+    if(system_context_document):
+        if(system_context_document['version'] != current_app.config['latest_descriptor_version']):
+            system_context_document = update_document_version('system_context', system_context_document)
+            db_insert_document(current_app.config['database'], project_name, 'system_context', system_context_document)
 
         system_context_goal_ids = [item['id'] for item in system_context_document['goals']]
 
@@ -327,10 +343,12 @@ def validate_development_environment(database, project_name, development_environ
     """
     error_list = []
 
-    db_data_pipeline_response = db_get_document(database, project_name, 'data_pipeline')
+    data_pipeline_document = db_get_document(database, project_name, 'data_pipeline')
+    if(data_pipeline_document):
+        if(data_pipeline_document['version'] != current_app.config['latest_descriptor_version']):
+            data_pipeline_document = update_document_version('data_pipeline', data_pipeline_document)
+            db_insert_document(current_app.config['database'], project_name, 'data_pipeline', data_pipeline_document)
 
-    if(db_data_pipeline_response):
-        data_pipeline_document = db_data_pipeline_response
         development_environment_upstream_component_names = [component['component_name'] for component in development_environment_document['upstream_components']]
 
         # Ensuring that no components selected in the input specification of Data Pipeline have been deleted
@@ -348,10 +366,12 @@ def validate_development_environment(database, project_name, development_environ
                 if(input_spec['component_mapping']['data_item'] != '' and input_spec['component_mapping']['data_item'] not in selected_upstream_component_data_items):
                     error_list.append('The Data Item: ' + input_spec['component_mapping']['data_item'] + ' in the Upstream Component: ' + input_spec['component_mapping']['component'] + ' is in use in Data Pipeline and cannot be deleted.')
 
-    db_trained_model_response = db_get_document(database, project_name, 'trained_model')
+    trained_model_document = db_get_document(database, project_name, 'trained_model')
+    if(trained_model_document):
+        if(trained_model_document['version'] != current_app.config['latest_descriptor_version']):
+            trained_model_document = update_document_version('trained_model', trained_model_document)
+            db_insert_document(current_app.config['database'], project_name, 'trained_model', trained_model_document)
 
-    if(db_trained_model_response):
-        trained_model_document = db_trained_model_response
         development_environment_downstream_component_names = [component['component_name'] for component in development_environment_document['downstream_components']]
 
         # Ensuring that no components selected in Output Specification of Trained Model have been deleted
@@ -416,10 +436,11 @@ def validate_production_environment(database, project_name, production_environme
     """
     error_list = []
 
-    db_trained_model_response = db_get_document(database, project_name, 'trained_model')
-
-    if(db_trained_model_response):
-        trained_model_document = db_trained_model_response
+    trained_model_document = db_get_document(database, project_name, 'trained_model')
+    if(trained_model_document):
+        if(trained_model_document['version'] != current_app.config['latest_descriptor_version']):
+            trained_model_document = update_document_version('trained_model', trained_model_document)
+            db_insert_document(current_app.config['database'], project_name, 'trained_model', trained_model_document)
 
         production_environment_algorithm_metrics = [item['metric'] for item in production_environment_document['algorithm_metrics']]
         trained_model_algorithm_metrics = [item['metric'] for item in trained_model_document['algorithm_metrics']]
