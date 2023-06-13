@@ -8,14 +8,20 @@
 
 
 import json
-from flask import Blueprint, request, current_app, make_response
+import os
+import zipfile
 
-from MyFPDFClass import *
+from flask import Blueprint, request, current_app, make_response, send_file
+from threading import Lock
+
 from database_helpers.project import *
 from helpers.mismatch_detection import *
+from MyFPDFClass import *
+from helpers.util import to_nice_name
 
 project_blueprint = Blueprint('project', __name__)
 
+file_lock = Lock()
 
 @project_blueprint.route('/insert_project', methods=['POST'])
 def insert_project():
@@ -118,6 +124,39 @@ def get_project():
     
     return json.dumps({'project': response}), 200
 
+
+@project_blueprint.route("/export_project", methods=["POST"])
+def export_project():
+    database = current_app.config["database"]
+    json_data = request.get_json()
+    project_name = json_data["project_name"]
+    project_json = db_get_project(database, project_name)
+    del project_json["name"]
+    del project_json["description"]
+    del project_json["point_of_contact"]
+
+    # TODO : Make this more efficient, maybe just use PID as the folder name to make it more thread safe instead of locking?
+    # TODO : Find a way to delete the files after I send them out. Something like flask after reqeust maybe?
+    # Maybe response like here from Garrett https://stackoverflow.com/questions/24612366/delete-an-uploaded-file-after-downloading-it-from-flask
+    with file_lock:
+        folder_path = "/tmp/" + project_name
+        if not os.path.exists(folder_path):
+            os.mkdir(folder_path)
+
+        for key in project_json:
+            with open(folder_path + "/" + project_name + " - " + to_nice_name(key) + ".json", "w") as file:
+                json.dump(project_json[key], file, indent=2)
+
+        zipfolder = zipfile.ZipFile(folder_path + ".zip", "w", compression=zipfile.ZIP_DEFLATED)
+
+        for root, dirs, files in os.walk(folder_path + "/"):
+            for file in files:
+                zipfolder.write(folder_path + "/" + file, arcname=file) 
+        zipfolder.close()
+
+    return send_file(folder_path + ".zip",
+                     attachment_filename = project_name + ".zip",
+                     as_attachment = True), 200
 
 
 @project_blueprint.route('/get_all_projects', methods=['GET'])

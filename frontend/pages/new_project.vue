@@ -39,7 +39,7 @@ DM23-0003
 
     <template v-slot:actions-bar>
       <nuxt-link :to="{path: 'my_projects'}" class="ml-auto"> 
-        <sds-button variant="light" outline="True">
+        <sds-button variant="light" :outline=true>
           Cancel
         </sds-button> 
       </nuxt-link>
@@ -145,7 +145,7 @@ DM23-0003
         let project_name = this.$route.query['project_name'];
         this.page_title = 'Edit Project - ' + project_name;
 
-        let post_json = { 'project_name': project_name}
+        let post_json = {'project_name': project_name}
         await this.$axios.post('/api/project/get_project', post_json).then((promise => {
           console.log(promise['data']['project']);
           this.model = promise['data']['project']

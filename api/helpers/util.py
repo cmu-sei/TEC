@@ -20,3 +20,9 @@ def insert_dict_key_preserve_order(document, prev_key, new_key, new_value):
     document[new_key] = new_value
 
     return document
+
+
+def to_nice_name(descriptor_name):
+    nice_name = descriptor_name.replace("_", " ")
+    nice_name = str.title(nice_name)
+    return nice_name
