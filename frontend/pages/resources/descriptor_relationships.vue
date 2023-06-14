@@ -20,7 +20,6 @@ DM23-0003
       <br><br>
       The diagram below presents two types of relationships between descriptors. The relationship denoted by an arrow is simply a reference between descriptors. For example, the Trained Model descriptor has a reference to the Training Data descriptor to indicate the dataset that was used to train the model. This helps with traceability between descriptors, especially in cases where they are being provided by different organizations.
       The relationship denoted by a single line between descriptors indicates that there are common attributes between descriptors that must align to prevent mismatch. For example, Training Data and Production Data should align in terms of data schema, data statistics, and data distribution to avoid problems once the model is put into production.
-
     </div>
     <div class='m-8 p-4 bg-white max-w-4xl'>
       <b>Relationship Diagram</b>
