@@ -36,54 +36,96 @@ DM23-0003
       </div>
 
       <div class='input-div'>
-        <label for='business_goals'> <b> Business Goals </b> - {{schema.properties.business_goals.description}}</label>
+        <label for='goals'> <b> Goals </b> - {{schema.properties.goals.description}}</label>
         <br />
-        <div class="input-div" v-for="(business_goal, index) in model.document.business_goals" :key="index">
+        <div class="input-div" v-for="(goal, index) in model.document.goals" :key="index">
           <div class='variable-input-parent-div'>
-            <label for='id' class='split-fourth-label'> ID </label>
-            <div class='popover-container'>
-              <sds-popover>
-                <template #trigger>
-                  <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                </template>
-                <template #default>
-                  <div class="popover-div">
-                    <h3 class="popover-h3">
-                      ID
-                    </h3>
-                    <p class="popover-p">
-                      {{schema.properties.business_goals.items.properties.id.description}}
-                    </p>
-                  </div>
-                </template>
-              </sds-popover>
+            <div class="input-line-div">
+              <label for='id' class='split-fourth-label'> ID </label>
+              <div class='popover-container'>
+                <sds-popover>
+                  <template #trigger>
+                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+                  </template>
+                  <template #default>
+                    <div class="popover-div">
+                      <h3 class="popover-h3">
+                        ID
+                      </h3>
+                      <p class="popover-p">
+                        {{schema.properties.goals.items.properties.id.description}}
+                      </p>
+                    </div>
+                  </template>
+                </sds-popover>
+              </div>
+              <input v-model="goal.id" type="text" class='split-fourth-input' disabled/>
+              <label for='goal' class='split-fourth-label'> Goal </label>
+              <div class='popover-container'>
+                <sds-popover>
+                  <template #trigger>
+                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+                  </template>
+                  <template #default>
+                    <div class="popover-div">
+                      <h3 class="popover-h3">
+                        Goal
+                      </h3>
+                      <p class="popover-p">
+                        {{schema.properties.goals.items.properties.goal.description}}
+                      </p>
+                    </div>
+                  </template>
+                </sds-popover>
+              </div>
+              <textarea v-model="goal.goal" type="text" class='split-fourth-input' style="vertical-align: top"/>
             </div>
-            <input v-model="business_goal.id" type="text" class='split-fourth-input' disabled/>
-            <label for='goal' class='split-fourth-label'> Goal </label>
-            <div class='popover-container'>
-              <sds-popover>
-                <template #trigger>
-                  <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                </template>
-                <template #default>
-                  <div class="popover-div">
-                    <h3 class="popover-h3">
-                      Goal
-                    </h3>
-                    <p class="popover-p">
-                      {{schema.properties.business_goals.items.properties.goal.description}}
-                    </p>
-                  </div>
-                </template>
-              </sds-popover>
+            <div class="input-line-div">
+              <label for='metric' class='split-fourth-label'> Metric </label>
+              <div class='popover-container'>
+                <sds-popover>
+                  <template #trigger>
+                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+                  </template>
+                  <template #default>
+                    <div class="popover-div">
+                      <h3 class="popover-h3">
+                        Metric
+                      </h3>
+                      <p class="popover-p">
+                        {{schema.properties.goals.items.properties.metric.description}}
+                      </p>
+                    </div>
+                  </template>
+                </sds-popover>
+              </div>
+              <input v-model="goal.metric" type="text" class='split-fourth-input' />
+              <label for='metric' class='split-fourth-label'> Baseline </label>
+              <div class='popover-container'>
+                <sds-popover>
+                  <template #trigger>
+                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+                  </template>
+                  <template #default>
+                    <div class="popover-div">
+                      <h3 class="popover-h3">
+                        Baseline
+                      </h3>
+                      <p class="popover-p">
+                        {{schema.properties.goals.items.properties.baseline.description}}
+                      </p>
+                    </div>
+                  </template>
+                </sds-popover>
+              </div>
+              <input v-model="goal.baseline" type="text" class='split-fourth-input' />
             </div>
-            <input v-model="business_goal.goal" type="text" class='split-fourth-input' />
           </div>
           <div class='variable-input-btn-div'>
-            <sds-button variant="default" v-if='index==0' @click="add_business_goal()">
+            <sds-button variant="default" v-if='index==0' @click="add_goal()">
               Add Goal
             </sds-button>
-            <sds-button variant="default" v-if='index!=0' @click="remove_business_goal(index)"> 
+            <sds-button variant="default" v-if='index!=0' @click="remove_goal(index)"> 
               Delete Goal
             </sds-button>
           </div>
@@ -94,22 +136,6 @@ DM23-0003
         <label for="available_data"> <b> Available Data </b> - {{schema.properties.available_data.description}} </label>
         <br>
         <textarea type="text" v-model="model.document.available_data" class="form-control" />
-      </div>
-
-      <div class='input-div'>
-        <label for='success_criteria'> <b> Success Criteria </b> - {{schema.properties.success_criteria.description}}</label>
-        <br />
-        <div class="input-div" v-for="(criteria, index) in model.document.success_criteria" :key="index">
-          <div class='variable-input-parent-div'>
-            <input v-model="criteria.value" type="text" class='form-control'/>
-          </div>
-          <sds-button variant="default" v-if='index==0' @click="add_success_criteria()">
-            Add Criteria
-          </sds-button>
-          <sds-button variant="default" v-if='index!=0' @click="remove_success_criteria(index)">
-            Delete Criteria
-          </sds-button>
-        </div>
       </div>
 
       <div class='input-div'>
@@ -220,18 +246,19 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '1.0',
+            version: '1.1',
             task: '',
             ml_problem_type: {
               ml_problem: '',
               other_problem: '',
             },
-            business_goals: [{
-              id: 'BG-01',
-              goal: ''
+            goals: [{
+              id: 'G-01',
+              goal: '',
+              metric: '',
+              baseline: ''
             }],
             available_data: '',
-            success_criteria: [{value: ''}],
             usage_context: '',
             data_rights_policies: '',
             risks: {
@@ -246,7 +273,7 @@ DM23-0003
           }
         },
         ml_problem_enum: [],
-        business_goals_input: '',
+        goals_input: '',
 
         toasts: [],
         toaster_messages: [
@@ -260,8 +287,8 @@ DM23-0003
           {
             id: 1,
             variant: 'info',
-            title: 'Business Goal Update',
-            text: 'If you made changes to Business Goals ensure that those changes are reflected in Trained Model Selections.'
+            title: 'Goal Update',
+            text: 'If you made changes to Goals ensure that those changes are reflected in Trained Model Selections.'
           },
         ],
       }
@@ -273,11 +300,6 @@ DM23-0003
           descriptor_name: 'system_context',
           document: JSON.parse(JSON.stringify(this.model.document))
         }
-
-        post_json.document.success_criteria = []
-        this.model.document.success_criteria.forEach(element => {
-          post_json.document.success_criteria.push(element['value']);
-        });
 
         console.log(post_json);
         await this.$axios.post('/api/documents/insert_document', post_json).then((promise => {
@@ -303,40 +325,32 @@ DM23-0003
       },
 
 
-      add_business_goal(){
-        let num_goals = this.model.document.business_goals.length + 1
-        let bg_num = ''
+      add_goal(){
+        let num_goals = this.model.document.goals.length + 1
+        let goal_num = ''
         if(num_goals < 10){
-          bg_num = '0' + num_goals
+          goal_num = '0' + num_goals
         }
         else{
-          bg_num = num_goals
+          goal_num = num_goals
         }
-        this.model.document.business_goals.push({id: 'BG-' + bg_num, goal: ''});
+        this.model.document.goals.push({id: 'G-' + goal_num, goal: '', metric: '', baseline: ''});
       },
 
-      remove_business_goal(index){
-        this.model.document.business_goals.splice(index, 1);
+      
+      remove_goal(index){
+        this.model.document.goals.splice(index, 1);
 
         let i = 1;
-        this.model.document.business_goals.forEach(goal => {
+        this.model.document.goals.forEach(goal => {
           if(i < 10){
-            goal['id'] = 'BG-0' + i
+            goal['id'] = 'G-0' + i
           }
           else{
-            goal['id'] = 'BG-' + i
+            goal['id'] = 'G-' + i
           }
           i++;
         });
-      },
-
-
-      add_success_criteria(){
-        this.model.document.success_criteria.push({value: ''});
-      },
-
-      remove_success_criteria(index){
-        this.model.document.success_criteria.splice(index, 1);
       },
 
 
@@ -380,19 +394,16 @@ DM23-0003
       let post_json = {'project_name': this.project_name, 'descriptor_name': 'system_context'}
       await this.$axios.post('/api/documents/get_document', post_json).then(response => {
         if(response['data']['document'] != null){
-          console.log(response['data'])
-          console.log("xxx")
           console.log(response['data']['document'])
-
           this.model.document = JSON.parse(JSON.stringify(response['data']['document']))
 
-          this.model.document.success_criteria = []
-          response['data']['document']['success_criteria'].forEach(element => {
-            this.model.document.success_criteria.push({value: element})
-          });
+          if(response['data']['version_updated']){
+            this.$store.dispatch('generate_version_update_toast').then(toast => {
+              this.toasts.unshift(toast);
+            })
+          }
         }
         else{
-          this.model.document.version = this.schema['properties']['version']['const']
           console.log("No document found to load")
         }
       });

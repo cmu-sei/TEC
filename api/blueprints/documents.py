@@ -11,6 +11,7 @@ import json
 from flask import Blueprint, request, current_app
 
 from database_helpers.documents import *
+from descriptor_version_updaters.version_updater import *
 from helpers.validate_documents import *
 
 documents_blueprint = Blueprint('documents', __name__)
@@ -19,6 +20,7 @@ documents_blueprint = Blueprint('documents', __name__)
 def insert_document():
     """
     Insert or update a document in the DB
+    
     :JSON param project_name: The project that the document will be inserted under
     :JSON param descriptor_name: The descriptor that the document will be inserted under
     :JSON param document: The document to be inserted (POST)
@@ -40,30 +42,19 @@ def insert_document():
     database = current_app.config['database']
 
     # TODO : Give this and export a different list name than just 'errors'
-    # TODO : This will not do the normal validation along with this because it returns every time
     if('import' in json_data and json_data['import']):
         schema_errors = validate_document_against_schema(descriptor_name, document)
         if(len(schema_errors) > 0):
             return {'schema_errors': schema_errors}, 400
+        
+        if(document['version'] != current_app.config['latest_descriptor_version']):
+            document = update_document_version(descriptor_name, document)
 
-    error_list = []
-    if(descriptor_name == 'system_context'):
-        error_list = validate_system_context(database, project_name, document)
-    elif(descriptor_name == 'data_pipeline'):
-        error_list = validate_data_pipeline(database, project_name, document)
-    elif(descriptor_name == 'training_data'):
-        error_list = validate_training_data(database, project_name, document)
-    elif(descriptor_name == 'trained_model'):
-        error_list = validate_trained_model(database, project_name, document)
-    elif(descriptor_name == 'development_environment'):
-        error_list = validate_development_environment(database, project_name, document)
-    elif(descriptor_name == 'production_environment'):
-        error_list = validate_production_environment(database, project_name, document)
-    elif(descriptor_name == 'production_data'):
-        error_list = validate_production_data(database, project_name, document)
-    
-    if(len(error_list) > 0):
-        return {'error_list': error_list}, 400
+    # TODO : Determine if linked fields should be validated on import, its a weird situation
+    if('import' not in json_data):
+        error_list = validate_document_linked_fields(database, project_name, descriptor_name, document)
+        if(len(error_list) > 0):
+            return {'error_list': error_list}, 400
 
     db_response = db_insert_document(database, project_name, descriptor_name, document)
 
@@ -94,19 +85,22 @@ def get_document():
     
     database = current_app.config['database']
 
-    db_response = db_get_document(database, project_name, descriptor_name)
+    document = db_get_document(database, project_name, descriptor_name)
 
-    if not db_response:
+    if not document:
         return "No document found", 200
-    else:
-        # TODO : Give this and export a different list name than just 'errors'
-        # TODO : This will not do the normal validation along with this because it returns every time
-        if 'export' in json_data and json_data['export']:
-            schema_errors = validate_document_against_schema(descriptor_name, db_response)
-            return {'document': db_response, 'errors': schema_errors}
-        else:
-            return {'document': db_response}, 200
-            
+
+    # TODO : Give this and export a different list name than just 'errors'
+    # TODO : This will not do the normal validation along with this because it returns every time
+    if 'export' in json_data and json_data['export']:
+        schema_errors = validate_document_against_schema(descriptor_name, document)
+        return {'document': document, 'errors': schema_errors}
+    
+    if(document['version'] != current_app.config['latest_descriptor_version']):
+        document = update_document_version(descriptor_name, document)
+        return {'document': document, 'version_updated': True}, 200
+    
+    return {'document': document}, 200
 
 @documents_blueprint.route('/delete_document', methods=['POST'])
 def delete_document():

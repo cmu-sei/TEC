@@ -62,7 +62,8 @@ DM23-0003
         <br><br>
         <input type='file' accept='.json' @change='file_upload'/>
       </template>
-      <p class='text-danger' v-if='import_modal_error'> There were one or more errors in your import. </p>
+      <p class='text-danger' v-if='import_modal_error'> There were one or more errors in your import.  </p>
+      <p class='text-danger' v-if='import_modal_error'> Your document is validated against the schema specified in its version field.</p>
       <div v-if='import_modal_error'>
         <div v-for="(item, index) in import_modal_error_list" :key="index" class='text-danger'>
           <p> ({{index + 1}}) {{item}} </p>
@@ -179,7 +180,7 @@ export default {
           id: 0,
           variant: 'success',
           title: 'Document Imported',
-          text: 'Your document has been successfully imported.',
+          text: 'Your document has been successfully imported. If it was a previous version, it has been automatically updated.',
           autoHideDelay: 5000
         },
         {

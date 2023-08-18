@@ -181,31 +181,45 @@ export default {
         if(this.resource === ''){
           data = this.options;
         }
-        else if (this.resource === 'programming_languages') {
-          let languages = await this.$store.dispatch('get_programming_languages');
+        else if(this.resource == 'deployment_mechanism'){
+          let deployment_mechanisms = await this.$store.dispatch('get_deployment_mechanisms')
 
-          languages.forEach((element) => {
-            data.push({ id: element, value: element});
+          deployment_mechanisms.forEach((element) => {
+            data.push({id: element, value: element});
+          })
+        }
+        else if(this.resource == 'deployment_platform'){
+          let deployment_platforms = await this.$store.dispatch('get_deployment_platforms')
+
+          deployment_platforms.forEach((element) => {
+            data.push({id: element, value: element});
           });
-        } 
-        else if (this.resource === 'ml_frameworks') {
+        }
+        else if(this.resource == 'item_type'){
+          let item_types = await this.$store.dispatch('get_item_types')
+
+          item_types.forEach((element) => {
+            data.push({id: element, value: element});
+          });
+        }
+        else if (this.resource == 'ml_frameworks') {
           let frameworks = await this.$store.dispatch('get_ml_frameworks');
 
           frameworks.forEach((element) => {
             data.push({id: element, value: element});
           });
         }
-        else if(this.resource === 'statistics'){
+        else if (this.resource == 'programming_languages') {
+          let languages = await this.$store.dispatch('get_programming_languages');
+
+          languages.forEach((element) => {
+            data.push({ id: element, value: element});
+          });
+        } 
+        else if(this.resource == 'statistics'){
           let statistics = await this.$store.dispatch('get_statistics');
 
           statistics.forEach((element) => {
-            data.push({id: element, value: element});
-          });
-        }
-        else if(this.resource === 'item_type'){
-          let item_types = await this.$store.dispatch('get_item_types')
-
-          item_types.forEach((element) => {
             data.push({id: element, value: element});
           });
         }

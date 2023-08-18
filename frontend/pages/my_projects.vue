@@ -56,26 +56,20 @@ DM23-0003
       
       async export_project(project_name){
         let post_json = {'project_name': project_name}
-        await this.$axios.post('/api/project/get_project', post_json).then(response => {
-          let project_json = response['data']
-          Object.entries(project_json).forEach(([key, value]) => {
-            if(!value){
-              project_json[key] = {}
-            }
-          })
+        await this.$axios.post('/api/project/export_project', post_json, {responseType: "blob"}).then(response => {
+          var file_to_save = new Blob([response['data']], {
+            type: 'application/zip'
+          });
 
-          var file_to_save = new Blob([JSON.stringify(project_json, null, 2)], {
-                type: 'application/json'
-            });
-
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(file_to_save);
-            link.download = project_name;
-            link.click();
-            URL.revokeObjectURL(link.href);
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(file_to_save);
+          link.download = project_name;
+          link.click();
+          URL.revokeObjectURL(link.href);
         })
       },
     },
+    
 
     async fetch() {
       await this.$axios.get('api/project/get_all_projects').then((response) => {

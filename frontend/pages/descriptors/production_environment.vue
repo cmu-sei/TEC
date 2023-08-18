@@ -157,6 +157,32 @@ DM23-0003
       </div>
 
       <div class='input-div'>
+        <label for="deployment_platform"> <b> Deployment Platform </b> - {{schema.properties.deployment_platform.description}}</label>
+        <br>
+        <deployment-platform-multiselect
+          :value='model.document.deployment_platform'
+          v-bind:multiple='false'
+
+          @updateSelected='(selections) => {model.document.deployment_platform = selections}'
+
+          class='form-control'
+        />
+      </div>
+
+      <div class='input-div'>
+        <label for="deployment_mechanism"> <b> Deployment Mechanism </b> - {{schema.properties.deployment_mechanism.description}}</label>
+        <br>
+        <deployment-mechanism-multiselect
+          :value='model.document.deployment_mechanism'
+          v-bind:multiple='false'
+
+          @updateSelected='(selections) => {model.document.deployment_mechanism = selections}'
+
+          class='form-control'
+        />
+      </div>
+
+      <div class='input-div'>
         <label for="algorithm_metrics"> <b> Algorithm Metrics </b> - {{schema.properties.algorithm_metrics.description}}</label>
         <br>
         <div class="input-div" v-for="(item, index) in model.document.algorithm_metrics" :key="index">
@@ -596,7 +622,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '1.0',
+            version: '1.1',
             required_inference_time: {
               time: 0,
               unit: [],
@@ -607,6 +633,8 @@ DM23-0003
               memory: 0,
               storage: 0,
             },
+            deployment_platform: [],
+            deployment_mechanism: [],
             algorithm_metrics: [{
               metric: [],
               implementation: '',
@@ -674,12 +702,18 @@ DM23-0003
         post_json.document.algorithm_metrics.forEach(metric => {
           metric.metric = metric.metric.length > 0 ? metric.metric[0].value : '';
         });
+
+        post_json.document.deployment_platform = post_json.document.deployment_platform.length > 0 ? post_json.document.deployment_platform[0].value : '';
+        post_json.document.deployment_mechanism = post_json.document.deployment_mechanism.length > 0 ? post_json.document.deployment_mechanism[0].value : '';
+
         post_json.document.business_metrics.forEach(metric => {
           metric.metric = metric.metric.length > 0 ? metric.metric[0].value : '';
         });
+
         post_json.document.user_system_feedback.forEach(feedback => {
           feedback.feedback = feedback.feedback.length > 0 ? feedback.feedback[0].value : '';
         });
+
         post_json.document.model_logs.forEach(log => {
           log.log = log.log.length > 0 ? log.log[0].value : '';
         })
@@ -804,23 +838,34 @@ DM23-0003
         if(response['data']['document'] != null){
           console.log(response['data'])
           this.model.document = JSON.parse(JSON.stringify(response['data']['document']))
+          
+          if(response['data']['version_updated']){
+            this.$store.dispatch('generate_version_update_toast').then(toast => {
+              this.toasts.unshift(toast);
+            })
+          }
 
           this.model.document.required_inference_time.unit = [{id: this.model.document.required_inference_time.unit, value: this.model.document.required_inference_time.unit}];
+          this.model.document.deployment_platform = [{id: this.model.document.deployment_platform, value: this.model.document.deployment_platform}];
+          this.model.document.deployment_mechanism = [{id: this.model.document.deployment_mechanism, value: this.model.document.deployment_mechanism}];
+
           this.model.document.algorithm_metrics.forEach(metric => {
             metric['metric'] = [{id: metric['metric'], value: metric['metric']}]
           });
+
           this.model.document.business_metrics.forEach(metric => {
             metric['metric'] = [{id: metric['metric'], value: metric['metric']}]
           });
+
           this.model.document.user_system_feedback.forEach(feedback => {
             feedback['feedback'] = [{id: feedback['feedback'], value: feedback['feedback']}]
           });
+
           this.model.document.model_logs.forEach(log => {
             log['log'] = [{id: log['log'], value: log['log']}]
-          })
+          });
         }
         else{
-          this.model.document.version = this.schema['properties']['version']['const']
           console.log("No base document found to load")
         }
       });

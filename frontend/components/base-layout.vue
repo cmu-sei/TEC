@@ -78,14 +78,20 @@ DM23-0003
               {
                 'id': 5,
                 'title': 'Descriptor Producers and Consumers',
-                'active': this.$route.path.includes('/descriptor_producers_and_consumers'),
-                'href': '/descriptor_producers_and_consumers',
+                'active': this.$route.path.includes('/resources/descriptor_producers_and_consumers'),
+                'href': '/resources/descriptor_producers_and_consumers',
               },
               {
                 'id': 6,
                 'title': 'Descriptor Relationships',
-                'active': this.$route.path.includes('/descriptor_relationships'),
-                'href': '/descriptor_relationships',
+                'active': this.$route.path.includes('/resources/descriptor_relationships'),
+                'href': '/resources/descriptor_relationships',
+              },
+              {
+                'id': 7,
+                'title': 'Descriptor Changelog',
+                'active': this.$route.path.includes('/resources/descriptor_changelog'),
+                'href': '/resources/descriptor_changelog'
               }
             ]
           }
