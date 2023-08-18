@@ -136,7 +136,7 @@ def export_project():
     del project_json["point_of_contact"]
 
     # TODO : Make this more efficient, maybe just use PID as the folder name to make it more thread safe instead of locking?
-    # TODO : Find a way to delete the files after I send them out. Something like flask after reqeust maybe?
+    # TODO : Find a way to delete the files after I send them out. Something like flask after request maybe?
     # Maybe response like here from Garrett https://stackoverflow.com/questions/24612366/delete-an-uploaded-file-after-downloading-it-from-flask
     with file_lock:
         folder_path = "/tmp/" + project_name
@@ -144,8 +144,9 @@ def export_project():
             os.mkdir(folder_path)
 
         for key in project_json:
-            with open(folder_path + "/" + project_name + " - " + to_nice_name(key) + ".json", "w") as file:
-                json.dump(project_json[key], file, indent=2)
+            if(project_json[key] != None):
+                with open(folder_path + "/" + project_name + " - " + to_nice_name(key) + ".json", "w") as file:
+                    json.dump(project_json[key], file, indent=2)
 
         zipfolder = zipfile.ZipFile(folder_path + ".zip", "w", compression=zipfile.ZIP_DEFLATED)
 

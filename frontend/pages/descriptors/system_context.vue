@@ -78,7 +78,7 @@ DM23-0003
                   </template>
                 </sds-popover>
               </div>
-              <input v-model="goal.goal" type="text" class='split-fourth-input' />
+              <textarea v-model="goal.goal" type="text" class='split-fourth-input' style="vertical-align: top"/>
             </div>
             <div class="input-line-div">
               <label for='metric' class='split-fourth-label'> Metric </label>
