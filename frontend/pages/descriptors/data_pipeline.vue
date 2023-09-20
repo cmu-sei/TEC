@@ -609,9 +609,10 @@ DM23-0003
           }
 
           this.model.document['input_spec'].forEach(spec => {
-            spec.item_type = [{key: spec.item_type, value: spec.item_type}]
-            spec.component_mapping.component = [{key: spec.component_mapping.component, value: spec.component_mapping.component}]
-            spec.component_mapping.data_item = [{key: spec.component_mapping.data_item, value: spec.component_mapping.data_item}]
+            spec.item_type = [{id: spec.item_type, value: spec.item_type}]
+            spec.error_handling.error_type = [{id: spec.error_handling.error_type, value: spec.error_handling.error_type}]
+            spec.component_mapping.component = [{id: spec.component_mapping.component, value: spec.component_mapping.component}]
+            spec.component_mapping.data_item = [{id: spec.component_mapping.data_item, value: spec.component_mapping.data_item}]
           });
         }
         else{

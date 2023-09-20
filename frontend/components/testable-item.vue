@@ -227,7 +227,6 @@ export default {
   computed: {
     item_types() {
       let types_list = [];
-      console.log(this.schema.items.properties.item_type);
       if(this.schema !== null){
         this.schema.items.properties.item_type.enum.forEach(type => {
           types_list.push({id: type, value: type});

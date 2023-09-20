@@ -20,6 +20,8 @@ def update_document_version(descriptor_name, document):
     elif(descriptor_name == 'data_pipeline'):
         if(document['version'] == '1.0'):
             document = dp_convert_1_0_to_1_1(document)
+        if(document['version'] == '1.1'):
+            document = dp_convert_1_1_to_1_2(document)
 
     elif(descriptor_name == 'training_data'):
         if(document['version'] == '1.0'):
