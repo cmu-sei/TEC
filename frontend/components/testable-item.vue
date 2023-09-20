@@ -10,50 +10,79 @@ DM23-0003
 
 
 <template>
-  <div>
-    <div class="variable-input-parent-div">
-      <div class='input-line-div'>
-        <label for='item_name' class='split-fourth-label'> Item Name </label>
-        <div class='popover-container'>
-          <sds-popover>
-            <template #trigger>
-              <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-            </template>
-            <template #default>
-              <div class="popover-div">
-                <h3 class="popover-h3">
-                  Item Name
-                </h3>
-                <p class="popover-p">
-                  {{ schema.items.properties.item_name.description }}
-                </p>
-              </div>
-            </template>
-          </sds-popover>
-        </div>
-        <input v-model="item.item_name" type="text" class='split-fourth-input' />
-        <label for='item_description' class='split-fourth-label'> Item Description </label>
-        <div class='popover-container'>
-          <sds-popover>
-            <template #trigger>
-              <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-            </template>
-            <template #default>
-              <div class="popover-div">
-                <h3 class="popover-h3">
-                  Item Description
-                </h3>
-                <p class="popover-p">
-                  {{ schema.items.properties.item_description.description }}
-                </p>
-              </div>
-            </template>
-          </sds-popover>
-        </div>
-        <input v-model="item.item_description" type="text" class='split-fourth-input'/>
+  <span>
+    <div class='input-line-div'>
+      <label for='item_name' class='split-fourth-label'> Item Name </label>
+      <div class='popover-container'>
+        <sds-popover>
+          <template #trigger>
+            <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+          </template>
+          <template #default>
+            <div class="popover-div">
+              <h3 class="popover-h3">
+                Item Name
+              </h3>
+              <p class="popover-p">
+                {{ schema.items.properties.item_name.description }}
+              </p>
+            </div>
+          </template>
+        </sds-popover>
       </div>
-      <div class='input-line-div'>
-        <label for='item_type' class='split-fourth-label'> Item Type </label>
+      <input v-model="item.item_name" type="text" class='split-fourth-input' />
+      <label for='item_description' class='split-fourth-label'> Item Description </label>
+      <div class='popover-container'>
+        <sds-popover>
+          <template #trigger>
+            <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+          </template>
+          <template #default>
+            <div class="popover-div">
+              <h3 class="popover-h3">
+                Item Description
+              </h3>
+              <p class="popover-p">
+                {{ schema.items.properties.item_description.description }}
+              </p>
+            </div>
+          </template>
+        </sds-popover>
+      </div>
+      <input v-model="item.item_description" type="text" class='split-fourth-input'/>
+    </div>
+
+    <div class='input-line-div'>
+      <label for='item_type' class='split-fourth-label'> Item Type </label>
+      <div class='popover-container'>
+        <sds-popover>
+          <template #trigger>
+            <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+          </template>
+          <template #default>
+            <div class="popover-div">
+              <h3 class="popover-h3">
+                Item Type
+              </h3>
+              <p class="popover-p">
+                {{ schema.items.properties.item_type.description }}
+              </p>
+            </div>
+          </template>
+        </sds-popover>
+      </div>
+      <general-multiselect
+        :value='item.item_type'
+        :options='item_types'
+        v-bind:multiple='false'
+
+        @updateSelected='update_item_type($event)'
+
+        class='split-fourth-input inline-block'
+      />
+
+      <span v-if="item.item_type.length > 0 && item.item_type[0].value == 'String'">
+        <label for='allowed_characters' class='split-fourth-label'> Allowed Characters </label>
         <div class='popover-container'>
           <sds-popover>
             <template #trigger>
@@ -62,167 +91,131 @@ DM23-0003
             <template #default>
               <div class="popover-div">
                 <h3 class="popover-h3">
-                  Item Type
+                  Allowed Characters
                 </h3>
                 <p class="popover-p">
-                  {{ schema.items.properties.item_type.description }}
+                  TODO 
                 </p>
               </div>
             </template>
           </sds-popover>
         </div>
         <general-multiselect
-          :value='item.item_type'
-          :options='item_types'
-          v-bind:multiple='false'
+          :value='character_multiselect_value'
+          :options='character_multiselect_options'
+          :multiple='true'
 
-          @updateSelected='update_item_type($event)'
+          @updateSelected='update_character_multiselect($event)'
 
           class='split-fourth-input inline-block'
         />
+      </span>
 
-        <span v-if="item.item_type.length > 0 && item.item_type[0].value == 'String'">
-          <label for='allowed_characters' class='split-fourth-label'> Allowed Characters </label>
-          <div class='popover-container'>
-            <sds-popover>
-              <template #trigger>
-                <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-              </template>
-              <template #default>
-                <div class="popover-div">
-                  <h3 class="popover-h3">
-                    Allowed Characters
-                  </h3>
-                  <p class="popover-p">
-                    TODO 
-                  </p>
-                </div>
-              </template>
-            </sds-popover>
-          </div>
-          <general-multiselect
-            :value='character_multiselect_value'
-            :options='character_multiselect_options'
-            :multiple='true'
-
-            @updateSelected='update_character_multiselect($event)'
-
-            class='split-fourth-input inline-block'
-          />
-        </span>
-
-
-        <span v-if="item.item_type.length > 0 && item.item_type[0].value == 'Other'">
-          <label for='expected_value' class='split-fourth-label'> Expected Value </label>
-          <div class='popover-container'>
-            <sds-popover>
-              <template #trigger>
-                <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-              </template>
-              <template #default>
-                <div class="popover-div">
-                  <h3 class="popover-h3">
-                    Expected Value
-                  </h3>
-                  <p class="popover-p">
-                    {{ schema.items.properties.item_specification.properties.expected_value.description }}
-                  </p>
-                </div>
-              </template>
-            </sds-popover>
-          </div>
-          <input v-model="item.item_specification.expected_value" type="text" class='split-fourth-input' />
-        </span>
-      </div>
-
-      <div v-if="item.item_type.length > 0 && (item.item_type[0].value === 'Integer' || item.item_type[0].value ==='Float')">
-        <div class="input-line-div">
-          <label for='min_value' class='split-fourth-label'> Min Value </label>
-          <div class='popover-container'>
-            <sds-popover>
-              <template #trigger>
-                <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-              </template>
-              <template #default>
-                <div class="popover-div">
-                  <h3 class="popover-h3">
-                    Min Value
-                  </h3>
-                  <p class="popover-p">
-                    {{ schema.items.properties.item_specification.properties.min_value.description }}
-                  </p>
-                </div>
-              </template>
-            </sds-popover>
-          </div>
-          <input v-model="item.item_specification.min_value" type="number" class='split-fourth-input' />
-          <label for='max_value' class='split-fourth-label'> Max Value </label>
-          <div class='popover-container'>
-            <sds-popover>
-              <template #trigger>
-                <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-              </template>
-              <template #default>
-                <div class="popover-div">
-                  <h3 class="popover-h3">
-                    Max Value
-                  </h3>
-                  <p class="popover-p">
-                    {{ schema.items.properties.item_specification.properties.max_value.description }}
-                  </p>
-                </div>
-              </template>
-            </sds-popover>
-          </div>
-          <input v-model="item.item_specification.max_value" type="number" class='split-fourth-input'/>
+      <span v-if="item.item_type.length > 0 && item.item_type[0].value == 'Other'">
+        <label for='expected_value' class='split-fourth-label'> Expected Value </label>
+        <div class='popover-container'>
+          <sds-popover>
+            <template #trigger>
+              <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+            </template>
+            <template #default>
+              <div class="popover-div">
+                <h3 class="popover-h3">
+                  Expected Value
+                </h3>
+                <p class="popover-p">
+                  {{ schema.items.properties.item_specification.properties.expected_value.description }}
+                </p>
+              </div>
+            </template>
+          </sds-popover>
         </div>
-      </div>
-
-      <div v-if="item.item_type.length > 0 && item.item_type[0].value == 'Image'">
-        <div class="input-line-div">
-          <label for='resolution_x' class='split-fourth-label'> Resolution X </label>
-          <div class='popover-container'>
-            <sds-popover>
-              <template #trigger>
-                <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-              </template>
-              <template #default>
-                <div class="popover-div">
-                  <h3 class="popover-h3">
-                    Resolution X
-                  </h3>
-                  <p class="popover-p">
-                    {{ schema.items.properties.item_specification.properties.resolution_x.description }}
-                  </p>
-                </div>
-              </template>
-            </sds-popover>
-          </div>
-          <input v-model="item.item_specification.resolution_x" type="number" class='split-fourth-input' />
-          <label for='resolution_y' class='split-fourth-label'> Resolution Y </label>
-          <div class='popover-container'>
-            <sds-popover>
-              <template #trigger>
-                <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-              </template>
-              <template #default>
-                <div class="popover-div">
-                  <h3 class="popover-h3">
-                    Resolution Y
-                  </h3>
-                  <p class="popover-p">
-                    {{ schema.items.properties.item_specification.properties.resolution_y.description }}
-                  </p>
-                </div>
-              </template>
-            </sds-popover>
-          </div>
-          <input v-model="item.item_specification.resolution_y" type="number" class='split-fourth-input'/>
-        </div>
-      </div>
-
+        <input v-model="item.item_specification.expected_value" type="text" class='split-fourth-input' />
+      </span>
     </div>
-  </div>
+
+    <div v-if="item.item_type.length > 0 && (item.item_type[0].value === 'Integer' || item.item_type[0].value ==='Float')" class="input-line-div">
+      <label for='min_value' class='split-fourth-label'> Min Value </label>
+      <div class='popover-container'>
+        <sds-popover>
+          <template #trigger>
+            <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+          </template>
+          <template #default>
+            <div class="popover-div">
+              <h3 class="popover-h3">
+                Min Value
+              </h3>
+              <p class="popover-p">
+                {{ schema.items.properties.item_specification.properties.min_value.description }}
+              </p>
+            </div>
+          </template>
+        </sds-popover>
+      </div>
+      <input v-model="item.item_specification.min_value" type="number" class='split-fourth-input' />
+      <label for='max_value' class='split-fourth-label'> Max Value </label>
+      <div class='popover-container'>
+        <sds-popover>
+          <template #trigger>
+            <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+          </template>
+          <template #default>
+            <div class="popover-div">
+              <h3 class="popover-h3">
+                Max Value
+              </h3>
+              <p class="popover-p">
+                {{ schema.items.properties.item_specification.properties.max_value.description }}
+              </p>
+            </div>
+          </template>
+        </sds-popover>
+      </div>
+      <input v-model="item.item_specification.max_value" type="number" class='split-fourth-input'/>
+    </div>
+
+    <div v-if="item.item_type.length > 0 && item.item_type[0].value == 'Image'" class="input-line-div">
+      <label for='resolution_x' class='split-fourth-label'> Resolution X </label>
+      <div class='popover-container'>
+        <sds-popover>
+          <template #trigger>
+            <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+          </template>
+          <template #default>
+            <div class="popover-div">
+              <h3 class="popover-h3">
+                Resolution X
+              </h3>
+              <p class="popover-p">
+                {{ schema.items.properties.item_specification.properties.resolution_x.description }}
+              </p>
+            </div>
+          </template>
+        </sds-popover>
+      </div>
+      <input v-model="item.item_specification.resolution_x" type="number" class='split-fourth-input' />
+      <label for='resolution_y' class='split-fourth-label'> Resolution Y </label>
+      <div class='popover-container'>
+        <sds-popover>
+          <template #trigger>
+            <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+          </template>
+          <template #default>
+            <div class="popover-div">
+              <h3 class="popover-h3">
+                Resolution Y
+              </h3>
+              <p class="popover-p">
+                {{ schema.items.properties.item_specification.properties.resolution_y.description }}
+              </p>
+            </div>
+          </template>
+        </sds-popover>
+      </div>
+      <input v-model="item.item_specification.resolution_y" type="number" class='split-fourth-input'/>
+    </div>
+  </span>
 </template>
 
 <script>

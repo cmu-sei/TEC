@@ -31,97 +31,15 @@ DM23-0003
         <textarea type="text" v-model="model.document.pipeline_description" class="form-control" />
       </div>
 
-      <div class='input-div'>
+      <div class="input-div">
         <label for="input_spec"> <b> Input Specification </b> - {{schema.properties.input_spec.description}}</label>
         <div class="input-div" v-for="(item, spec_index) in model.document.input_spec" :key="spec_index">
-          <div class='variable-input-parent-div'>
-            <div class='input-line-div'>
-              <label for='item_name' class='split-fourth-label'> Item Name </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Item Name
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.input_spec.items.properties.item_name.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <input v-model="item.item_name" type="text" class='split-fourth-input' />
-              <label for='item_description' class='split-fourth-label'> Item Description </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Item Description
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.input_spec.items.properties.item_description.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <input v-model="item.item_description" type="text" class='split-fourth-input'/>
-            </div>
-            <div class='input-line-div'>
-              <label for='item_type' class='split-fourth-label'> Item Type </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Item Type
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.input_spec.items.properties.item_type.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <item-type-multiselect
-                :value='item.item_type'
-                v-bind:multiple="false"
+          <div class="variable-input-parent-div">
+            <testable-item
+              :item="item"
+              :schema="schema.properties.input_spec"
+            />
 
-                @updateSelected='(selections) => {item.item_type = selections}'
-
-                class='split-fourth-input'
-              />
-              <label for='expected_values' class='split-fourth-label'> Expected Values </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Expected Values
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.input_spec.items.properties.expected_values.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <input v-model="item.expected_values" type="text" class='split-fourth-input' />
-            </div>
             <div class='input-line-div'>
               <label for='component' class='split-fourth-label'> Upstream Component in Development Environment </label>
               <div class='popover-container'>
@@ -178,8 +96,8 @@ DM23-0003
                 class='split-fourth-input inline-block'
               />
             </div>
-          </div>
 
+          </div>
           <div class='variable-input-btn-div'>
             <sds-button variant="default" v-if='spec_index==0' @click="add_input_spec()">
               Add Input
@@ -407,7 +325,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '1.0',
+            version: '1.1',
             pipeline_identifier: '',
             pipeline_version: '',
             pipeline_description: '',
@@ -415,7 +333,21 @@ DM23-0003
               item_name: '',
               item_description: '',
               item_type: [],
-              expected_values: '',
+              item_specification: {
+                min_value: 0,
+                max_value: 0,
+                resolution_x: 0,
+                resolution_y: 0,
+                empty: false,
+                numeric: false,
+                slashes: false,
+                spaces: false,
+                special: false
+              },
+              error_handling: {
+                error_type: "",
+                error_code_value: 0
+              },
               component_mapping: {
                 component: [],
                 data_item: [],
