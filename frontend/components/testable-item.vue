@@ -30,7 +30,7 @@ DM23-0003
           </template>
         </sds-popover>
       </div>
-      <input v-model="item.item_name" type="text" class='split-fourth-input' />
+      <input v-model="item.item_name" :disabled='disabled' type="text" class='split-fourth-input' />
       <label for='item_description' class='split-fourth-label'> Item Description </label>
       <div class='popover-container'>
         <sds-popover>
@@ -49,7 +49,7 @@ DM23-0003
           </template>
         </sds-popover>
       </div>
-      <input v-model="item.item_description" type="text" class='split-fourth-input'/>
+      <textarea v-model="item.item_description" :disabled='disabled' type="text" class='split-fourth-input' style="vertical-align: top"/>
     </div>
 
     <div class='input-line-div'>
@@ -75,6 +75,7 @@ DM23-0003
         :value='item.item_type'
         :options='item_types'
         v-bind:multiple='false'
+        :disabled='disabled'
 
         @updateSelected='update_item_type($event)'
 
@@ -222,7 +223,8 @@ DM23-0003
 export default {
   props: {
     item: {type: Object},
-    schema: {type: Object}
+    schema: {type: Object},
+    disabled: {type: Boolean, default: false}
   },
   computed: {
     item_types() {
