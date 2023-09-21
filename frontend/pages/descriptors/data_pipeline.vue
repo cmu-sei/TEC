@@ -39,7 +39,6 @@ DM23-0003
               :item="item"
               :schema="schema.properties.input_spec"
             />
-
             <div class='input-line-div'>
               <label for='error_type' class='split-fourth-label'> Error Type </label>
               <div class='popover-container'>
@@ -376,7 +375,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '1.1',
+            version: '1.2',
             pipeline_identifier: '',
             pipeline_version: '',
             pipeline_description: '',
@@ -389,6 +388,8 @@ DM23-0003
                 max_value: 0,
                 resolution_x: 0,
                 resolution_y: 0,
+                channels: 0,
+                image_format: [],
                 empty: false,
                 numeric: false,
                 slashes: false,
@@ -446,6 +447,7 @@ DM23-0003
 
         post_json.document['input_spec'].forEach(spec => {
           spec.item_type = spec.item_type.length > 0 ? spec.item_type[0]['value'] : '';
+          spec.item_specification.image_format = spec.item_specification.image_format.length > 0 ? spec.item_specification.image_format[0]['value'] : '';
           spec.error_handling.error_type = spec.error_handling.error_type.length > 0 ? spec.error_handling.error_type[0]['value']: '';
           spec.component_mapping.component = spec.component_mapping.component.length > 0 ? spec.component_mapping.component[0]['value'] : '';
           spec.component_mapping.data_item = spec.component_mapping.data_item.length > 0 ? spec.component_mapping.data_item[0]['value'] : '';
@@ -497,6 +499,8 @@ DM23-0003
               max_value: 0,
               resolution_x: 0,
               resolution_y: 0,
+              channels: 0,
+              image_format: [],
               empty: false,
               numeric: false,
               slashes: false,
@@ -610,6 +614,7 @@ DM23-0003
 
           this.model.document['input_spec'].forEach(spec => {
             spec.item_type = [{id: spec.item_type, value: spec.item_type}]
+            spec.item_specification.image_format = [{id: spec.item_specification.image_format, value: spec.item_specification.image_format}]
             spec.error_handling.error_type = [{id: spec.error_handling.error_type, value: spec.error_handling.error_type}]
             spec.component_mapping.component = [{id: spec.component_mapping.component, value: spec.component_mapping.component}]
             spec.component_mapping.data_item = [{id: spec.component_mapping.data_item, value: spec.component_mapping.data_item}]

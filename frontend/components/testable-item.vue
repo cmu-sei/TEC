@@ -73,7 +73,7 @@ DM23-0003
       </div>
       <general-multiselect
         :value='item.item_type'
-        :options='item_types'
+        :options='item_type_options'
         v-bind:multiple='false'
         :disabled='disabled'
 
@@ -176,46 +176,97 @@ DM23-0003
       <input v-model="item.item_specification.max_value" type="number" class='split-fourth-input'/>
     </div>
 
-    <div v-if="item.item_type.length > 0 && item.item_type[0].value == 'Image'" class="input-line-div">
-      <label for='resolution_x' class='split-fourth-label'> Resolution X </label>
-      <div class='popover-container'>
-        <sds-popover>
-          <template #trigger>
-            <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-          </template>
-          <template #default>
-            <div class="popover-div">
-              <h3 class="popover-h3">
-                Resolution X
-              </h3>
-              <p class="popover-p">
-                {{ schema.items.properties.item_specification.properties.resolution_x.description }}
-              </p>
-            </div>
-          </template>
-        </sds-popover>
+    <span v-if="item.item_type.length > 0 && item.item_type[0].value == 'Image'">
+      <div class="input-line-div">
+        <label for='resolution_x' class='split-fourth-label'> Resolution X </label>
+        <div class='popover-container'>
+          <sds-popover>
+            <template #trigger>
+              <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+            </template>
+            <template #default>
+              <div class="popover-div">
+                <h3 class="popover-h3">
+                  Resolution X
+                </h3>
+                <p class="popover-p">
+                  {{ schema.items.properties.item_specification.properties.resolution_x.description }}
+                </p>
+              </div>
+            </template>
+          </sds-popover>
+        </div>
+        <input v-model="item.item_specification.resolution_x" type="number" class='split-fourth-input' />
+        <label for='resolution_y' class='split-fourth-label'> Resolution Y </label>
+        <div class='popover-container'>
+          <sds-popover>
+            <template #trigger>
+              <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+            </template>
+            <template #default>
+              <div class="popover-div">
+                <h3 class="popover-h3">
+                  Resolution Y
+                </h3>
+                <p class="popover-p">
+                  {{ schema.items.properties.item_specification.properties.resolution_y.description }}
+                </p>
+              </div>
+            </template>
+          </sds-popover>
+        </div>
+        <input v-model="item.item_specification.resolution_y" type="number" class='split-fourth-input'/>
       </div>
-      <input v-model="item.item_specification.resolution_x" type="number" class='split-fourth-input' />
-      <label for='resolution_y' class='split-fourth-label'> Resolution Y </label>
-      <div class='popover-container'>
-        <sds-popover>
-          <template #trigger>
-            <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-          </template>
-          <template #default>
-            <div class="popover-div">
-              <h3 class="popover-h3">
-                Resolution Y
-              </h3>
-              <p class="popover-p">
-                {{ schema.items.properties.item_specification.properties.resolution_y.description }}
-              </p>
-            </div>
-          </template>
-        </sds-popover>
+
+      <div class="input-line-div">
+        <label for='channels' class='split-fourth-label'> Channels </label>
+        <div class='popover-container'>
+          <sds-popover>
+            <template #trigger>
+              <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+            </template>
+            <template #default>
+              <div class="popover-div">
+                <h3 class="popover-h3">
+                  Channels
+                </h3>
+                <p class="popover-p">
+                  {{ schema.items.properties.item_specification.properties.channels.description }}
+                </p>
+              </div>
+            </template>
+          </sds-popover>
+        </div>
+        <input v-model="item.item_specification.channels" type="number" class='split-fourth-input' />
+        <label for='image_format' class='split-fourth-label'> Image Format </label>
+        <div class='popover-container'>
+          <sds-popover>
+            <template #trigger>
+              <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+            </template>
+            <template #default>
+              <div class="popover-div">
+                <h3 class="popover-h3">
+                  Image Format
+                </h3>
+                <p class="popover-p">
+                  {{ schema.items.properties.item_specification.properties.image_format.description }}
+                </p>
+              </div>
+            </template>
+          </sds-popover>
+        </div>
+        <general-multiselect
+          :value='item.item_specification.image_format'
+          :options='image_format_options'
+          v-bind:multiple='false'
+
+          @updateSelected='(selections) => {item.item_specification.image_format = selections}'
+
+          class='split-fourth-input inline-block'
+        />
       </div>
-      <input v-model="item.item_specification.resolution_y" type="number" class='split-fourth-input'/>
-    </div>
+    </span>
   </span>
 </template>
 
@@ -227,7 +278,7 @@ export default {
     disabled: {type: Boolean, default: false}
   },
   computed: {
-    item_types() {
+    item_type_options() {
       let types_list = [];
       if(this.schema !== null){
         this.schema.items.properties.item_type.enum.forEach(type => {
@@ -236,6 +287,16 @@ export default {
       }
       return types_list;
     },
+
+    image_format_options() {
+      let formats_list = [];
+      if(this.schema !== null){
+        this.schema.items.properties.item_specification.properties.image_format.enum.forEach(format => {
+          formats_list.push({id: format, value: format})
+        })
+      }
+      return formats_list;
+    }
   },
   data() {
     return {
@@ -246,7 +307,7 @@ export default {
         {id: "Slashes", value: "Slashes"},
         {id: "Spaces", value: "Spaces"},
         {id: "Special", value: "Special"}
-      ]
+      ],
     }
   },
   methods: {
@@ -258,6 +319,8 @@ export default {
       this.item.item_specification.max_value = 0;
       this.item.item_specification.resolution_x = 0;
       this.item.item_specification.resolution_y = 0;
+      this.item.item_specification.channels = 0;
+      this.item.item_specification.image_format = [];
       this.item.item_specification.empty = false;
       this.item.item_specification.numeric = false;
       this.item.item_specification.slashes = false;

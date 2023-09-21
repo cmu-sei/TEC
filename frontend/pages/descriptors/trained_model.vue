@@ -1459,6 +1459,8 @@ DM23-0003
                 max_value: 0,
                 resolution_x: 0,
                 resolution_y: 0,
+                channels: 0,
+                image_format: [],
                 empty: false,
                 numeric: false,
                 slashes: false,
@@ -1483,6 +1485,8 @@ DM23-0003
                 max_value: 0,
                 resolution_x: 0,
                 resolution_y: 0,
+                channels: 0,
+                image_format: [],
                 empty: false,
                 numeric: false,
                 slashes: false,
@@ -1621,6 +1625,7 @@ DM23-0003
 
         post_json.document.output_spec.forEach(spec => {
           spec.item_type = spec.item_type.length > 0 ? spec.item_type[0].value : '';
+          spec.item_specification.image_format = spec.item_specification.image_format.length > 0 ? spec.item_specification.image_format[0]['value'] : '';
           spec.component_mapping.component = spec.component_mapping.component.length > 0 ? spec.component_mapping.component[0].value : '';
           spec.component_mapping.data_item = spec.component_mapping.data_item.length > 0 ? spec.component_mapping.data_item[0].value : '';
         });  
@@ -1632,6 +1637,7 @@ DM23-0003
 
         post_json.document.final_output_spec.forEach(spec => {
           spec.item_type = spec.item_type.length > 0 ? spec.item_type[0].value : '';
+          spec.item_specification.image_format = spec.item_specification.image_format.length > 0 ? spec.item_specification.image_format[0]['value'] : '';
           spec.component_mapping.component = spec.component_mapping.component.length > 0 ? spec.component_mapping.component[0].value : '';
           spec.component_mapping.data_item = spec.component_mapping.data_item.length > 0 ? spec.component_mapping.data_item[0].value : '';
         });
@@ -1715,6 +1721,8 @@ DM23-0003
                 max_value: 0,
                 resolution_x: 0,
                 resolution_y: 0,
+                channels: 0,
+                image_format: [],
                 empty: false,
                 numeric: false,
                 slashes: false,
@@ -1776,6 +1784,8 @@ DM23-0003
               max_value: 0,
               resolution_x: 0,
               resolution_y: 0,
+              channels: 0,
+              image_format: [],
               empty: false,
               numeric: false,
               slashes: false,
@@ -1806,6 +1816,8 @@ DM23-0003
               max_value: 0,
               resolution_x: 0,
               resolution_y: 0,
+              channels: 0,
+              image_format: [],
               empty: false,
               numeric: false,
               slashes: false,
@@ -2019,12 +2031,14 @@ DM23-0003
 
           this.model.document['output_spec'].forEach(spec => {
             spec.item_type = [{key: spec.item_type, value: spec.item_type}]
+            spec.item_specification.image_format = [{id: spec.item_specification.image_format, value: spec.item_specification.image_format}]
             spec.component_mapping.component = [{key: spec.component_mapping.component, value: spec.component_mapping.component}]
             spec.component_mapping.data_item = [{key: spec.component_mapping.data_item, value: spec.component_mapping.data_item}]
           });
 
           this.model.document['final_output_spec'].forEach(spec => {
             spec.item_type = [{key: spec.item_type, value: spec.item_type}]
+            spec.item_specification.image_format = [{id: spec.item_specification.image_format, value: spec.item_specification.image_format}]
             spec.component_mapping.component = [{key: spec.component_mapping.component, value: spec.component_mapping.component}]
             spec.component_mapping.data_item = [{key: spec.component_mapping.data_item, value: spec.component_mapping.data_item}]
           });
