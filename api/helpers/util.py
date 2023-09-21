@@ -1,25 +1,29 @@
-def update_dict_key_preserve_order(document, old_key, new_key):
+def update_dict_key_preserve_order(dict, old_key, new_key):
     """
+    Replaces dict['old_key'] with dict['new_key'] preserving the value and order of the dict.
+    Only works on top level dict items. 
     """
-    index = list(document.keys()).index(old_key)
-    items = list(document.items())
+    index = list(dict.keys()).index(old_key)
+    items = list(dict.items())
     items.insert(index + 1, (new_key, None))
-    document = dict(items)
-    document[new_key] = document.pop(old_key)
+    dict = dict(items)
+    dict[new_key] = dict.pop(old_key)
 
-    return document
+    return dict
 
 
-def insert_dict_key_preserve_order(document, prev_key, new_key, new_value):
+def insert_dict_key_preserve_order(dict, prev_key, new_key, new_value):
     """
+    Adds dict['new_key'] = value to the dict immediately after dict['prev_key']
+    Only works on top level dict items.
     """
-    index = list(document.keys()).index(prev_key)
-    items = list(document.items())
+    index = list(dict.keys()).index(prev_key)
+    items = list(dict.items())
     items.insert(index + 1, (new_key, None))
-    document = dict(items)
-    document[new_key] = new_value
+    dict = dict(items)
+    dict[new_key] = new_value
 
-    return document
+    return dict
 
 
 def to_nice_name(descriptor_name):
