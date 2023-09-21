@@ -22,6 +22,8 @@ def dp_convert_1_1_to_1_2(document):
                 'max_value': 0,
                 'resolution_x': 0,
                 'resolution_y': 0,
+                'channels': 0,
+                'image_format': "",
                 'empty': False,
                 'numeric': False,
                 'slashes': False,
