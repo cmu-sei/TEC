@@ -113,7 +113,7 @@ DM23-0003
       </span>
 
       <span v-if="item.item_type.length > 0 && item.item_type[0].value == 'Other'">
-        <label for='expected_value' class='split-fourth-label'> Expected Value </label>
+        <label for='expected_values' class='split-fourth-label'> Expected Values </label>
         <div class='popover-container'>
           <sds-popover>
             <template #trigger>
@@ -122,16 +122,16 @@ DM23-0003
             <template #default>
               <div class="popover-div">
                 <h3 class="popover-h3">
-                  Expected Value
+                  Expected Values
                 </h3>
                 <p class="popover-p">
-                  {{ schema.items.properties.item_specification.properties.expected_value.description }}
+                  {{ schema.items.properties.item_specification.properties.expected_values.description }}
                 </p>
               </div>
             </template>
           </sds-popover>
         </div>
-        <input v-model="item.item_specification.expected_value" type="text" class='split-fourth-input' />
+        <input v-model="item.item_specification.expected_values" type="text" class='split-fourth-input' />
       </span>
     </div>
 
@@ -292,7 +292,9 @@ export default {
       let formats_list = [];
       if(this.schema !== null){
         this.schema.items.properties.item_specification.properties.image_format.enum.forEach(format => {
-          formats_list.push({id: format, value: format})
+          if(format !== ""){
+            formats_list.push({id: format, value: format})
+          }
         })
       }
       return formats_list;
@@ -314,7 +316,9 @@ export default {
     update_item_type(selections){
       this.item.item_type = selections;
 
-      this.item.item_specification.expected_value = "";
+      if(selections[0].value !== "Other" && this.item.item_specification.expected_values !== ""){
+        this.item.item_specification.expected_values = "";
+      }
       this.item.item_specification.min_value = 0;
       this.item.item_specification.max_value = 0;
       this.item.item_specification.resolution_x = 0;

@@ -1455,6 +1455,7 @@ DM23-0003
               item_description: '', 
               item_type: [], 
               item_specification: {
+                expected_values: "",
                 min_value: 0,
                 max_value: 0,
                 resolution_x: 0,
@@ -1481,6 +1482,7 @@ DM23-0003
               item_description: '',
               item_type: [],
               item_specification: {
+                expected_values: "",
                 min_value: 0,
                 max_value: 0,
                 resolution_x: 0,
@@ -1717,6 +1719,7 @@ DM23-0003
               item_description: '',
               item_type: [],
               item_specification: {
+                expected_values: "",
                 min_value: 0,
                 max_value: 0,
                 resolution_x: 0,
@@ -1780,6 +1783,7 @@ DM23-0003
             item_description: '',
             item_type: [],
             item_specification: {
+              expected_values: "",
               min_value: 0,
               max_value: 0,
               resolution_x: 0,
@@ -1812,6 +1816,7 @@ DM23-0003
             item_description: '',
             item_type: [],
             item_specification: {
+              expected_values: "",
               min_value: 0,
               max_value: 0,
               resolution_x: 0,

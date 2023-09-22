@@ -28,10 +28,9 @@ def tm_convert_1_1_to_1_2(document):
     document['version'] = '1.2'
     for i in range(0, len(document['output_spec'])):
         item = document['output_spec'][i]
-        item.pop('expected_values')
         item = insert_dict_key_preserve_order(item, 'item_type', 'item_specification', 
             {
-                'expected_value': '',
+                'expected_values': '',
                 'min_value': 0,
                 'max_value': 0,
                 'resolution_x': 0,
@@ -45,14 +44,15 @@ def tm_convert_1_1_to_1_2(document):
                 'special': False
             }
         )
+        item['item_specification']['expected_values'] = item['expected_values']
+        item.pop('expected_values')
         document['output_spec'][i] = item
 
     for i in range(0, len(document['final_output_spec'])):
         item = document['final_output_spec'][i]
-        item.pop('expected_values')
         item = insert_dict_key_preserve_order(item, 'item_type', 'item_specification', 
             {
-                'expected_value': '',
+                'expected_values': '',
                 'min_value': 0,
                 'max_value': 0,
                 'resolution_x': 0,
@@ -66,6 +66,8 @@ def tm_convert_1_1_to_1_2(document):
                 'special': False
             }
         )
+        item['item_specification']['expected_values'] = item['expected_values']
+        item.pop('expected_values')
         document['final_output_spec'][i] = item
 
     return document
