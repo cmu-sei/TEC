@@ -23,6 +23,8 @@ def dp_convert_1_1_to_1_2(document):
                 'resolution_y': 0,
                 'channels': 0,
                 'image_format': "",
+                'min_length': 0,
+                'max_length': 0,
                 'empty': False,
                 'numeric': False,
                 'slashes': False,
