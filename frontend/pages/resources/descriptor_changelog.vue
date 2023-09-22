@@ -44,6 +44,29 @@ DM23-0003
           </ul>
         </li>
       </ul>
+      <b>v1.2</b>
+      <ul>
+        <li>
+          Data Pipeline
+          <ul>
+            <li>Remove expected_values as a subfield of input_spec</li>
+            <li>
+              New subfield of input_spec, item_specification which contains several fields to specify items
+              based on their type. 
+            </li>
+          </ul>
+        </li>
+        <li>
+          Trained Model
+          <ul>
+            <li>Remove expected_values as a subfield of output_spec and final_output_spec</li>
+            <li>
+              New subfield of output_spec and final_output_spec, item_specification which contains several fields to specify items
+              based on their type. 
+            </li>
+          </ul>
+        </li>
+      </ul>
     </div>
   </base-layout>
 </template>
