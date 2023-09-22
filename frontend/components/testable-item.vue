@@ -135,6 +135,47 @@ DM23-0003
       </span>
     </div>
 
+    <div v-if="item.item_type.length > 0 && (item.item_type[0].value === 'String')" class="input-line-div">
+      <label for='min_length' class='split-fourth-label'> Min Length </label>
+      <div class='popover-container'>
+        <sds-popover>
+          <template #trigger>
+            <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+          </template>
+          <template #default>
+            <div class="popover-div">
+              <h3 class="popover-h3">
+                Min Length
+              </h3>
+              <p class="popover-p">
+                {{ schema.items.properties.item_specification.properties.min_length.description }}
+              </p>
+            </div>
+          </template>
+        </sds-popover>
+      </div>
+      <input v-model="item.item_specification.min_length" type="number" class='split-fourth-input' />
+      <label for='max_length' class='split-fourth-label'> Max Length </label>
+      <div class='popover-container'>
+        <sds-popover>
+          <template #trigger>
+            <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+          </template>
+          <template #default>
+            <div class="popover-div">
+              <h3 class="popover-h3">
+                Max Length
+              </h3>
+              <p class="popover-p">
+                {{ schema.items.properties.item_specification.properties.max_length.description }}
+              </p>
+            </div>
+          </template>
+        </sds-popover>
+      </div>
+      <input v-model="item.item_specification.max_length" type="number" class='split-fourth-input'/>
+    </div>
+
     <div v-if="item.item_type.length > 0 && (item.item_type[0].value === 'Integer' || item.item_type[0].value ==='Float')" class="input-line-div">
       <label for='min_value' class='split-fourth-label'> Min Value </label>
       <div class='popover-container'>
@@ -316,7 +357,7 @@ export default {
     update_item_type(selections){
       this.item.item_type = selections;
 
-      if(selections[0].value !== "Other" && this.item.item_specification.expected_values !== ""){
+      if(selections.length > 0 && selections[0].value !== "Other" && this.item.item_specification.expected_values !== ""){
         this.item.item_specification.expected_values = "";
       }
       this.item.item_specification.min_value = 0;
