@@ -16,7 +16,7 @@ def dp_convert_1_1_to_1_2(document):
         item = document['input_spec'][i]
         item = insert_dict_key_preserve_order(item, 'item_type', 'item_specification', 
             {
-                'expected_values': '',
+                'other_value': '',
                 'min_value': 0,
                 'max_value': 0,
                 'resolution_x': 0,
@@ -32,7 +32,7 @@ def dp_convert_1_1_to_1_2(document):
                 'special': False
             }
         )
-        item['item_specification']['expected_values'] = item['expected_values']
+        item['item_specification']['other_value'] = item['expected_values']
         item.pop('expected_values')
         item = insert_dict_key_preserve_order(item, 'item_specification', 'error_handling',
             {

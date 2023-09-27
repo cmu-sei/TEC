@@ -95,7 +95,7 @@ DM23-0003
                   Allowed Characters
                 </h3>
                 <p class="popover-p">
-                  TODO 
+                  Selection of what types of characters or string types are allowed for data item. 
                 </p>
               </div>
             </template>
@@ -113,7 +113,7 @@ DM23-0003
       </span>
 
       <span v-if="item.item_type.length > 0 && item.item_type[0].value == 'Other'">
-        <label for='expected_values' class='split-fourth-label'> Expected Values </label>
+        <label for='other_value' class='split-fourth-label'> Other Value </label>
         <div class='popover-container'>
           <sds-popover>
             <template #trigger>
@@ -122,16 +122,16 @@ DM23-0003
             <template #default>
               <div class="popover-div">
                 <h3 class="popover-h3">
-                  Expected Values
+                  Other Value
                 </h3>
                 <p class="popover-p">
-                  {{ schema.items.properties.item_specification.properties.expected_values.description }}
+                  {{ schema.items.properties.item_specification.properties.other_value.description }}
                 </p>
               </div>
             </template>
           </sds-popover>
         </div>
-        <input v-model="item.item_specification.expected_values" type="text" class='split-fourth-input' />
+        <input v-model="item.item_specification.other_value" type="text" class='split-fourth-input' />
       </span>
     </div>
 
