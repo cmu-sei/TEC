@@ -31,12 +31,16 @@ DM23-0003
         <textarea type="text" v-model="model.document.pipeline_description" class="form-control" />
       </div>
 
-      <div class='input-div'>
+      <div class="input-div">
         <label for="input_spec"> <b> Input Specification </b> - {{schema.properties.input_spec.description}}</label>
         <div class="input-div" v-for="(item, spec_index) in model.document.input_spec" :key="spec_index">
-          <div class='variable-input-parent-div'>
+          <div class="variable-input-parent-div">
+            <testable-item
+              :item="item"
+              :schema="schema.properties.input_spec"
+            />
             <div class='input-line-div'>
-              <label for='item_name' class='split-fourth-label'> Item Name </label>
+              <label for='error_type' class='split-fourth-label'> Error Type </label>
               <div class='popover-container'>
                 <sds-popover>
                   <template #trigger>
@@ -45,83 +49,47 @@ DM23-0003
                   <template #default>
                     <div class="popover-div">
                       <h3 class="popover-h3">
-                        Item Name
+                        Error Type
                       </h3>
                       <p class="popover-p">
-                        {{schema.properties.input_spec.items.properties.item_name.description}}
+                        {{ schema.properties.input_spec.items.properties.error_handling.properties.error_type.description }}
                       </p>
                     </div>
                   </template>
                 </sds-popover>
               </div>
-              <input v-model="item.item_name" type="text" class='split-fourth-input' />
-              <label for='item_description' class='split-fourth-label'> Item Description </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Item Description
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.input_spec.items.properties.item_description.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <input v-model="item.item_description" type="text" class='split-fourth-input'/>
-            </div>
-            <div class='input-line-div'>
-              <label for='item_type' class='split-fourth-label'> Item Type </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Item Type
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.input_spec.items.properties.item_type.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <item-type-multiselect
-                :value='item.item_type'
-                v-bind:multiple="false"
+              <general-multiselect
+                :value='item.error_handling.error_type'
+                :options='input_spec_error_type_options'
+                v-bind:multiple='false'
 
-                @updateSelected='(selections) => {item.item_type = selections}'
+                @updateSelected='update_selected_error_type($event, spec_index)'
 
-                class='split-fourth-input'
+                class='split-fourth-input inline-block'
               />
-              <label for='expected_values' class='split-fourth-label'> Expected Values </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Expected Values
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.input_spec.items.properties.expected_values.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <input v-model="item.expected_values" type="text" class='split-fourth-input' />
+              <span v-if="item.error_handling.error_type.length > 0 && item.error_handling.error_type[0].value === 'Return error code'">
+                <label for='error_code_value' class='split-fourth-label'> Error Code Value </label>
+                <div class='popover-container'>
+                  <sds-popover>
+                    <template #trigger>
+                      <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
+                    </template>
+                    <template #default>
+                      <div class="popover-div">
+                        <h3 class="popover-h3">
+                          Error Code value
+                        </h3>
+                        <p class="popover-p">
+                          {{ schema.properties.input_spec.items.properties.error_handling.properties.error_code_value.description }}
+                        </p>
+                      </div>
+                    </template>
+                  </sds-popover>
+                </div>
+                <input v-model="item.error_handling.error_code_value" type="number" class='split-fourth-input'/>
+              </span>
             </div>
+
             <div class='input-line-div'>
               <label for='component' class='split-fourth-label'> Upstream Component in Development Environment </label>
               <div class='popover-container'>
@@ -407,7 +375,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '1.0',
+            version: '1.2',
             pipeline_identifier: '',
             pipeline_version: '',
             pipeline_description: '',
@@ -415,7 +383,26 @@ DM23-0003
               item_name: '',
               item_description: '',
               item_type: [],
-              expected_values: '',
+              item_specification: {
+                other_value: "",
+                min_value: 0,
+                max_value: 0,
+                resolution_x: 0,
+                resolution_y: 0,
+                channels: 0,
+                image_format: [],
+                min_length: 0,
+                max_length: 0,
+                empty: false,
+                numeric: false,
+                slashes: false,
+                spaces: false,
+                special: false
+              },
+              error_handling: {
+                error_type: [],
+                error_code_value: 0
+              },
               component_mapping: {
                 component: [],
                 data_item: [],
@@ -437,6 +424,7 @@ DM23-0003
             }]
           }
         },
+        input_spec_error_type_options: [],
         input_spec_component_options: [],
         input_spec_data_item_options: [],
 
@@ -462,6 +450,8 @@ DM23-0003
 
         post_json.document['input_spec'].forEach(spec => {
           spec.item_type = spec.item_type.length > 0 ? spec.item_type[0]['value'] : '';
+          spec.item_specification.image_format = spec.item_specification.image_format.length > 0 ? spec.item_specification.image_format[0]['value'] : '';
+          spec.error_handling.error_type = spec.error_handling.error_type.length > 0 ? spec.error_handling.error_type[0]['value']: '';
           spec.component_mapping.component = spec.component_mapping.component.length > 0 ? spec.component_mapping.component[0]['value'] : '';
           spec.component_mapping.data_item = spec.component_mapping.data_item.length > 0 ? spec.component_mapping.data_item[0]['value'] : '';
         });
@@ -489,6 +479,12 @@ DM23-0003
       },
 
 
+      update_selected_error_type(selections, spec_index){
+        this.model.document.input_spec[spec_index].error_handling.error_type = selections;
+        this.model.document.input_spec[spec_index].error_handling.error_code_value = 0;        
+      },
+
+
       update_selected_component_mapping(selections, spec_index){
         this.model.document.input_spec[spec_index].component_mapping.component = selections;
         this.model.document.input_spec[spec_index].component_mapping.data_item = []
@@ -496,7 +492,31 @@ DM23-0003
 
 
       add_input_spec(){
-        this.model.document.input_spec.push({item_name: '', item_description: '', item_type: [], expected_values: '', component_mapping: {component: [], data_item: []}})
+        this.model.document.input_spec.push(
+          {
+            item_name: '',
+            item_description: '',
+            item_type: [],
+            item_specification: {
+              other_value: "",
+              min_value: 0,
+              max_value: 0,
+              resolution_x: 0,
+              resolution_y: 0,
+              channels: 0,
+              image_format: [],
+              min_length: 0,
+              max_length: 0,
+              empty: false,
+              numeric: false,
+              slashes: false,
+              spaces: false,
+              special: false
+            },
+            error_handling: {error_type: [], error_code_value: 0},
+            component_mapping: {component: [], data_item: []}
+          }
+        )
       },
 
 
@@ -560,6 +580,9 @@ DM23-0003
     async fetch(){
       await this.$axios.post('/api/get_schema/data_pipeline_schema.json').then(response => {
         this.schema = response['data'];
+        this.schema['properties']['input_spec']['items']['properties']['error_handling']['properties']['error_type']['enum'].forEach(type => {
+          this.input_spec_error_type_options.push({id: type, value: type});
+        })
       })
 
       // Populating the option fields in the page with the items from the development environment descriptor
@@ -596,9 +619,11 @@ DM23-0003
           }
 
           this.model.document['input_spec'].forEach(spec => {
-            spec.item_type = [{key: spec.item_type, value: spec.item_type}]
-            spec.component_mapping.component = [{key: spec.component_mapping.component, value: spec.component_mapping.component}]
-            spec.component_mapping.data_item = [{key: spec.component_mapping.data_item, value: spec.component_mapping.data_item}]
+            spec.item_type = [{id: spec.item_type, value: spec.item_type}]
+            spec.item_specification.image_format = [{id: spec.item_specification.image_format, value: spec.item_specification.image_format}]
+            spec.error_handling.error_type = [{id: spec.error_handling.error_type, value: spec.error_handling.error_type}]
+            spec.component_mapping.component = [{id: spec.component_mapping.component, value: spec.component_mapping.component}]
+            spec.component_mapping.data_item = [{id: spec.component_mapping.data_item, value: spec.component_mapping.data_item}]
           });
         }
         else{

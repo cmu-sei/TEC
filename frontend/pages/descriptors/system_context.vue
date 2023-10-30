@@ -246,7 +246,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '1.1',
+            version: '1.2',
             task: '',
             ml_problem_type: {
               ml_problem: '',

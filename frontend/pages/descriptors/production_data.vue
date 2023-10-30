@@ -357,7 +357,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '1.0',
+            version: '1.2',
             data_sources: '',
             data_rates: '',
             schema: [{

@@ -29,7 +29,7 @@ def create_application():
     app = Flask(__name__, static_url_path=None)
 
     app.config['JSON_SORT_KEYS'] = False
-    app.config['latest_descriptor_version'] = '1.1'
+    app.config['latest_descriptor_version'] = '1.2'
 
     app.register_blueprint(project_blueprint, url_prefix='/project')
     app.register_blueprint(documents_blueprint, url_prefix='/documents')

@@ -530,7 +530,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '1.0',
+            version: '1.2',
             dataset_identifier: '',
             dataset_name: '',
             dataset_version: '',

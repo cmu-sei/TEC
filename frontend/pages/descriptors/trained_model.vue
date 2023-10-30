@@ -221,97 +221,15 @@ DM23-0003
         <input type="text" v-model="model.document.training_data_identifier" class="form-control" disabled/>
       </div>
 
-      <div class='input-div'>
+      <div class="input-div">
         <label for="output_spec"> <b> Output Specification </b> - {{schema.properties.output_spec.description}}</label>
         <div class="input-div" v-for="(item, spec_index) in model.document.output_spec" :key="spec_index">
-          <div class='variable-input-parent-div'>
-            <div class='input-line-div'>
-              <label for='name' class='split-fourth-label'> Data Item Name </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Data Item Name
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.output_spec.items.properties.item_name.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <input type='text' class='split-fourth-input' v-model="item.item_name" />
-              <label for='description' class='split-fourth-label'> Item Description </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Item Description
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.output_spec.items.properties.item_description.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <textarea v-model="item.item_description" type="text" class='split-fourth-input' style='vertical-align: top'/>
-            </div>
-            <div class='input-line-div'>
-              <label for='type' class='split-fourth-label'> Item Type </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Item Type
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.output_spec.items.properties.item_type.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <item-type-multiselect
-                :value='item.item_type'
-                v-bind:multiple="false"
+          <div class="variable-input-parent-div">
+            <testable-item
+              :item="item"
+              :schema="schema.properties.output_spec"
+            />
 
-                @updateSelected='(selections) => {item.item_type = selections}'
-
-                class='split-fourth-input'
-              />
-              <label for='expected_value' class='split-fourth-label'> Expected Value </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Expected Value
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.output_spec.items.properties.expected_values.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <input type='text' class='split-fourth-input' v-model="item.expected_values" />
-            </div>
             <div class='input-line-div'>
               <label for='component' class='split-fourth-label'> Downstream Component in Development Environment </label>
               <div class='popover-container'>
@@ -406,93 +324,11 @@ DM23-0003
         <label for="final_output_spec"> <b> Final Output Specification </b> - {{schema.properties.final_output_spec.description}}</label>
         <div class="input-div" v-for="(item, spec_index) in model.document.final_output_spec" :key="spec_index">
           <div class='variable-input-parent-div'>
-            <div class='input-line-div'>
-              <label for='item_name' class='split-fourth-label'> Item Name </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Item Name
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.final_output_spec.items.properties.item_name.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <input :disabled='!model.document.post_processing' v-model="item.item_name" type="text" class='split-fourth-input' />
-              <label for='item_description' class='split-fourth-label'> Item Description </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Item Description
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.final_output_spec.items.properties.item_description.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <textarea :disabled='!model.document.post_processing' v-model="item.item_description" type="text" class='split-fourth-input' style='vertical-align: top'/>
-            </div>
-            <div class='input-line-div'>
-              <label for='item_type' class='split-fourth-label'> Item Type </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Item Type
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.final_output_spec.items.properties.item_type.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <item-type-multiselect
-                :value='item.item_type'
-                v-bind:multiple="false"
-                :disabled='!model.document.post_processing'
-                @updateSelected='(selections) => {item.item_type = selections}'
-
-                class='split-fourth-input'
-              />
-              <label for='expected_values' class='split-fourth-label'> Expected Values </label>
-              <div class='popover-container'>
-                <sds-popover>
-                  <template #trigger>
-                    <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                  </template>
-                  <template #default>
-                    <div class="popover-div">
-                      <h3 class="popover-h3">
-                        Expected Values
-                      </h3>
-                      <p class="popover-p">
-                        {{schema.properties.final_output_spec.items.properties.expected_values.description}}
-                      </p>
-                    </div>
-                  </template>
-                </sds-popover>
-              </div>
-              <input :disabled='!model.document.post_processing' v-model="item.expected_values" type="text" class='split-fourth-input' />
-            </div>
+            <testable-item
+              :item="item"
+              :schema="schema.properties.output_spec"
+              :disabled="!model.document.post_processing"
+            />
             <div class='input-line-div'>
               <label for='component' class='split-fourth-label'> Downstream Component in Development Environment </label>
               <div class='popover-container'>
@@ -556,60 +392,6 @@ DM23-0003
             </sds-button>
             <sds-button variant="default" :disabled='!model.document.post_processing' v-if='spec_index!=0' @click="remove_final_output_spec(spec_index)">
               Delete Output
-            </sds-button>
-          </div>
-        </div>
-      </div>
-
-      <div class='input-div'>
-        <label> <b> Error Handling </b> - {{schema.properties.error_handling.description}}</label>
-        <div class='input-div' v-for="(error, index) in model.document.error_handling" :key="index">
-          <div class='variable-input-parent-div'>
-            <label for='error_condition' class='split-fourth-label'> Error Condition </label>
-            <div class='popover-container'>
-              <sds-popover>
-                <template #trigger>
-                  <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                </template>
-                <template #default>
-                  <div class="popover-div">
-                    <h3 class="popover-h3">
-                      Error Condition
-                    </h3>
-                    <p class="popover-p">
-                      {{schema.properties.error_handling.items.properties.error_condition.description}}
-                    </p>
-                  </div>
-                </template>
-              </sds-popover>
-            </div>
-            <input v-model="error.error_condition" type="text" class='split-fourth-input' />
-            <label for='how_handled' class='split-fourth-label'> How Handled </label>
-            <div class='popover-container'>
-              <sds-popover>
-                <template #trigger>
-                  <img src="/icons/information-circle.svg" width="30px" height="30px" style="display: inline;"/>
-                </template>
-                <template #default>
-                  <div class="popover-div">
-                    <h3 class="popover-h3">
-                      How Handled
-                    </h3>
-                    <p class="popover-p">
-                      {{schema.properties.error_handling.items.properties.how_handled.description}}
-                    </p>
-                  </div>
-                </template>
-              </sds-popover>
-            </div>
-            <textarea v-model="error.how_handled" type="text" class='split-fourth-input' style='vertical-align: top'/>
-          </div>
-          <div class='variable-input-btn-div'>
-            <sds-button variant="default" v-if='index==0' @click="add_error()">
-              Add Error Condition
-            </sds-button>
-            <sds-button variant="default" v-if='index!=0' @click="remove_error(index)">
-              Delete Error Condition
             </sds-button>
           </div>
         </div>
@@ -1647,7 +1429,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '1.1',
+            version: '1.2',
             model_name: '',
             model_version: '',
             model_description: '',
@@ -1672,7 +1454,22 @@ DM23-0003
               item_name: '', 
               item_description: '', 
               item_type: [], 
-              expected_values: '',
+              item_specification: {
+                other_value: "",
+                min_value: 0,
+                max_value: 0,
+                resolution_x: 0,
+                resolution_y: 0,
+                channels: 0,
+                image_format: [],
+                min_length: 0,
+                max_length: 0,
+                empty: false,
+                numeric: false,
+                slashes: false,
+                spaces: false,
+                special: false
+              },
               component_mapping: {
                 component: [],
                 data_item: [],
@@ -1686,15 +1483,26 @@ DM23-0003
               item_name: '',
               item_description: '',
               item_type: [],
-              expected_values: '',
+              item_specification: {
+                other_value: "",
+                min_value: 0,
+                max_value: 0,
+                resolution_x: 0,
+                resolution_y: 0,
+                channels: 0,
+                image_format: [],
+                min_length: 0,
+                max_length: 0,
+                empty: false,
+                numeric: false,
+                slashes: false,
+                spaces: false,
+                special: false
+              },
               component_mapping: {
                 component: [],
                 data_item: [],
               }
-            }],
-            error_handling: [{
-              error_condition: '',
-              how_handled: '',
             }],
             evaluation_dataset: {
               name: '', 
@@ -1823,6 +1631,7 @@ DM23-0003
 
         post_json.document.output_spec.forEach(spec => {
           spec.item_type = spec.item_type.length > 0 ? spec.item_type[0].value : '';
+          spec.item_specification.image_format = spec.item_specification.image_format.length > 0 ? spec.item_specification.image_format[0]['value'] : '';
           spec.component_mapping.component = spec.component_mapping.component.length > 0 ? spec.component_mapping.component[0].value : '';
           spec.component_mapping.data_item = spec.component_mapping.data_item.length > 0 ? spec.component_mapping.data_item[0].value : '';
         });  
@@ -1834,6 +1643,7 @@ DM23-0003
 
         post_json.document.final_output_spec.forEach(spec => {
           spec.item_type = spec.item_type.length > 0 ? spec.item_type[0].value : '';
+          spec.item_specification.image_format = spec.item_specification.image_format.length > 0 ? spec.item_specification.image_format[0]['value'] : '';
           spec.component_mapping.component = spec.component_mapping.component.length > 0 ? spec.component_mapping.component[0].value : '';
           spec.component_mapping.data_item = spec.component_mapping.data_item.length > 0 ? spec.component_mapping.data_item[0].value : '';
         });
@@ -1904,7 +1714,6 @@ DM23-0003
         });
       },
 
-
       confirm_post_processing_change(event){
         if(this.model.document.post_processing){
           if(confirm("This will clear all of the Post Processing Process and Final Output Specification items. Do you want to continue?")){
@@ -1913,7 +1722,22 @@ DM23-0003
               item_name: '',
               item_description: '',
               item_type: [],
-              expected_values: '',
+              item_specification: {
+                other_value: "",
+                min_value: 0,
+                max_value: 0,
+                resolution_x: 0,
+                resolution_y: 0,
+                channels: 0,
+                image_format: [],
+                min_length: 0,
+                max_length: 0,
+                empty: false,
+                numeric: false,
+                slashes: false,
+                spaces: false,
+                special: false
+              }, 
               component_mapping: {
                 component: [],
                 data_item: [],
@@ -1959,8 +1783,30 @@ DM23-0003
 
 
       add_output_spec() {
-        this.model.document.output_spec.push({item_name: '', item_description: '', item_type: [], expected_values: '', component_mapping: {component: [], data_item: []}});
-
+        this.model.document.output_spec.push(
+          {
+            item_name: '',
+            item_description: '',
+            item_type: [],
+            item_specification: {
+              other_value: "",
+              min_value: 0,
+              max_value: 0,
+              resolution_x: 0,
+              resolution_y: 0,
+              channels: 0,
+              image_format: [],
+              min_length: 0,
+              max_length: 0,
+              empty: false,
+              numeric: false,
+              slashes: false,
+              spaces: false,
+              special: false
+            }, 
+            component_mapping: {component: [], data_item: []}
+          }
+        );
       },
 
       remove_output_spec(spec_index) {
@@ -1972,15 +1818,34 @@ DM23-0003
       },
 
       add_final_output_spec(){
-        this.model.document.final_output_spec.push({item_name: '', item_description: '', item_type: [], expected_values: '', component_mapping: {component: [], data_item: []}});
+        this.model.document.final_output_spec.push(
+          {
+            item_name: '',
+            item_description: '',
+            item_type: [],
+            item_specification: {
+              other_value: "",
+              min_value: 0,
+              max_value: 0,
+              resolution_x: 0,
+              resolution_y: 0,
+              channels: 0,
+              image_format: [],
+              min_length: 0,
+              max_length: 0,
+              empty: false,
+              numeric: false,
+              slashes: false,
+              spaces: false,
+              special: false
+            }, 
+            component_mapping: {component: [], data_item: []}
+          }
+        );
       },
 
       remove_final_output_spec(spec_index){
         this.model.document.final_output_spec.splice(spec_index, 1);
-      },
-
-      add_error() {
-        this.model.document.error_handling.push({error_condition: '', how_handled: ''});
       },
 
       add_evaluation_metric(){
@@ -2032,10 +1897,6 @@ DM23-0003
 
       remove_post_processing_process(index) {
         this.model.document.post_processing_process.splice(index, 1);
-      },
-
-      remove_error(index) {
-        this.model.document.error_handling.splice(index, 1);
       },
 
       remove_evaluation_metric(index){
@@ -2185,12 +2046,14 @@ DM23-0003
 
           this.model.document['output_spec'].forEach(spec => {
             spec.item_type = [{key: spec.item_type, value: spec.item_type}]
+            spec.item_specification.image_format = [{id: spec.item_specification.image_format, value: spec.item_specification.image_format}]
             spec.component_mapping.component = [{key: spec.component_mapping.component, value: spec.component_mapping.component}]
             spec.component_mapping.data_item = [{key: spec.component_mapping.data_item, value: spec.component_mapping.data_item}]
           });
 
           this.model.document['final_output_spec'].forEach(spec => {
             spec.item_type = [{key: spec.item_type, value: spec.item_type}]
+            spec.item_specification.image_format = [{id: spec.item_specification.image_format, value: spec.item_specification.image_format}]
             spec.component_mapping.component = [{key: spec.component_mapping.component, value: spec.component_mapping.component}]
             spec.component_mapping.data_item = [{key: spec.component_mapping.data_item, value: spec.component_mapping.data_item}]
           });

@@ -622,7 +622,7 @@ DM23-0003
         schema: {},
         model: {
           document: {
-            version: '1.1',
+            version: '1.2',
             required_inference_time: {
               time: 0,
               unit: [],
