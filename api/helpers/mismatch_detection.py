@@ -846,13 +846,13 @@ def data_pipeline_missing_fields(data_pipeline_json):
                 'rationale': 'Field type is important information for building the data pipeline.'
             })
 
-        if(any(spec['expected_values'].strip() == '' for spec in data_pipeline_json['input_spec'])):
-            missing_fields.append(
-            {
-                'descriptor': 'Data Pipeline',
-                'field': 'Input Specification.Expected Values', 
-                'rationale': 'Understanding of expected values for a field is important information for building the data pipeline and determining errors in input data.'
-            })
+        # if(any(spec['expected_values'].strip() == '' for spec in data_pipeline_json['input_spec'])):
+        #     missing_fields.append(
+        #     {
+        #         'descriptor': 'Data Pipeline',
+        #         'field': 'Input Specification.Expected Values', 
+        #         'rationale': 'Understanding of expected values for a field is important information for building the data pipeline and determining errors in input data.'
+        #     })
         
         if(any(spec['component_mapping']['component'].strip() == '' and spec['component_mapping']['data_item'].strip() == '' for spec in data_pipeline_json['input_spec'])):
             missing_fields.append(
@@ -1147,13 +1147,13 @@ def trained_model_missing_fields(trained_model_json):
                     'rationale': 'Field type is important information for integrating the trained model into the ML system.'
                 }) 
 
-        if(any(spec['expected_values'].strip() == '' for spec in trained_model_json['output_spec'])):
-            missing_fields.append(
-                {
-                    'descriptor': 'Trained Model',
-                    'field': 'Output Specification.Expected Values', 
-                    'rationale': 'Understanding of expected values for a field is important information for integrated the trained model into the ML system and determining errors in model output data.'
-                })
+        # if(any(spec['expected_values'].strip() == '' for spec in trained_model_json['output_spec'])):
+        #     missing_fields.append(
+        #         {
+        #             'descriptor': 'Trained Model',
+        #             'field': 'Output Specification.Expected Values', 
+        #             'rationale': 'Understanding of expected values for a field is important information for integrated the trained model into the ML system and determining errors in model output data.'
+        #         })
 
         if(any(spec['component_mapping']['component'].strip() == '' for spec in trained_model_json['output_spec'])):
             missing_fields.append(
