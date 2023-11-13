@@ -1632,6 +1632,12 @@ DM23-0003
         post_json.document.output_spec.forEach(spec => {
           spec.item_type = spec.item_type.length > 0 ? spec.item_type[0].value : '';
           spec.item_specification.image_format = spec.item_specification.image_format.length > 0 ? spec.item_specification.image_format[0]['value'] : '';
+          // Remove block if testable-item is fixed to return numbers instead of strings
+          spec.item_specification.min_value = parseInt(spec.item_specification.min_value)
+          spec.item_specification.max_value = parseInt(spec.item_specification.max_value)
+          spec.item_specification.min_length = parseInt(spec.item_specification.min_length)
+          spec.item_specification.max_length = parseInt(spec.item_specification.max_length)
+          // end block
           spec.component_mapping.component = spec.component_mapping.component.length > 0 ? spec.component_mapping.component[0].value : '';
           spec.component_mapping.data_item = spec.component_mapping.data_item.length > 0 ? spec.component_mapping.data_item[0].value : '';
         });  
@@ -1643,6 +1649,12 @@ DM23-0003
 
         post_json.document.final_output_spec.forEach(spec => {
           spec.item_type = spec.item_type.length > 0 ? spec.item_type[0].value : '';
+          // Remove block if testable-item is fixed to return numbers instead of strings
+          spec.item_specification.min_value = parseInt(spec.item_specification.min_value)
+          spec.item_specification.max_value = parseInt(spec.item_specification.max_value)
+          spec.item_specification.min_length = parseInt(spec.item_specification.min_length)
+          spec.item_specification.max_length = parseInt(spec.item_specification.max_length)
+          // end block
           spec.item_specification.image_format = spec.item_specification.image_format.length > 0 ? spec.item_specification.image_format[0]['value'] : '';
           spec.component_mapping.component = spec.component_mapping.component.length > 0 ? spec.component_mapping.component[0].value : '';
           spec.component_mapping.data_item = spec.component_mapping.data_item.length > 0 ? spec.component_mapping.data_item[0].value : '';

@@ -809,7 +809,9 @@ def data_pipeline_missing_fields(data_pipeline_json):
     if(not data_pipeline_json 
         or all(
             spec['item_name'].strip() == '' and spec['item_description'].strip() == ''
-            and spec['item_type'].strip() == '' and spec['expected_values'].strip() == ''
+            and spec['item_type'].strip() == ''
+            # expected_values removed, do we want a check like this?
+            # and item_spec_missing_fields(trained_model_json['final_output_spec'])
             and spec['component_mapping']['component'].strip() == ''
             and spec['component_mapping']['data_item'].strip() == ''
             for spec in data_pipeline_json['input_spec']
@@ -846,13 +848,13 @@ def data_pipeline_missing_fields(data_pipeline_json):
                 'rationale': 'Field type is important information for building the data pipeline.'
             })
 
-        # if(any(spec['expected_values'].strip() == '' for spec in data_pipeline_json['input_spec'])):
-        #     missing_fields.append(
-        #     {
-        #         'descriptor': 'Data Pipeline',
-        #         'field': 'Input Specification.Expected Values', 
-        #         'rationale': 'Understanding of expected values for a field is important information for building the data pipeline and determining errors in input data.'
-        #     })
+        if(item_spec_missing_fields(data_pipeline_json['input_spec'])):
+            missing_fields.append(
+            {
+                'descriptor': 'Data Pipeline',
+                'field': 'Input Specification.Item Specification', 
+                'rationale': 'Understanding of expected values for a field is important information for building the data pipeline and determining errors in input data.'
+            })
         
         if(any(spec['component_mapping']['component'].strip() == '' and spec['component_mapping']['data_item'].strip() == '' for spec in data_pipeline_json['input_spec'])):
             missing_fields.append(
@@ -1108,7 +1110,8 @@ def trained_model_missing_fields(trained_model_json):
                 spec['item_name'].strip() == ''
                 and spec['item_description'].strip() == ''
                 and spec['item_type'].strip() == ''
-                and spec['expected_values'].strip() == ''
+                # expected_values removed, do we want a check like this?
+                # and item_spec_missing_fields(trained_model_json['final_output_spec'])
                 and spec['component_mapping']['component'].strip() == ''
                 and spec['component_mapping']['data_item'].strip() == '' 
                 for spec in trained_model_json['output_spec']
@@ -1147,13 +1150,13 @@ def trained_model_missing_fields(trained_model_json):
                     'rationale': 'Field type is important information for integrating the trained model into the ML system.'
                 }) 
 
-        # if(any(spec['expected_values'].strip() == '' for spec in trained_model_json['output_spec'])):
-        #     missing_fields.append(
-        #         {
-        #             'descriptor': 'Trained Model',
-        #             'field': 'Output Specification.Expected Values', 
-        #             'rationale': 'Understanding of expected values for a field is important information for integrated the trained model into the ML system and determining errors in model output data.'
-        #         })
+        if(item_spec_missing_fields(trained_model_json['output_spec'])):
+            missing_fields.append(
+                {
+                    'descriptor': 'Trained Model',
+                    'field': 'Output Specification.Item Specification', 
+                    'rationale': 'Understanding of expected values for a field is important information for integrated the trained model into the ML system and determining errors in model output data.'
+                })
 
         if(any(spec['component_mapping']['component'].strip() == '' for spec in trained_model_json['output_spec'])):
             missing_fields.append(
@@ -1186,7 +1189,8 @@ def trained_model_missing_fields(trained_model_json):
                 spec['item_name'].strip() == ''
                 and spec['item_description'].strip() == ''
                 and spec['item_type'].strip() == ''
-                and spec['expected_values'].strip() == ''
+                # expected_values removed, do we want a check like this?
+                # and item_spec_missing_fields(trained_model_json['final_output_spec'])
                 and spec['component_mapping']['component'].strip() == ''
                 and spec['component_mapping']['data_item'].strip() == ''
                 for spec in trained_model_json['final_output_spec']
@@ -1225,11 +1229,11 @@ def trained_model_missing_fields(trained_model_json):
                     'rationale': 'Field type is important information for integrating the trained model into the ML system.'
                 })
 
-        if(any(spec['expected_values'].strip() == '' for spec in trained_model_json['final_output_spec'])):
+        if(item_spec_missing_fields(trained_model_json['final_output_spec'])):
             missing_fields.append(
                 {
                     'descriptor': 'Trained Model',
-                    'field': 'Final Output Specification.Expected Values', 
+                    'field': 'Final Output Specification.Item Specification', 
                     'rationale': 'Understanding of expected values for a field is important information for integrated the trained model into the ML system and determining errors in model output data.'
                 })
 
@@ -2043,3 +2047,21 @@ def production_data_missing_fields(production_data_json):
                 })
 
     return missing_fields
+
+
+def item_spec_missing_fields(specification_list):
+    if any(
+        item_spec['item_specification']['other_value'] == ''
+        and item_spec['item_specification']['min_value'] == 0
+        and item_spec['item_specification']['max_value'] == 0
+        and item_spec['item_specification']['resolution_x'] == 0
+        and item_spec['item_specification']['resolution_y'] == 0
+        and item_spec['item_specification']['channels'] == 0
+        and item_spec['item_specification']['image_format'] == ''
+        and item_spec['item_specification']['min_length'] == 0
+        and item_spec['item_specification']['max_length'] == 0
+        for item_spec in specification_list
+    ):
+        return True
+    else:
+        return False

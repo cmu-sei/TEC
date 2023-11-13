@@ -357,6 +357,7 @@ export default {
     update_item_type(selections){
       this.item.item_type = selections;
 
+      // Don't add this property if it isn't there
       if(selections.length > 0 && selections[0].value !== "Other" && this.item.item_specification.expected_values !== ""){
         this.item.item_specification.expected_values = "";
       }
